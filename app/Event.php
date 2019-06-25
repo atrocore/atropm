@@ -21,7 +21,7 @@
 
 declare(strict_types=1);
 
-namespace Treo\ModuleManagerEvents\ProjectManagement;
+namespace ProjectManagement;
 
 use Treo\Composer\AbstractEvent;
 
