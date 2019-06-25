@@ -1,0 +1,12 @@
+{
+    "controller": "controllers/record",
+    "boolFilterList": [
+        "onlyMy"
+    ],
+    "color": "#7eb7da",
+    "iconClass": "fas fa-cubes",
+    "recordViews": {
+        "edit": "project-management:views/expense/record/edit",
+        "editSmall": "project-management:views/expense/record/edit-small"
+    }
+}

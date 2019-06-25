@@ -1,0 +1,44 @@
+[
+    {
+        "style": "default",
+        "rows": [
+            [
+                {
+                    "name": "name"
+                },
+                {
+                    "name": "group"
+                }
+            ],
+            [
+                {
+                    "name": "description",
+                    "fullWidth": true
+                }
+            ],
+            [
+                {
+                    "name": "account"
+                },
+                {
+                    "name": "projectType"
+                }
+            ],
+            [
+                {
+                    "name": "defaultQA"
+                },
+                false
+            ],
+            [
+                {
+                    "name": "totalIssues"
+                },
+                {
+                    "name": "closedIssues"
+                }
+            ]
+        ],
+        "label": "Overview"
+    }
+]

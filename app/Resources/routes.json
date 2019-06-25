@@ -1,0 +1,20 @@
+[
+    {
+        "route": "/Project/getMilestonesAndIssues/:id",
+        "method": "get",
+        "params": {
+            "controller": "Project",
+            "action": "getMilestonesAndIssues",
+            "id": ":id"
+        }
+    },
+    {
+        "route": "/Milestone/getIssuesAndExpenses/:id",
+        "method": "get",
+        "params": {
+            "controller": "Milestone",
+            "action": "getIssuesAndExpenses",
+            "id": ":id"
+        }
+    }
+]

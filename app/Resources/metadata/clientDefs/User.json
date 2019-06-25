@@ -1,0 +1,5 @@
+{
+    "modalViews": {
+        "select": "project-management:views/modals/select-records"
+    }
+}

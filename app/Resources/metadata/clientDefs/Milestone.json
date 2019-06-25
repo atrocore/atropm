@@ -1,0 +1,52 @@
+{
+    "controller": "controllers/record",
+    "boolFilterList": [
+        "onlyMy"
+    ],
+    "color": "#7eb7da",
+    "iconClass": "fas fa-flag",
+    "modalViews": {
+        "select": "project-management:views/modals/select-records"
+    },
+    "relationshipPanels": {
+        "issues": {
+            "selectDisabled": true,
+            "viewDisabled": true,
+            "createDisabled": true
+        }
+    },
+    "bottomPanels": {
+        "detail": [
+            {
+                "name": "expenses",
+                "label": "expenses",
+                "view": "project-management:views/milestone/record/panels/expenses",
+                "order": 10
+            }
+        ]
+    },
+    "dynamicLogic": {
+        "fields": {
+            "status": {
+                "readOnly": {
+                    "conditionGroup": [
+                        {
+                            "type": "isEmpty",
+                            "attribute": "id"
+                        }
+                    ]
+                }
+            },
+            "parent": {
+                "readOnly": {
+                    "conditionGroup": [
+                        {
+                            "type": "isNotEmpty",
+                            "attribute": "id"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

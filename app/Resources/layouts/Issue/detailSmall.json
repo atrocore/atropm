@@ -1,0 +1,42 @@
+[
+    {
+        "rows": [
+            [
+                {
+                    "name": "name",
+                    "fullWidth": true
+                }
+            ],
+            [
+                {
+                    "name": "description",
+                    "fullWidth": true
+                }
+            ],
+            [
+                {
+                    "name": "issueType"
+                },
+                {
+                    "name": "status"
+                }
+            ],
+            [
+                {
+                    "name": "project"
+                },
+                {
+                    "name": "milestone"
+                }
+            ],
+            [
+                {
+                    "name": "dueDate"
+                },
+                false
+            ]
+        ],
+        "style": "default",
+        "label": ""
+    }
+]

@@ -1,0 +1,44 @@
+[
+    {
+        "rows": [
+            [
+                {
+                    "name": "name"
+                },
+                {
+                    "name": "parent"
+                }
+            ],
+            [
+                {
+                    "name": "expenseType"
+                },
+                {
+                    "name": "unitPrice"
+                }
+            ],
+            [
+                {
+                    "name": "units"
+                },
+                {
+                    "name": "total"
+                }
+            ],
+            [
+                {
+                    "name": "description",
+                    "fullWidth": true
+                }
+            ],
+            [
+                {
+                    "name": "dateCompleted"
+                },
+                false
+            ]
+        ],
+        "style": "default",
+        "label": "Overview"
+    }
+]

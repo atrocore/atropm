@@ -1,0 +1,13 @@
+[
+    "assignedUser",
+    "teams",
+    "createdAt",
+    "createdBy",
+    "modifiedAt",
+    "type",
+    "industry",
+    "description",
+    "emailAddress",
+    "phoneNumber",
+    "website"
+]

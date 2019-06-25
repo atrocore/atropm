@@ -1,0 +1,18 @@
+[
+    {
+        "name": "name",
+        "link": true
+    },
+    {
+        "name": "parent"
+    },
+    {
+        "name": "status"
+    },
+    {
+        "name": "totalIssues"
+    },
+    {
+        "name": "closedIssues"
+    }
+]

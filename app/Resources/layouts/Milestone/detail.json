@@ -1,0 +1,44 @@
+[
+    {
+        "style": "default",
+        "rows": [
+            [
+                {
+                    "name": "name"
+                },
+                {
+                    "name": "parent"
+                }
+            ],
+            [
+                {
+                    "name": "description",
+                    "fullWidth": true
+                }
+            ],
+            [
+                {
+                    "name": "startDate"
+                },
+                {
+                    "name": "dueDate"
+                }
+            ],
+            [
+                {
+                    "name": "status"
+                },
+                false
+            ],
+            [
+                {
+                    "name": "totalIssues"
+                },
+                {
+                    "name": "closedIssues"
+                }
+            ]
+        ],
+        "label": "Overview"
+    }
+]

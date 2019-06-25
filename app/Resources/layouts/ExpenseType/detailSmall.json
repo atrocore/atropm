@@ -1,0 +1,30 @@
+[
+    {
+        "rows": [
+            [
+                {
+                    "name": "name"
+                },
+                {
+                    "name": "unitPrice"
+                }
+            ],
+            [
+                {
+                    "name": "unitName"
+                },
+                {
+                    "name": "pluralizedUnitName"
+                }
+            ],
+            [
+                {
+                    "name": "defaultUnitsAmount"
+                },
+                false
+            ]
+        ],
+        "style": "default",
+        "label": ""
+    }
+]

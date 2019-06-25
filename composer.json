@@ -1,0 +1,38 @@
+{
+    "name": "treo-module/project-management",
+    "description": "Project Management module for TreoCore",
+    "authors": [
+        {
+            "name": "Oleksandr Trelin",
+            "email": "o.trelin@treolabs.com"
+        },
+        {
+            "name": "Yurii Kondratskyi",
+            "email": "y.kondratskyi@treolabs.com"
+        },
+        {
+            "name": "Dmytro Talko",
+            "email": "d.talko@treolabs.com"
+        }
+    ],
+    "require": {
+        "treolabs/treocore": "~3.19.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "ProjectManagement\\": "app/"
+        }
+    },
+    "extra": {
+        "treoId": "ProjectManagement",
+        "name": {
+            "default": "Project Management"
+        },
+        "description": {
+            "default": "Project Management module for TreoCore."
+        },
+        "tags": [
+            "project-management"
+        ]
+    }
+}

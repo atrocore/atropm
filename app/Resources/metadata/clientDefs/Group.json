@@ -1,0 +1,53 @@
+{
+    "controller": "controllers/record",
+    "boolFilterList": [
+        "onlyMy"
+    ],
+    "color": "#7eb7da",
+    "iconClass": "fas fa-folder-open",
+    "views": {
+        "detail": "project-management:views/group/detail"
+    },
+    "relationshipPanels": {
+        "projects": {
+            "selectDisabled": true,
+            "viewDisabled": true
+        },
+        "subgroups": {
+            "selectDisabled": true,
+            "viewDisabled": true
+        }
+    },
+    "bottomPanels": {
+        "detail":  [
+            {
+                "name": "milestones",
+                "label": "milestones",
+                "view": "project-management:views/group/record/panels/milestones",
+                "rowActionsView": "views/record/row-actions/relationship-no-unlink",
+                "order": 10
+            },
+            {
+                "name": "labels",
+                "label": "labels",
+                "view": "project-management:views/group/record/panels/labels",
+                "rowActionsView": "views/record/row-actions/relationship-no-unlink",
+                "order": 10
+            }
+        ]
+    },
+    "dynamicLogic": {
+        "fields": {
+            "parentGroup": {
+                "readOnly": {
+                    "conditionGroup": [
+                        {
+                            "type": "isNotEmpty",
+                            "attribute": "id"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

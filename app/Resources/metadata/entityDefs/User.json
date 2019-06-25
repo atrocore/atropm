@@ -1,0 +1,30 @@
+{
+    "fields": {
+        "unitPrice": {
+            "type": "currency",
+            "audited": true,
+            "min": null,
+            "max": null
+        },
+        "isCustomer": {
+            "notNull": true,
+            "type": "bool"
+        },
+        "projects": {
+            "type": "linkMultiple",
+            "layoutDetailDisabled": true,
+            "layoutMassUpdateDisabled": true,
+            "noLoad": true,
+            "importDisabled": true
+        }
+    },
+    "links": {
+        "projects": {
+            "type": "hasMany",
+            "foreign": "defaultQA",
+            "entity": "Project",
+            "audited": true,
+            "layoutRelationshipsDisabled": true
+        }
+    }
+}

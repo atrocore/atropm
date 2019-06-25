@@ -1,0 +1,12 @@
+{
+    "fields": {
+        "unitPrice": "Unit Price",
+        "unitPriceCurrency": "Unit Price (Currency)",
+        "unitPriceConverted": "Unit Price (Converted)",
+        "isCustomer": "Is Customer",
+        "projects": "Projects"
+    },
+    "links": {
+        "projects": "Projects"
+    }
+}

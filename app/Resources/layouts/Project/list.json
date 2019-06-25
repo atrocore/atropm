@@ -1,0 +1,21 @@
+[
+    {
+        "name": "name",
+        "link": true
+    },
+    {
+        "name": "group"
+    },
+    {
+        "name": "projectType"
+    },
+    {
+        "name": "account"
+    },
+    {
+        "name": "totalIssues"
+    },
+    {
+        "name": "closedIssues"
+    }
+]

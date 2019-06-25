@@ -1,0 +1,54 @@
+{
+    "controller": "controllers/record",
+    "boolFilterList": [
+        "onlyMy"
+    ],
+    "color": "#7eb7da",
+    "iconClass": "fas fa-gem",
+    "relationshipPanels": {
+        "issues": {
+            "selectDisabled": true,
+            "viewDisabled": true,
+            "view": "project-management:views/project/record/panels/issues"
+        }
+    },
+    "bottomPanels": {
+        "detail":  [
+            {
+                "name": "milestones",
+                "label": "milestones",
+                "view": "project-management:views/project/record/panels/milestones",
+                "rowActionsView": "views/record/row-actions/relationship-no-unlink",
+                "order": 10
+            },
+            {
+                "name": "labels",
+                "label": "labels",
+                "view": "project-management:views/project/record/panels/labels",
+                "rowActionsView": "views/record/row-actions/relationship-no-unlink",
+                "order": 10
+            },
+            {
+                "name": "expenses",
+                "label": "expenses",
+                "view": "project-management:views/project/record/panels/expenses",
+                "rowActionsView": "views/record/row-actions/relationship-no-unlink",
+                "order": 10
+            }
+        ]
+    },
+    "dynamicLogic": {
+        "fields": {
+            "group": {
+                "readOnly": {
+                    "conditionGroup": [
+                        {
+                            "type": "isNotEmpty",
+                            "attribute": "id"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

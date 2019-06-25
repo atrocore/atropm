@@ -1,0 +1,24 @@
+{
+    "fields": {
+        "groupType": "Group Type",
+        "subgroups": "Subgroups",
+        "parentGroup": "Parent Group",
+        "projects": "Projects"
+    },
+    "links": {
+        "subgroups": "Subgroups",
+        "parentGroup": "Parent Group",
+        "projects": "Projects"
+    },
+    "labels": {
+        "Create Group": "Create Group",
+        "milestones": "Milestones",
+        "labels": "Labels"
+    },
+    "options": {
+        "groupType": {
+            "External": "External",
+            "Internal": "Internal"
+        }
+    }
+}

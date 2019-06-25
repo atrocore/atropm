@@ -1,0 +1,21 @@
+{
+    "fields": {
+        "expenseType": "Expense Type",
+        "unitPrice": "Unit Price",
+        "unitPriceCurrency": "Unit Price (Currency)",
+        "unitPriceConverted": "Unit Price (Converted)",
+        "units": "Units",
+        "total": "Total",
+        "totalCurrency": "Total (Currency)",
+        "totalConverted": "Total (Converted)",
+        "dateCompleted": "Date Completed",
+        "parent": "Parent"
+    },
+    "links": {
+        "expenseType": "ExpenseType",
+        "parent": "Parent"
+    },
+    "labels": {
+        "Create Expense": "Create Expense"
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "fields": {
+        "issueType": "Issue Type",
+        "status": "Status",
+        "project": "Project",
+        "milestone": "Milestone",
+        "labels": "Labels",
+        "dueDate": "Due Date",
+        "expenses": "Expenses"
+    },
+    "links": {
+        "project": "Project",
+        "milestone": "Milestone",
+        "labels": "Labels"
+    },
+    "labels": {
+        "expenses": "Expenses"
+    },
+    "options": {
+        "issueType": {
+            "Request": "Request",
+            "Addon": "Addon",
+            "Improvement": "Improvement",
+            "Bug": "Bug"
+        },
+        "status": {
+            "open": "Open",
+            "closed": "Closed"
+        },
+        "labels": []
+    }
+}

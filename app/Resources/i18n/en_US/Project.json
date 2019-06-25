@@ -1,0 +1,29 @@
+{
+    "fields": {
+        "group": "Group",
+        "account": "Account",
+        "projectType": "Project Type",
+        "issues": "Issues",
+        "totalIssues": "Total Issues",
+        "closedIssues": "Closed Issues",
+        "defaultQA": "Default QA"
+    },
+    "links": {
+        "group": "Group",
+        "account": "Account",
+        "issues": "Issues",
+        "defaultQA": "Default QA"
+    },
+    "labels": {
+        "Create Project": "Create Project",
+        "milestones": "Milestones",
+        "labels": "Labels",
+        "expenses": "Expenses"
+    },
+    "options": {
+        "projectType": {
+            "External": "External",
+            "Internal": "Internal"
+        }
+    }
+}

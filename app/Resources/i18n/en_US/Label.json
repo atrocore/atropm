@@ -1,0 +1,12 @@
+{
+    "fields": {
+        "parent": "Parent",
+        "issues": "Issues"
+    },
+    "links": {
+        "issues": "Issues"
+    },
+    "labels": {
+        "Create Label": "Create Label"
+    }
+}

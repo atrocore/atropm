@@ -1,0 +1,27 @@
+[
+    {
+        "name": "name",
+        "link": true
+    },
+    {
+        "name": "parent"
+    },
+    {
+        "name": "expenseType"
+    },
+    {
+        "name": "unitPrice"
+    },
+    {
+        "name": "units"
+    },
+    {
+        "name": "total"
+    },
+    {
+        "name": "assignedUser"
+    },
+    {
+        "name": "dateCompleted"
+    }
+]

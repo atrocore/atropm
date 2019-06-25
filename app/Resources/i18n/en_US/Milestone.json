@@ -1,0 +1,32 @@
+{
+    "fields": {
+        "parent": "Parent",
+        "status": "Status",
+        "totalIssues": "Total Issues",
+        "closedIssues": "Closed Issues",
+        "startDate": "Start Date",
+        "dueDate": "Due Date",
+        "issues": "Issues"
+    },
+    "links": {
+        "issues": "Issues"
+    },
+    "labels": {
+        "Create Milestone": "Create Milestone",
+        "sum": "Sum",
+        "expenses": "Expenses"
+    },
+    "options": {
+        "status": {
+            "active": "Active",
+            "closed": "Closed"
+        }
+    },
+    "expensesPanel": {
+        "name": "Name",
+        "expenseType": "Expense Type",
+        "status": "Status",
+        "labelsOrDescription": "Labels/Description",
+        "total": "Total"
+    }
+}

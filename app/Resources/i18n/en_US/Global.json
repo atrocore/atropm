@@ -1,0 +1,22 @@
+{
+    "scopeNames": {
+        "Account": "Account",
+        "Group": "Group",
+        "Project": "Project",
+        "Milestone": "Milestone",
+        "Issue": "Issue",
+        "ExpenseType": "Expense Type",
+        "Expense": "Expense",
+        "Label": "Label"
+    },
+    "scopeNamesPlural": {
+        "Account": "Accounts",
+        "Group": "Groups",
+        "Project": "Projects",
+        "Milestone": "Milestones",
+        "Issue": "Issues",
+        "ExpenseType": "Expense Types",
+        "Expense": "Expenses",
+        "Label": "Labels"
+    }
+}

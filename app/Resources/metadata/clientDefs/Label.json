@@ -1,0 +1,32 @@
+{
+    "controller": "controllers/record",
+    "boolFilterList": [
+        "onlyMy"
+    ],
+    "color": "#7eb7da",
+    "iconClass": "fas fa-tag",
+    "modalViews": {
+        "select": "project-management:views/modals/select-records"
+    },
+    "relationshipPanels": {
+        "issues": {
+            "selectDisabled": true,
+            "viewDisabled": true,
+            "createDisabled": true
+        }
+    },
+    "dynamicLogic": {
+        "fields": {
+            "parent": {
+                "readOnly": {
+                    "conditionGroup": [
+                        {
+                            "type": "isNotEmpty",
+                            "attribute": "id"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

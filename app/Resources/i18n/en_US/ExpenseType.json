@@ -1,0 +1,17 @@
+{
+    "fields": {
+        "unitPrice": "Unit Price",
+        "unitPriceCurrency": "Unit Price (Currency)",
+        "unitPriceConverted": "Unit Price (Converted)",
+        "unitName": "Unit Name",
+        "pluralizedUnitName": "Pluralized Unit Name",
+        "defaultUnitsAmount": "Default Units Amount",
+        "expenses": "Expenses"
+    },
+    "links": {
+        "expenses": "Expenses"
+    },
+    "labels": {
+        "Create ExpenseType": "Create Expense Type"
+    }
+}

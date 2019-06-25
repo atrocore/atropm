@@ -1,0 +1,14 @@
+[
+    {
+        "label": "Project Management Settings",
+        "style": "default",
+        "rows": [
+            [
+                {
+                    "name": "isCustomer"
+                },
+                false
+            ]
+        ]
+    }
+]

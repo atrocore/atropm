@@ -1,0 +1,2 @@
+<a style="margin-left: {{marginLeft}}px;" href="#{{model.name}}/view/{{model.id}}" class="link" data-id="{{model.id}}" title="{{value}}">{{#if value}}{{value}}{{else}}{{translate 'None'}}{{/if}}</a>
+{{#if showCaret}}<span class="action text-muted" style="cursor: pointer; display: inline-block; width: 16px; text-align: center;" data-action="toggleCaret"><i class="fas fa-sm{{#if hidden}} fa-caret-right{{else}} fa-caret-down{{/if}}"></i></span>{{/if}}
