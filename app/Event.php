@@ -32,4 +32,108 @@ use Treo\Composer\AbstractEvent;
  */
 class Event extends AbstractEvent
 {
+    /**
+     * @var array
+     */
+    protected $menuItems = [
+        'Account',
+        'Group',
+        'Project',
+        'Label',
+        'Milestone',
+        'Issue',
+        'ExpenseType',
+        'Expense'
+    ];
+
+    /**
+     * @inheritdoc
+     */
+    public function afterInstall(): void
+    {
+        // add menu items
+        $this->addMenuItems();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterDelete(): void
+    {
+        // delete menu items
+        $this->deleteMenuItems();
+    }
+
+    /**
+     * Add menu items
+     */
+    protected function addMenuItems()
+    {
+        // get config
+        $config = $this->getContainer()->get('config');
+
+        // get config data
+        $tabList = $config->get("tabList", []);
+        $quickCreateList = $config->get("quickCreateList", []);
+        $twoLevelTabList = $config->get("twoLevelTabList", []);
+
+        foreach ($this->menuItems as $item) {
+            if (!in_array($item, $tabList)) {
+                $tabList[] = $item;
+            }
+            if (!in_array($item, $quickCreateList)) {
+                $quickCreateList[] = $item;
+            }
+            if (!in_array($item, $twoLevelTabList)) {
+                $twoLevelTabList[] = $item;
+            }
+        }
+
+        // set to config
+        $config->set('tabList', $tabList);
+        $config->set('quickCreateList', $quickCreateList);
+        $config->set('twoLevelTabList', $twoLevelTabList);
+
+        // save
+        $config->save();
+    }
+
+    /**
+     * Delete menu items
+     */
+    protected function deleteMenuItems()
+    {
+        // get config
+        $config = $this->getContainer()->get('config');
+
+        // for tabList
+        $tabList = [];
+        foreach ($config->get("tabList", []) as $entity) {
+            if (!in_array($entity, $this->menuItems)) {
+                $tabList[] = $entity;
+            }
+        }
+        $config->set('tabList', $tabList);
+
+        // for quickCreateList
+        $quickCreateList = [];
+        foreach ($config->get("quickCreateList", []) as $entity) {
+            if (!in_array($entity, $this->menuItems)) {
+                $quickCreateList[] = $entity;
+            }
+        }
+        $config->set('quickCreateList', $quickCreateList);
+
+        // for twoLevelTabList
+        $twoLevelTabList = [];
+        foreach ($config->get("twoLevelTabList", []) as $entity) {
+            if (!in_array($entity, $this->menuItems)) {
+                $twoLevelTabList[] = $entity;
+            }
+        }
+        $config->set('twoLevelTabList', $twoLevelTabList);
+
+        // save
+        $config->save();
+    }
 }
