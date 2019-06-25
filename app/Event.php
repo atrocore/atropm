@@ -36,7 +36,6 @@ class Event extends AbstractEvent
      * @var array
      */
     protected $menuItems = [
-        'Account',
         'Group',
         'Project',
         'Label',
