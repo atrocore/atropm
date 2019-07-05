@@ -8,5 +8,19 @@
     "recordViews": {
         "edit": "project-management:views/expense/record/edit",
         "editSmall": "project-management:views/expense/record/edit-small"
+    },
+    "dynamicLogic": {
+        "fields": {
+            "teams": {
+                "visible": {
+                    "conditionGroup": [
+                        {
+                            "type": "isNotEmpty",
+                            "attribute": "id"
+                        }
+                    ]
+                }
+            }
+        }
     }
 }

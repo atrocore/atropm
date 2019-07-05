@@ -10,12 +10,10 @@
     },
     "relationshipPanels": {
         "projects": {
-            "selectDisabled": true,
-            "viewDisabled": true
+            "select": false
         },
         "subgroups": {
-            "selectDisabled": true,
-            "viewDisabled": true
+            "select": false
         }
     },
     "bottomPanels": {

@@ -10,9 +10,8 @@
     },
     "relationshipPanels": {
         "issues": {
-            "selectDisabled": true,
-            "viewDisabled": true,
-            "createDisabled": true
+            "select": false,
+            "create": false
         }
     },
     "bottomPanels": {
