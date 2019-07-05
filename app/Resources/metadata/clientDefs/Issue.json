@@ -10,8 +10,7 @@
     },
     "relationshipPanels": {
         "labels": {
-            "viewDisabled": true,
-            "createDisabled": true
+            "create": false
         }
     },
     "bottomPanels": {
