@@ -27,6 +27,11 @@
             ],
             [
                 {
+                    "name": "status"
+                },false
+            ],
+            [
+                {
                     "name": "description",
                     "fullWidth": true
                 }

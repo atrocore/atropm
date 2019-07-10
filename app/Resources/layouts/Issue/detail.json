@@ -18,8 +18,21 @@
                     "name": "issueType"
                 },
                 {
-                    "name": "status"
+                    "name": "state"
                 }
+            ],
+            [
+                {
+                    "name": "status"
+                },
+                {
+                    "name": "approvalStatus"
+                }
+            ],
+            [
+                {
+                    "name": "estimationStatus"
+                },false
             ],
             [
                 {
