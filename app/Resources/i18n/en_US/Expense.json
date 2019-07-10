@@ -5,6 +5,7 @@
         "unitPriceCurrency": "Unit Price (Currency)",
         "unitPriceConverted": "Unit Price (Converted)",
         "units": "Units",
+        "status": "Status",
         "total": "Total",
         "totalCurrency": "Total (Currency)",
         "totalConverted": "Total (Converted)",
@@ -17,5 +18,12 @@
     },
     "labels": {
         "Create Expense": "Create Expense"
+    },
+    "options": {
+        "status": {
+            "New": "New",
+            "Estimated": "Estimated",
+            "Realised": "Realised"
+        }
     }
 }

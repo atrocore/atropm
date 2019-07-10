@@ -37,8 +37,8 @@ class PMIssueHook extends \Espo\Core\Hooks\Base
     {
         $this->countIssues($entity);
 
-        // set "Date Completed" in Expenses of current Issue if status has changed to "closed"
-        if ($entity->isAttributeChanged('status') && $entity->get('status') == 'closed') {
+        // set "Date Completed" in Expenses of current Issue if state has changed to "closed"
+        if ($entity->isAttributeChanged('state') && $entity->get('state') == 'closed') {
             $expensesEntity = $this->getEntityManager()->getRepository('Expense')->where([
                 'parentId' => $entity->get('id'),
                 'parentType' => $entity->getEntityType()
@@ -126,7 +126,7 @@ class PMIssueHook extends \Espo\Core\Hooks\Base
             ])->find();
             $issuesProjectEntityClosed = $this->getEntityManager()->getRepository('Issue')->where([
                 'projectId' => $entity->get('projectId'),
-                'status' => 'closed'
+                'state' => 'closed'
             ])->find();
             $projectEntity->set([
                 'totalIssues' => count($issuesProjectEntityTotal),
@@ -143,7 +143,7 @@ class PMIssueHook extends \Espo\Core\Hooks\Base
                     ])->find();
                     $issuesMilestoneEntityClosed = $this->getEntityManager()->getRepository('Issue')->where([
                         'milestoneId' => $milestoneEntity->get('id'),
-                        'status' => 'closed'
+                        'state' => 'closed'
                     ])->find();
                     $milestoneEntity->set([
                         'totalIssues' => count($issuesMilestoneEntityTotal),

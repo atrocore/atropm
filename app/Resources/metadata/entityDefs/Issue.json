@@ -48,7 +48,7 @@
             "default": "Request",
             "audited": true
         },
-        "status": {
+        "state": {
             "type": "enum",
             "required": true,
             "options": [
@@ -56,6 +56,42 @@
                 "closed"
             ],
             "default": "open",
+            "audited": true
+        },
+        "status": {
+            "type": "enum",
+            "required": true,
+            "options": [
+                "New",
+                "ToDo",
+                "In Progress",
+                "Rejected",
+                "Frozen",
+                "Done"
+            ],
+            "default": "New",
+            "audited": true
+        },
+        "approvalStatus": {
+            "type": "enum",
+            "required": true,
+            "options": [
+                "New",
+                "To Approve",
+                "Approved"
+            ],
+            "default": "New",
+            "audited": true
+        },
+        "estimationStatus": {
+            "type": "enum",
+            "required": true,
+            "options": [
+                "New",
+                "To Estimate",
+                "Estimated"
+            ],
+            "default": "New",
             "audited": true
         },
         "project": {

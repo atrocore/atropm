@@ -1,7 +1,10 @@
 {
     "fields": {
         "issueType": "Issue Type",
+        "state": "State",
         "status": "Status",
+        "approvalStatus": "Approval Status",
+        "estimationStatus": "Estimation Status",
         "project": "Project",
         "milestone": "Milestone",
         "labels": "Labels",
@@ -23,9 +26,27 @@
             "Improvement": "Improvement",
             "Bug": "Bug"
         },
-        "status": {
+        "state": {
             "open": "Open",
             "closed": "Closed"
+        },
+        "status": {
+            "New": "New",
+            "ToDo": "ToDo",
+            "In Progress": "In Progress",
+            "Rejected": "Rejected",
+            "Frozen": "Frozen",
+            "Done": "Done"
+        },
+        "approvalStatus": {
+            "New": "New",
+            "To Approve": "To Approve",
+            "Approved": "Approved"
+        },
+        "estimationStatus": {
+            "New": "New",
+            "To Estimate": "To Estimate",
+            "Estimated": "Estimated"
         },
         "labels": []
     }

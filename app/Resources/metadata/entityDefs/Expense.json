@@ -36,6 +36,17 @@
             "view": "views/fields/teams",
             "readOnly": true
         },
+        "status": {
+            "type": "enum",
+            "required": true,
+            "options": [
+                "New",
+                "Estimated",
+                "Realised"
+            ],
+            "default": "Request",
+            "audited": true
+        },
         "expenseType": {
             "type": "link",
             "audited": true,
