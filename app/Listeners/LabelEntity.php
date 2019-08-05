@@ -21,26 +21,58 @@
 
 declare(strict_types=1);
 
-namespace ProjectManagement\Hooks\Label;
+namespace ProjectManagement\Listeners;
 
+use Treo\Listeners\AbstractListener;
+use Treo\Core\EventManager\Event;
 use Espo\Orm\Entity;
 use Espo\Core\Exceptions\Error;
 
-class PMLabelHook extends \Espo\Core\Hooks\Base
+/**
+ * Class LabelEntity
+ *
+ * @author o.trelin <o.trelin@treolabs.com>
+ * @author d.talko <d.talko@treolabs.com>
+ *
+ * @package ProjectManagement\Listeners
+ */
+class LabelEntity extends AbstractListener
 {
     /**
-     * Before save entity hook
+     * @param Event $event
      *
-     * @param Entity $entity
-     * @param array $options
+     * @return Entity
+     */
+    private function getEntity(Event $event): Entity
+    {
+        return $event->getArgument('entity');
+    }
+
+    /**
+     * @param Event $event
+     *
+     * @return Entity
+     */
+    private function getOptions(Event $event)
+    {
+        return $event->getArgument('options');
+    }
+
+    /**
+     * Before save entity listener
+     *
+     * @param Event $event
      * @throws Error
      */
-    public function beforeSave(Entity $entity, array $options = [])
+    public function beforeSave(Event $event)
     {
-        $parentType = $entity->get('parentType');
-        $parentId = $entity->get('parentId');
+        // get label entity
+        $label = $this->getEntity($event);
+
+        $parentType = $label->get('parentType');
+        $parentId = $label->get('parentId');
         if ($parentType == 'Project') {
-            if ($this->isNameExist($entity->get('id'), $entity->get('name'), $parentType, $parentId)) {
+            if ($this->isNameExist($label->get('id'), $label->get('name'), $parentType, $parentId)) {
                 throw new Error('Name has already been taken for this project');
             }
 
@@ -53,27 +85,31 @@ class PMLabelHook extends \Espo\Core\Hooks\Base
         }
 
         if ($parentType == 'Group') {
-            $this->checkGroupLabel($entity->get('id'), $entity->get('name'), $parentType, $parentId);
+            $this->checkGroupLabel($label->get('id'), $label->get('name'), $parentType, $parentId);
         }
     }
 
     /**
-     * After save entity hook
+     * After save entity listener
      *
-     * @param Entity $entity
-     * @param array $options
+     * @param Event $event
      */
-    public function afterSave(Entity $entity, array $options = [])
+    public function afterSave(Event $event)
     {
+        // get label entity
+        $label = $this->getEntity($event);
+        // get options
+        $options = $this->getOptions($event);
+
         // auto assign teams
         if (empty($options['skipPMAutoAssignTeam'])) {
             $teamsIds = [];
 
             // get teams of parent entity
-            if (!empty($entity->get('parentId'))) {
+            if (!empty($label->get('parentId'))) {
                 $parentEntity = $this->getEntityManager()->getEntity(
-                    $entity->get('parentType'),
-                    $entity->get('parentId')
+                    $label->get('parentType'),
+                    $label->get('parentId')
                 );
                 foreach ($parentEntity->get('teams') as $team) {
                     $teamsIds[] = $team->get('id');
@@ -82,12 +118,12 @@ class PMLabelHook extends \Espo\Core\Hooks\Base
 
             // set all found teams to label
             if (!empty($teamsIds)) {
-                $entity->set([
+                $label->set([
                     'teamsIds' => $teamsIds
                 ]);
                 $options['skipPMAutoAssignTeam'] = true;
                 $options['noStream'] = true;
-                $this->getEntityManager()->saveEntity($entity, $options);
+                $this->getEntityManager()->saveEntity($label, $options);
             }
         }
     }

@@ -21,27 +21,61 @@
 
 declare(strict_types=1);
 
-namespace ProjectManagement\Hooks\Issue;
+namespace ProjectManagement\Listeners;
 
+use Treo\Listeners\AbstractListener;
+use Treo\Core\EventManager\Event;
 use Espo\Orm\Entity;
 
-class PMIssueHook extends \Espo\Core\Hooks\Base
+/**
+ * Class IssueEntity
+ *
+ * @author o.trelin <o.trelin@treolabs.com>
+ * @author d.talko <d.talko@treolabs.com>
+ *
+ * @package ProjectManagement\Listeners
+ */
+class IssueEntity extends AbstractListener
 {
     /**
-     * After save entity hook
+     * @param Event $event
      *
-     * @param Entity $entity
-     * @param array $options
+     * @return Entity
      */
-    public function afterSave(Entity $entity, array $options = [])
+    private function getEntity(Event $event): Entity
     {
-        $this->countIssues($entity);
+        return $event->getArgument('entity');
+    }
+
+    /**
+     * @param Event $event
+     *
+     * @return Entity
+     */
+    private function getOptions(Event $event)
+    {
+        return $event->getArgument('options');
+    }
+
+    /**
+     * After save entity listener
+     *
+     * @param Event $event
+     */
+    public function afterSave(Event $event)
+    {
+        // get issue entity
+        $issue = $this->getEntity($event);
+        // get options
+        $options = $this->getOptions($event);
+
+        $this->countIssues($issue);
 
         // set "Date Completed" in Expenses of current Issue if state has changed to "closed"
-        if ($entity->isAttributeChanged('state') && $entity->get('state') == 'closed') {
+        if ($issue->isAttributeChanged('state') && $issue->get('state') == 'closed') {
             $expensesEntity = $this->getEntityManager()->getRepository('Expense')->where([
-                'parentId' => $entity->get('id'),
-                'parentType' => $entity->getEntityType()
+                'parentId' => $issue->get('id'),
+                'parentType' => $issue->getEntityType()
             ])->find();
 
             foreach ($expensesEntity as $expenseEntity) {
@@ -57,8 +91,8 @@ class PMIssueHook extends \Espo\Core\Hooks\Base
             $teamsIds = [];
 
             // get teams of project
-            if (!empty($entity->get('projectId'))) {
-                $projectEntity = $this->getEntityManager()->getEntity('Project', $entity->get('projectId'));
+            if (!empty($issue->get('projectId'))) {
+                $projectEntity = $this->getEntityManager()->getEntity('Project', $issue->get('projectId'));
                 foreach ($projectEntity->get('teams') as $team) {
                     $teamsIds[] = $team->get('id');
                 }
@@ -66,19 +100,19 @@ class PMIssueHook extends \Espo\Core\Hooks\Base
 
             // set all found teams to issue
             if (!empty($teamsIds)) {
-                $entity->set([
+                $issue->set([
                     'teamsIds' => $teamsIds
                 ]);
                 $this->getEntityManager()->saveEntity(
-                    $entity,
+                    $issue,
                     array_merge($options, ['skipPMAutoAssignTeam' => true, 'noStream' => true])
                 );
             }
 
             // get expenses of current issue
             $expensesEntity = $this->getEntityManager()->getRepository('Expense')->where([
-                'parentId' => $entity->get('id'),
-                'parentType' => $entity->getEntityType()
+                'parentId' => $issue->get('id'),
+                'parentType' => $issue->getEntityType()
             ])->find();
             foreach ($expensesEntity as $expenseEntity) {
                 $expenseEntity->set([
@@ -93,24 +127,28 @@ class PMIssueHook extends \Espo\Core\Hooks\Base
     }
 
     /**
-     * After relate entity hook
-     * @param Entity $entity
-     * @param array $options
+     * After relate entity listener
+     * @param Event $event
      */
-    public function afterRelate(Entity $entity, array $options = [])
+    public function afterRelate(Event $event)
     {
-        $this->countIssues($entity);
+        // get issue entity
+        $issue = $this->getEntity($event);
+
+        $this->countIssues($issue);
     }
 
     /**
-     * After remove entity hook
+     * After remove entity listener
      *
-     * @param Entity $entity
-     * @param array $options
+     * @param Event $event
      */
-    public function afterRemove(Entity $entity, array $options = [])
+    public function afterRemove(Event $event)
     {
-        $this->countIssues($entity);
+        // get issue entity
+        $issue = $this->getEntity($event);
+
+        $this->countIssues($issue);
     }
 
     /**

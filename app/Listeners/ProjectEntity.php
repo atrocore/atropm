@@ -21,29 +21,61 @@
 
 declare(strict_types=1);
 
-namespace ProjectManagement\Hooks\Project;
+namespace ProjectManagement\Listeners;
 
+use Treo\Listeners\AbstractListener;
+use Treo\Core\EventManager\Event;
 use Espo\Core\Exceptions\Error;
 use Espo\Orm\Entity;
 
-class PMProjectHook extends \Espo\Core\Hooks\Base
+/**
+ * Class ProjectEntity
+ *
+ * @author o.trelin <o.trelin@treolabs.com>
+ * @author d.talko <d.talko@treolabs.com>
+ *
+ * @package ProjectManagement\Listeners
+ */
+class ProjectEntity extends AbstractListener
 {
     /**
-     * Before save entity hook
+     * @param Event $event
      *
-     * @param Entity $entity
-     * @param array $options
+     * @return Entity
+     */
+    private function getEntity(Event $event): Entity
+    {
+        return $event->getArgument('entity');
+    }
+
+    /**
+     * @param Event $event
+     *
+     * @return Entity
+     */
+    private function getOptions(Event $event)
+    {
+        return $event->getArgument('options');
+    }
+
+    /**
+     * Before save entity listener
+     *
+     * @param Event $event
      * @throws Error
      */
-    public function beforeSave(Entity $entity, array $options = [])
+    public function beforeSave(Event $event)
     {
-        if (ctype_digit($entity->get('name'))) {
+        // get project entity
+        $project = $this->getEntity($event);
+
+        if (ctype_digit($project->get('name'))) {
             throw new Error('Name must not consist of numbers only');
         }
 
         $projectsEntity = $this->getEntityManager()->getRepository('Project')->where([
-            'name' => $entity->get('name'),
-            'id!=' => $entity->get('id')
+            'name' => $project->get('name'),
+            'id!=' => $project->get('id')
         ])->findOne();
 
         if (!empty($projectsEntity)) {
@@ -52,28 +84,32 @@ class PMProjectHook extends \Espo\Core\Hooks\Base
     }
 
     /**
-     * After save entity hook
+     * After save entity listener
      *
-     * @param Entity $entity
-     * @param array $options
+     * @param Event $event
      */
-    public function afterSave(Entity $entity, array $options = [])
+    public function afterSave(Event $event)
     {
+        // get project entity
+        $project = $this->getEntity($event);
+        // get options
+        $options = $this->getOptions($event);
+
         // auto assign teams
         if (empty($options['skipPMAutoAssignTeam'])) {
             $teamsIds = [];
             $teamsNames = [];
             $teamProjectNameAssigned = false;
-            foreach ($entity->get('teams') as $team) {
-                if ($team->get('name') == $entity->get('name')) {
+            foreach ($project->get('teams') as $team) {
+                if ($team->get('name') == $project->get('name')) {
                     $teamProjectNameAssigned = true;
                 }
                 $teamsIds[] = $team->get('id');
                 $teamsNames[$team->get('id')] = $team->get('name');
             }
 
-            $getFetchedTeamsIds = $entity->getFetched('teamsIds');
-            $getTeamsIds = $entity->get('teamsIds');
+            $getFetchedTeamsIds = $project->getFetched('teamsIds');
+            $getTeamsIds = $project->get('teamsIds');
             // get removed teams
             $removedTeams = [];
             if (isset($getFetchedTeamsIds) && isset($getTeamsIds)) {
@@ -83,18 +119,18 @@ class PMProjectHook extends \Espo\Core\Hooks\Base
             if (!$teamProjectNameAssigned) {
                 // if team with project name was not found in assigned teams to Project, try to find it in existing teams
                 if (empty($teamEntity = $this->getEntityManager()->getRepository('Team')->where([
-                    'name' => $entity->get('name')
+                    'name' => $project->get('name')
                 ])->findOne()))
                 {
                     // if team does not exist then create new team
                     $teamEntity = $this->getEntityManager()->getEntity('Team');
                     $teamEntity->set([
-                        'name' => $entity->get('name')
+                        'name' => $project->get('name')
                     ]);
                     $this->getEntityManager()->saveEntity($teamEntity, $options);
 
                     // add user creator to Team
-                    $userEntity = $this->getEntityManager()->getEntity('User', $entity->get('createdById'));
+                    $userEntity = $this->getEntityManager()->getEntity('User', $project->get('createdById'));
                     $this->getEntityManager()->getRepository('Team')->relate($teamEntity, 'users', $userEntity);
                 }
                 $teamsIds[] = $teamEntity->get('id');
@@ -102,8 +138,8 @@ class PMProjectHook extends \Espo\Core\Hooks\Base
             }
 
             // get teams of group
-            if (!empty($entity->get('groupId'))) {
-                $groupEntity = $this->getEntityManager()->getEntity('Group', $entity->get('groupId'));
+            if (!empty($project->get('groupId'))) {
+                $groupEntity = $this->getEntityManager()->getEntity('Group', $project->get('groupId'));
                 foreach ($groupEntity->get('teams') as $team) {
                     $teamsIds[] = $team->get('id');
                     $teamsNames[$team->get('id')] = $team->get('name');
@@ -112,19 +148,19 @@ class PMProjectHook extends \Espo\Core\Hooks\Base
 
             // set all found teams to project
             if (!empty($teamsIds)) {
-                $entity->set([
+                $project->set([
                     'teamsIds' => array_unique($teamsIds),
                     'teamsNames' => $teamsNames
                 ]);
                 $this->getEntityManager()->saveEntity(
-                    $entity,
+                    $project,
                     array_merge($options, ['skipPMAutoAssignTeam' => true, 'noStream' => true])
                 );
             }
 
             // get labels of current project
             $labelsEntity = $this->getEntityManager()->getRepository('Label')->where([
-                'parentId' => $entity->get('id'),
+                'parentId' => $project->get('id'),
                 'parentType' => 'Project'
             ])->find();
             $this->setTeamsToRelatedEntities(
@@ -136,20 +172,20 @@ class PMProjectHook extends \Espo\Core\Hooks\Base
 
             // get milestones of current project
             $milestonesEntity = $this->getEntityManager()->getRepository('Milestone')->where([
-                'parentId' => $entity->get('id'),
+                'parentId' => $project->get('id'),
                 'parentType' => 'Project'
             ])->find();
             $this->setTeamsToRelatedEntities($milestonesEntity, $teamsIds, $removedTeams, $options);
 
             // get issues of current project
             $issuesEntity = $this->getEntityManager()->getRepository('Issue')->where([
-                'projectId' => $entity->get('id')
+                'projectId' => $project->get('id')
             ])->find();
             $this->setTeamsToRelatedEntities($issuesEntity, $teamsIds, $removedTeams, $options);
 
             // get expenses of current project
             $expensesEntity = $this->getEntityManager()->getRepository('Expense')->where([
-                'parentId' => $entity->get('id'),
+                'parentId' => $project->get('id'),
                 'parentType' => 'Project'
             ])->find();
             $this->setTeamsToRelatedEntities(
@@ -187,21 +223,25 @@ class PMProjectHook extends \Espo\Core\Hooks\Base
     }
 
     /**
-     * Before remove entity hook
+     * Before remove entity listener
      * Before deleting a project need to delete everything related with it
      *
-     * @param Entity $entity
-     * @param array $options
+     * @param Event $event
      */
-    public function beforeRemove(Entity $entity, array $options = [])
+    public function beforeRemove(Event $event)
     {
+        // get project entity
+        $project = $this->getEntity($event);
+        // get options
+        $options = $this->getOptions($event);
+
         // remove related Team with project name
         $relatedProjectTeams = $this->getEntityManager()->getRepository('Project')->findRelated(
-            $entity,
+            $project,
             'teams',
             [
                 'whereClause' => [
-                    'name' => $entity->get('name')
+                    'name' => $project->get('name')
                 ]
             ]
         );
@@ -211,7 +251,7 @@ class PMProjectHook extends \Espo\Core\Hooks\Base
 
         $labelsEntity = $this->getEntityManager()->getRepository('Label')->where([
             'parentType' => 'Project',
-            'parentId' => $entity->get('id')
+            'parentId' => $project->get('id')
         ])->find();
         foreach ($labelsEntity as $labelEntity) {
             $this->getEntityManager()->removeEntity($labelEntity, $options);
@@ -219,14 +259,14 @@ class PMProjectHook extends \Espo\Core\Hooks\Base
 
         $milestonesEntity = $this->getEntityManager()->getRepository('Milestone')->where([
             'parentType' => 'Project',
-            'parentId' => $entity->get('id')
+            'parentId' => $project->get('id')
         ])->find();
         foreach ($milestonesEntity as $milestoneEntity) {
             $this->getEntityManager()->removeEntity($milestoneEntity, $options);
         }
 
         $issuesEntity = $this->getEntityManager()->getRepository('Issue')->where([
-            'projectId' => $entity->get('id')
+            'projectId' => $project->get('id')
         ])->find();
         foreach ($issuesEntity as $issueEntity) {
             $this->getEntityManager()->removeEntity($issueEntity, $options);
