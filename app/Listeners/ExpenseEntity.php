@@ -21,29 +21,63 @@
 
 declare(strict_types=1);
 
-namespace ProjectManagement\Hooks\Expense;
+namespace ProjectManagement\Listeners;
 
+use Treo\Listeners\AbstractListener;
+use Treo\Core\EventManager\Event;
 use Espo\Orm\Entity;
 
-class PMExpenseHook extends \Espo\Core\Hooks\Base
+/**
+ * Class ExpenseEntity
+ *
+ * @author o.trelin <o.trelin@treolabs.com>
+ * @author d.talko <d.talko@treolabs.com>
+ *
+ * @package ProjectManagement\Listeners
+ */
+class ExpenseEntity extends AbstractListener
 {
     /**
-     * After save entity hook
+     * @param Event $event
      *
-     * @param Entity $entity
-     * @param array $options
+     * @return Entity
      */
-    public function afterSave(Entity $entity, array $options = [])
+    private function getEntity(Event $event): Entity
     {
+        return $event->getArgument('entity');
+    }
+
+    /**
+     * @param Event $event
+     *
+     * @return Entity
+     */
+    private function getOptions(Event $event)
+    {
+        return $event->getArgument('options');
+    }
+
+    /**
+     * After save entity listener
+     *
+     * @param Event $event
+     */
+    public function afterSave(Event $event)
+    {
+        // get expense entity
+        $expense = $this->getEntity($event);
+        // get options
+        $options = $this->getOptions($event);
+
         // auto assign teams
         if (empty($options['skipPMAutoAssignTeam'])) {
             $teamsIds = [];
 
             // get teams of parent entity
-            if (!empty($entity->get('parentId'))) {
+            if (!empty($expense->get('parentId'))) {
                 $parentEntity = $this->getEntityManager()->getEntity(
-                    $entity->get('parentType'),
-                    $entity->get('parentId')
+                    $expense->get('parentType'),
+                    $expense->get('parentId')
                 );
                 foreach ($parentEntity->get('teams') as $teamId) {
                     $teamsIds[] = $teamId->get('id');
@@ -52,12 +86,12 @@ class PMExpenseHook extends \Espo\Core\Hooks\Base
 
             // set all found teams to expense
             if (!empty($teamsIds)) {
-                $entity->set([
+                $expense->set([
                     'teamsIds' => $teamsIds
                 ]);
                 $options['skipPMAutoAssignTeam'] = true;
                 $options['noStream'] = true;
-                $this->getEntityManager()->saveEntity($entity, $options);
+                $this->getEntityManager()->saveEntity($expense, $options);
             }
         }
     }

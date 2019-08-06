@@ -21,47 +21,83 @@
 
 declare(strict_types=1);
 
-namespace ProjectManagement\Hooks\Milestone;
+namespace ProjectManagement\Listeners;
 
+use Treo\Listeners\AbstractListener;
+use Treo\Core\EventManager\Event;
 use Espo\Orm\Entity;
 use Espo\Core\Exceptions\Error;
 
-class PMMilestoneHook extends \Espo\Core\Hooks\Base
+/**
+ * Class MilestoneEntity
+ *
+ * @author o.trelin <o.trelin@treolabs.com>
+ * @author d.talko <d.talko@treolabs.com>
+ *
+ * @package ProjectManagement\Listeners
+ */
+class MilestoneEntity extends AbstractListener
 {
     /**
-     * Before save entity hook
+     * @param Event $event
      *
-     * @param Entity $entity
-     * @param array $options
+     * @return Entity
+     */
+    private function getEntity(Event $event): Entity
+    {
+        return $event->getArgument('entity');
+    }
+
+    /**
+     * @param Event $event
+     *
+     * @return Entity
+     */
+    private function getOptions(Event $event)
+    {
+        return $event->getArgument('options');
+    }
+
+    /**
+     * Before save entity listener
+     *
+     * @param Event $event
      * @throws Error
      */
-    public function beforeSave(Entity $entity, array $options = [])
+    public function beforeSave(Event $event)
     {
-        if (!empty($entity->get('startDate'))
-            && !empty($entity->get('dueDate'))
-            && $entity->get('startDate') >= $entity->get('dueDate'))
+        // get milestone entity
+        $milestone = $this->getEntity($event);
+
+        if (!empty($milestone->get('startDate'))
+            && !empty($milestone->get('dueDate'))
+            && $milestone->get('startDate') >= $milestone->get('dueDate'))
         {
             throw new Error('Due Date must be greater than Start Date');
         }
     }
 
     /**
-     * After save entity hook
+     * After save entity listener
      *
-     * @param Entity $entity
-     * @param array $options
+     * @param Event $event
      */
-    public function afterSave(Entity $entity, array $options = [])
+    public function afterSave(Event $event)
     {
+        // get milestone entity
+        $milestone = $this->getEntity($event);
+        // get options
+        $options = $this->getOptions($event);
+
         // auto assign teams
         if (empty($options['skipPMAutoAssignTeam'])) {
             $teamsIds = [];
 
             // get teams of parent entity
-            if (!empty($entity->get('parentId'))) {
+            if (!empty($milestone->get('parentId'))) {
                 $parentEntity = $this->getEntityManager()->getEntity(
-                    $entity->get('parentType'),
-                    $entity->get('parentId')
+                    $milestone->get('parentType'),
+                    $milestone->get('parentId')
                 );
                 foreach ($parentEntity->get('teams') as $team) {
                     $teamsIds[] = $team->get('id');
@@ -70,19 +106,19 @@ class PMMilestoneHook extends \Espo\Core\Hooks\Base
 
             // set all found teams to milestone
             if (!empty($teamsIds)) {
-                $entity->set([
+                $milestone->set([
                     'teamsIds' => $teamsIds
                 ]);
                 $this->getEntityManager()->saveEntity(
-                    $entity,
+                    $milestone,
                     array_merge($options, ['skipPMAutoAssignTeam' => true, 'noStream' => true])
                 );
             }
 
             // get expenses of current milestone
             $expensesEntity = $this->getEntityManager()->getRepository('Expense')->where([
-                'parentId' => $entity->get('id'),
-                'parentType' => $entity->getEntityType()
+                'parentId' => $milestone->get('id'),
+                'parentType' => $milestone->getEntityType()
             ])->find();
             foreach ($expensesEntity as $expenseEntity) {
                 $expenseEntity->set([
@@ -97,16 +133,20 @@ class PMMilestoneHook extends \Espo\Core\Hooks\Base
     }
 
     /**
-     * Before remove entity hook
+     * Before remove entity listener
      * Before deleting a milestone need to delete everything related with it
      *
-     * @param Entity $entity
-     * @param array $options
+     * @param Event $event
      */
-    public function beforeRemove(Entity $entity, array $options = [])
+    public function beforeRemove(Event $event)
     {
+        // get milestone entity
+        $milestone = $this->getEntity($event);
+        // get options
+        $options = $this->getOptions($event);
+
         $issuesEntity = $this->getEntityManager()->getRepository('Issue')->where([
-            'milestoneId' => $entity->get('id')
+            'milestoneId' => $milestone->get('id')
         ])->find();
         foreach ($issuesEntity as $issueEntity) {
             $issueEntity->set([

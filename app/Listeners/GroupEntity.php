@@ -21,41 +21,73 @@
 
 declare(strict_types=1);
 
-namespace ProjectManagement\Hooks\Group;
+namespace ProjectManagement\Listeners;
 
+use Treo\Listeners\AbstractListener;
+use Treo\Core\EventManager\Event;
 use Espo\Orm\Entity;
 use Espo\Core\Exceptions\Error;
 
-class PMGroupHook extends \Espo\Core\Hooks\Base
+/**
+ * Class GroupEntity
+ *
+ * @author o.trelin <o.trelin@treolabs.com>
+ * @author d.talko <d.talko@treolabs.com>
+ *
+ * @package ProjectManagement\Listeners
+ */
+class GroupEntity extends AbstractListener
 {
     /**
-     * Before save entity hook
+     * @param Event $event
      *
-     * @param Entity $entity
-     * @param array $options
+     * @return Entity
+     */
+    private function getEntity(Event $event): Entity
+    {
+        return $event->getArgument('entity');
+    }
+
+    /**
+     * @param Event $event
+     *
+     * @return Entity
+     */
+    private function getOptions(Event $event)
+    {
+        return $event->getArgument('options');
+    }
+
+    /**
+     * Before save entity listener
+     *
+     * @param Event $event
      * @throws Error
      */
-    public function beforeSave(Entity $entity, array $options = [])
+    public function beforeSave(Event $event)
     {
-        if (ctype_digit($entity->get('name'))) {
+        // get group entity
+        $group = $this->getEntity($event);
+
+        if (ctype_digit($group->get('name'))) {
             throw new Error('Name must not consist of numbers only');
         }
 
         $groupsEntity = $this->getEntityManager()->getRepository('Group')->where([
-            'name' => $entity->get('name'),
-            'id!=' => $entity->get('id')
+            'name' => $group->get('name'),
+            'id!=' => $group->get('id')
         ])->findOne();
 
         if (!empty($groupsEntity)) {
             throw new Error('Group with the same name already exists');
         }
 
-        if ($entity->get('parentGroup')) {
-            if ($entity->get('id') == $entity->get('parentGroupId')) {
+        if ($group->get('parentGroup')) {
+            if ($group->get('id') == $group->get('parentGroupId')) {
                 throw new Error('Unable to set self parent group');
             } else {
                 // check parentGroup
-                $this->checkParentGroup($entity->get('id'), $entity->get('parentGroupId'));
+                $this->checkParentGroup($group->get('id'), $group->get('parentGroupId'));
             }
         }
     }
@@ -73,29 +105,33 @@ class PMGroupHook extends \Espo\Core\Hooks\Base
     }
 
     /**
-     * After save entity hook
+     * After save entity listener
      *
-     * @param Entity $entity
-     * @param array $options
+     * @param Event $event
      */
-    public function afterSave(Entity $entity, array $options = [])
+    public function afterSave(Event $event)
     {
+        // get group entity
+        $group = $this->getEntity($event);
+        // get options
+        $options = $this->getOptions($event);
+
         // auto assign teams
         if (empty($options['skipPMAutoAssignTeam'])) {
             // try to find team with group name
             $teamsIds = [];
             $teamsNames = [];
             $teamGroupNameAssigned = false;
-            foreach ($entity->get('teams') as $team) {
-                if ($team->get('name') == $entity->get('name')) {
+            foreach ($group->get('teams') as $team) {
+                if ($team->get('name') == $group->get('name')) {
                     $teamGroupNameAssigned = true;
                 }
                 $teamsIds[] = $team->get('id');
                 $teamsNames[$team->get('id')] = $team->get('name');
             }
 
-            $getFetchedTeamsIds = $entity->getFetched('teamsIds');
-            $getTeamsIds = $entity->get('teamsIds');
+            $getFetchedTeamsIds = $group->getFetched('teamsIds');
+            $getTeamsIds = $group->get('teamsIds');
             // get removed teams
             $removedTeams = [];
             if (isset($getFetchedTeamsIds) && isset($getTeamsIds)) {
@@ -105,18 +141,18 @@ class PMGroupHook extends \Espo\Core\Hooks\Base
             if (!$teamGroupNameAssigned) {
                 // if team with group name was not found in assigned teams to Group, try to find it in existing teams
                 if (empty($teamEntity = $this->getEntityManager()->getRepository('Team')->where([
-                    'name' => $entity->get('name')
+                    'name' => $group->get('name')
                 ])->findOne()))
                 {
                     // if team does not exist then create new team
                     $teamEntity = $this->getEntityManager()->getEntity('Team');
                     $teamEntity->set([
-                        'name' => $entity->get('name')
+                        'name' => $group->get('name')
                     ]);
                     $this->getEntityManager()->saveEntity($teamEntity, $options);
 
                     // add user creator to Team
-                    $userEntity = $this->getEntityManager()->getEntity('User', $entity->get('createdById'));
+                    $userEntity = $this->getEntityManager()->getEntity('User', $group->get('createdById'));
                     $this->getEntityManager()->getRepository('Team')->relate($teamEntity, 'users', $userEntity);
                 }
                 $teamsIds[] = $teamEntity->get('id');
@@ -124,8 +160,8 @@ class PMGroupHook extends \Espo\Core\Hooks\Base
             }
 
             // get teams of parent group
-            if (!empty($entity->get('parentGroupId'))) {
-                $parentGroupEntity = $this->getEntityManager()->getEntity('Group', $entity->get('parentGroupId'));
+            if (!empty($group->get('parentGroupId'))) {
+                $parentGroupEntity = $this->getEntityManager()->getEntity('Group', $group->get('parentGroupId'));
                 foreach ($parentGroupEntity->get('teams') as $team) {
                     $teamsIds[] = $team->get('id');
                     $teamsNames[$team->get('id')] = $team->get('name');
@@ -134,25 +170,25 @@ class PMGroupHook extends \Espo\Core\Hooks\Base
 
             // set all found teams to group
             if (!empty($teamsIds)) {
-                $entity->set([
+                $group->set([
                     'teamsIds' => array_unique($teamsIds),
                     'teamsNames' => $teamsNames
                 ]);
                 $this->getEntityManager()->saveEntity(
-                    $entity,
+                    $group,
                     array_merge($options, ['skipPMAutoAssignTeam' => true, 'noStream' => true])
                 );
             }
 
             // get subgroups of current group
             $subGroupsEntity = $this->getEntityManager()->getRepository('Group')->where([
-                'parentGroupId' => $entity->get('id')
+                'parentGroupId' => $group->get('id')
             ])->find();
             $this->setTeamsToRelatedEntities($subGroupsEntity, $teamsIds, $removedTeams, $options);
 
             // get labels of current group
             $labelsEntity = $this->getEntityManager()->getRepository('Label')->where([
-                'parentId' => $entity->get('id'),
+                'parentId' => $group->get('id'),
                 'parentType' => 'Group'
             ])->find();
             $this->setTeamsToRelatedEntities(
@@ -164,14 +200,14 @@ class PMGroupHook extends \Espo\Core\Hooks\Base
 
             // get milestones of current group
             $milestonesEntity = $this->getEntityManager()->getRepository('Milestone')->where([
-                'parentId' => $entity->get('id'),
+                'parentId' => $group->get('id'),
                 'parentType' => 'Group'
             ])->find();
             $this->setTeamsToRelatedEntities($milestonesEntity, $teamsIds, $removedTeams, $options);
 
             // get projects of current group
             $projectsEntity = $this->getEntityManager()->getRepository('Project')->where([
-                'groupId' => $entity->get('id')
+                'groupId' => $group->get('id')
             ])->find();
             $this->setTeamsToRelatedEntities($projectsEntity, $teamsIds, $removedTeams, $options);
         }
@@ -203,21 +239,22 @@ class PMGroupHook extends \Espo\Core\Hooks\Base
     }
 
     /**
-     * Before relate entity hook
+     * Before relate entity listener
      *
-     * @param Entity $entity
-     * @param array $options
-     * @param array $data
+     * @param Event $event
      * @throws Error
      */
-    public function beforeRelate(Entity $entity, array $options = [], array $data = [])
+    public function beforeRelate(Event $event)
     {
-        if ($data['relationName'] == 'subgroups' && $entity->get('subgroups')) {
-            if ($entity->get('id') == $data['foreignEntity']->get('id')) {
+        // get group entity
+        $group = $this->getEntity($event);
+
+        if ($event->getArgument('relationName') == 'subgroups' && $group->get('subgroups')) {
+            if ($group->get('id') == $event->getArgument('foreign')->get('id')) {
                 throw new Error('Unable to set self subgroup');
             } else {
                 // check subgroups
-                $this->checkSubgroups($entity->get('id'), $data['foreignEntity']->get('subgroups'));
+                $this->checkSubgroups($group->get('id'), $event->getArgument('foreign')->get('subgroups'));
             }
         }
     }
@@ -236,22 +273,25 @@ class PMGroupHook extends \Espo\Core\Hooks\Base
     }
 
     /**
-     * Before remove entity hook
+     * Before remove entity listener
      * Before deleting a group need to delete everything related with it
      *
-     * @param Entity $entity
-     * @param array $options
-     * @param array $data
+     * @param Event $event
      */
-    public function beforeRemove(Entity $entity, array $options = [], array $data = [])
+    public function beforeRemove(Event $event)
     {
+        // get group entity
+        $group = $this->getEntity($event);
+        // get options
+        $options = $this->getOptions($event);
+
         // remove related Team with group name
         $relatedGroupTeams = $this->getEntityManager()->getRepository('Group')->findRelated(
-            $entity,
+            $group,
             'teams',
             [
                 'whereClause' => [
-                    'name' => $entity->get('name')
+                    'name' => $group->get('name')
                 ]
             ]
         );
@@ -260,7 +300,7 @@ class PMGroupHook extends \Espo\Core\Hooks\Base
         }
 
         $groupsEntity = $this->getEntityManager()->getRepository('Group')->where([
-            'parentGroupId' => $entity->get('id')
+            'parentGroupId' => $group->get('id')
         ])->find();
         foreach ($groupsEntity as $groupEntity) {
             $this->getEntityManager()->removeEntity($groupEntity, $options);
@@ -268,7 +308,7 @@ class PMGroupHook extends \Espo\Core\Hooks\Base
 
         $labelsEntity = $this->getEntityManager()->getRepository('Label')->where([
             'parentType' => 'Group',
-            'parentId' => $entity->get('id')
+            'parentId' => $group->get('id')
         ])->find();
         foreach ($labelsEntity as $labelEntity) {
             $this->getEntityManager()->removeEntity($labelEntity, $options);
@@ -276,14 +316,14 @@ class PMGroupHook extends \Espo\Core\Hooks\Base
 
         $milestonesEntity = $this->getEntityManager()->getRepository('Milestone')->where([
             'parentType' => 'Group',
-            'parentId' => $entity->get('id')
+            'parentId' => $group->get('id')
         ])->find();
         foreach ($milestonesEntity as $milestoneEntity) {
             $this->getEntityManager()->removeEntity($milestoneEntity, $options);
         }
 
         $projectsEntity = $this->getEntityManager()->getRepository('Project')->where([
-            'groupId' => $entity->get('id')
+            'groupId' => $group->get('id')
         ])->find();
         foreach ($projectsEntity as $projectEntity) {
             $this->getEntityManager()->removeEntity($projectEntity, $options);
