@@ -1,0 +1,57 @@
+{
+    "state": {
+        "transitions": {
+            "closed": [
+                "open"
+            ]
+        }
+    },
+    "status": {
+        "transitions": {
+            "ToDo": [
+                "New"
+            ],
+            "Frozen": [
+                "New",
+                "ToDo",
+                "In Progress"
+            ],
+            "Rejected": [
+                "New",
+                "ToDo",
+                "In Progress"
+            ],
+            "In Progress": [
+                "ToDo"
+            ],
+            "Done": [
+                "In Progress"
+            ]
+        }
+    },
+    "approvalStatus": {
+        "transitions": {
+            "New": [
+                "To Approve",
+                "Approved"
+            ],
+            "To Approve": [
+                "New",
+                "Approved"
+            ],
+            "Approved": [
+                "To Approve"
+            ]
+        }
+    },
+    "estimationStatus": {
+        "transitions": {
+            "To Estimate": [
+                "New"
+            ],
+            "Estimated": [
+                "To Estimate"
+            ]
+        }
+    }
+}

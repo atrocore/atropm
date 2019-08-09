@@ -44,7 +44,7 @@
                 "Estimated",
                 "Realised"
             ],
-            "default": "Request",
+            "default": "New",
             "audited": true
         },
         "expenseType": {
