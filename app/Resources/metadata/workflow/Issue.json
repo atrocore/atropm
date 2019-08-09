@@ -11,18 +11,18 @@
             "ToDo": [
                 "New"
             ],
-            "Frozen": [
-                "New",
-                "ToDo",
-                "In Progress"
+            "In Progress": [
+                "ToDo"
             ],
             "Rejected": [
                 "New",
                 "ToDo",
                 "In Progress"
             ],
-            "In Progress": [
-                "ToDo"
+            "Frozen": [
+                "New",
+                "ToDo",
+                "In Progress"
             ],
             "Done": [
                 "In Progress"
