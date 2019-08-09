@@ -176,7 +176,7 @@ class GroupEntity extends AbstractListener
                 ]);
                 $this->getEntityManager()->saveEntity(
                     $group,
-                    array_merge($options, ['skipPMAutoAssignTeam' => true, 'noStream' => true])
+                    array_merge($options, ['skipPMAutoAssignTeam' => true])
                 );
             }
 
