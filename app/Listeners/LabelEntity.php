@@ -122,7 +122,6 @@ class LabelEntity extends AbstractListener
                     'teamsIds' => $teamsIds
                 ]);
                 $options['skipPMAutoAssignTeam'] = true;
-                $options['noStream'] = true;
                 $this->getEntityManager()->saveEntity($label, $options);
             }
         }

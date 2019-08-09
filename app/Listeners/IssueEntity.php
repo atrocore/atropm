@@ -105,7 +105,7 @@ class IssueEntity extends AbstractListener
                 ]);
                 $this->getEntityManager()->saveEntity(
                     $issue,
-                    array_merge($options, ['skipPMAutoAssignTeam' => true, 'noStream' => true])
+                    array_merge($options, ['skipPMAutoAssignTeam' => true])
                 );
             }
 

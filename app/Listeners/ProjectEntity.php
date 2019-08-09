@@ -154,7 +154,7 @@ class ProjectEntity extends AbstractListener
                 ]);
                 $this->getEntityManager()->saveEntity(
                     $project,
-                    array_merge($options, ['skipPMAutoAssignTeam' => true, 'noStream' => true])
+                    array_merge($options, ['skipPMAutoAssignTeam' => true])
                 );
             }
 

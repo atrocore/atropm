@@ -111,7 +111,7 @@ class MilestoneEntity extends AbstractListener
                 ]);
                 $this->getEntityManager()->saveEntity(
                     $milestone,
-                    array_merge($options, ['skipPMAutoAssignTeam' => true, 'noStream' => true])
+                    array_merge($options, ['skipPMAutoAssignTeam' => true])
                 );
             }
 
