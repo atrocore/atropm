@@ -38,7 +38,14 @@ Espo.define('project-management:views/record/list-hierarchical', ['view', 'views
 
         events: {
             'click .action': function (e) {
-                Espo.Utils.handleAction(this, e);
+                var $el = $(e.currentTarget);
+                var action = $el.data('action');
+                var method = 'action' + Espo.Utils.upperCaseFirst(action);
+                if (typeof this[method] == 'function') {
+                    var data = $el.data();
+                    this[method](data, e);
+                    e.preventDefault();
+                }
             },
         },
 

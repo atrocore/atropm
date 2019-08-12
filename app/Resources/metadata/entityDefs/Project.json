@@ -76,6 +76,7 @@
         "defaultQA": {
             "type": "link",
             "required": true,
+            "tooltip": true,
             "view": "project-management:views/project/fields/default-q-a"
         }
     },
