@@ -25,5 +25,8 @@
             "External": "External",
             "Internal": "Internal"
         }
+    },
+    "tooltips": {
+        "defaultQA": "You must link user from assigned teams."
     }
 }
