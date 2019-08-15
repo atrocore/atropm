@@ -1,5 +1,8 @@
 [
     {
+        "name": "issueNumber"
+    },
+    {
         "name": "name",
         "link": true
     },

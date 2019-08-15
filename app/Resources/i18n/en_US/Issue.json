@@ -1,6 +1,7 @@
 {
     "fields": {
         "issueType": "Issue Type",
+        "issueNumber": "Issue Number",
         "state": "State",
         "status": "Status",
         "approvalStatus": "Approval Status",
