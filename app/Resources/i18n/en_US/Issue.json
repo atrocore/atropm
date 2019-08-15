@@ -24,8 +24,9 @@
         "issueType": {
             "Request": "Request",
             "Addon": "Addon",
-            "Improvement": "Improvement",
-            "Bug": "Bug"
+            "Feature": "Feature",
+            "Bug": "Bug",
+            "Internal": "Internal"
         },
         "state": {
             "open": "Open",
