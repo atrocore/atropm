@@ -42,8 +42,9 @@
             "options": [
                 "Request",
                 "Addon",
-                "Improvement",
-                "Bug"
+                "Feature",
+                "Bug",
+                "Internal"
             ],
             "default": "Request",
             "audited": true
