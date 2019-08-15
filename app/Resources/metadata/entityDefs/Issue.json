@@ -48,6 +48,11 @@
             "default": "Request",
             "audited": true
         },
+        "issueNumber": {
+            "type": "autoincrement",
+            "autoincrement": true,
+            "unique": true
+        },
         "state": {
             "type": "enum",
             "required": true,

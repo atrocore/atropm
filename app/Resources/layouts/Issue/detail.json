@@ -9,6 +9,11 @@
             ],
             [
                 {
+                    "name": "issueNumber"
+                },false
+            ],
+            [
+                {
                     "name": "description",
                     "fullWidth": true
                 }
