@@ -18,7 +18,8 @@
         "labels": "Labels"
     },
     "labels": {
-        "expenses": "Expenses"
+        "expenses": "Expenses",
+        "sum": "Sum"
     },
     "options": {
         "issueType": {

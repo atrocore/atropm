@@ -25,4 +25,52 @@ namespace ProjectManagement\Controllers;
 
 class Issue extends \Espo\Core\Templates\Controllers\Base
 {
+    public function getActionGetIssueExpenses($params, $data, $request)
+    {
+        $issueId = isset($params['id']) ? $params['id'] : null;
+
+        $list = [];
+        if ($issueId) {
+            // get all issue Expenses
+            $expenses = $this->getEntityManager()->getRepository('Expense')->where([
+                'parentId' => $issueId,
+                'parentType' => 'Issue'
+            ])->find();
+            $service = $this->getRecordService();
+            foreach ($expenses as $expense) {
+                $service->loadAdditionalFieldsForList($expense);
+                $expenseItem = [
+                    'type' => $expense->getEntityType(),
+                    'entity' => (array)$expense->getValueMap(),
+                    'children' => []
+                ];
+                $expenseItem['entity']['expenses'] = $expense->get('total');
+                $expenseItem['entity']['expensesCurrency'] = $expense->get('totalCurrency');
+
+                $list[] = $expenseItem;
+            }
+        }
+
+        $result = [
+            'total' => 0,
+            'totalCurrency' => '',
+            'list' => []
+        ];
+        foreach ($list as $e) {
+            if (!is_null($result['total'])) {
+                if ((empty($result['totalCurrency']) || ($result['totalCurrency'] == $e['entity']['expensesCurrency']))
+                    && !is_null($e['entity']['expenses']))
+                {
+                    $result['total'] += $e['entity']['expenses'];
+                    $result['totalCurrency'] = $e['entity']['expensesCurrency'];
+                } else {
+                    $result['total'] = null;
+                    $result['totalCurrency'] = null;
+                }
+            }
+            $result['list'][] = $e;
+        }
+
+        return json_encode($result);
+    }
 }

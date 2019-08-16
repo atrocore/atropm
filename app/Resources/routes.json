@@ -16,5 +16,23 @@
             "action": "getIssuesAndExpenses",
             "id": ":id"
         }
+    },
+    {
+        "route": "/Issue/getIssueExpenses/:id",
+        "method": "get",
+        "params": {
+            "controller": "Issue",
+            "action": "getIssueExpenses",
+            "id": ":id"
+        }
+    },
+    {
+        "route": "/Project/getProjectExpenses/:id",
+        "method": "get",
+        "params": {
+            "controller": "Project",
+            "action": "getProjectExpenses",
+            "id": ":id"
+        }
     }
 ]

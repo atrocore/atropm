@@ -32,7 +32,6 @@
                 "name": "expenses",
                 "label": "expenses",
                 "view": "project-management:views/project/record/panels/expenses",
-                "rowActionsView": "views/record/row-actions/relationship-no-unlink",
                 "order": 10
             }
         ]
