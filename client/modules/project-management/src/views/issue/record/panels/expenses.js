@@ -18,25 +18,46 @@
  * for your own needs, if source code is provided.
  */
 
-Espo.define('project-management:views/issue/record/panels/expenses', 'project-management:views/record/panels/bottom-list', function (Dep) {
+Espo.define('project-management:views/issue/record/panels/expenses', 'project-management:views/record/panels/bottom-hierarchical', function (Dep) {
 
     return Dep.extend({
 
+        totalDefs: {
+            type: 'currency'
+        },
+
+        rowActionsViews: {
+            Expense: 'views/record/row-actions/relationship-no-unlink'
+        },
+
+        layouts: {
+            Expense: [
+                {name: 'name', link: true},
+                {name: 'parent'},
+                {name: 'expenseType'},
+                {name: 'total'},
+                {name: 'assignedUser'},
+                {name: 'dateCompleted'}
+            ]
+        },
+
+        headLayout: [
+            {name: 'name'},
+            {name: 'parent'},
+            {name: 'expenseType'},
+            {name: 'total'},
+            {name: 'assignedUser'},
+            {name: 'dateCompleted'}
+        ],
+
         scope: 'Expense',
 
-        getWhereAdditional: function () {
-            return [
-                {
-                    type: 'equals',
-                    attribute: 'parentId',
-                    value: this.model.id
-                },
-                {
-                    type: 'equals',
-                    attribute: 'parentType',
-                    value: this.model.name
-                }
-            ];
+        getCollectionUrl: function () {
+            return 'Issue/getIssueExpenses/' + this.model.id;
+        },
+
+        getTotalLabel: function (value) {
+            return '<div class="total-container pull-right">' + this.translate('sum', 'labels', this.model.name) + ':' + value + '</div>';
         }
 
     });

@@ -18,7 +18,8 @@
         "Create Project": "Create Project",
         "milestones": "Milestones",
         "labels": "Labels",
-        "expenses": "Expenses"
+        "expenses": "Expenses",
+        "sum": "Sum"
     },
     "options": {
         "projectType": {

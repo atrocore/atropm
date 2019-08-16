@@ -36,7 +36,9 @@ class Issue extends \Espo\Core\Templates\Controllers\Base
                 'parentId' => $issueId,
                 'parentType' => 'Issue'
             ])->find();
+            $service = $this->getRecordService();
             foreach ($expenses as $expense) {
+                $service->loadAdditionalFieldsForList($expense);
                 $expenseItem = [
                     'type' => $expense->getEntityType(),
                     'entity' => (array)$expense->getValueMap(),

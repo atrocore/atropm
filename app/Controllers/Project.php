@@ -130,7 +130,9 @@ class Project extends \Espo\Core\Templates\Controllers\Base
                 'parentId' => $projectId,
                 'parentType' => 'Project'
             ])->find();
+            $service = $this->getRecordService();
             foreach ($expenses as $expense) {
+                $service->loadAdditionalFieldsForList($expense);
                 $expenseItem = [
                     'type' => $expense->getEntityType(),
                     'entity' => (array)$expense->getValueMap(),
