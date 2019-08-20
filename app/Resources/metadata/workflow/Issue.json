@@ -1,5 +1,8 @@
 {
     "state": {
+        "initStates": [
+            "open"
+        ],
         "transitions": {
             "closed": [
                 "open"
@@ -7,6 +10,9 @@
         }
     },
     "status": {
+        "initStates": [
+            "New"
+        ],
         "transitions": {
             "ToDo": [
                 "New"
@@ -30,6 +36,9 @@
         }
     },
     "approvalStatus": {
+        "initStates": [
+            "New"
+        ],
         "transitions": {
             "New": [
                 "To Approve",
@@ -45,6 +54,9 @@
         }
     },
     "estimationStatus": {
+        "initStates": [
+            "New"
+        ],
         "transitions": {
             "To Estimate": [
                 "New"

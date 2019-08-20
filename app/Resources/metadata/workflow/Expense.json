@@ -1,5 +1,8 @@
 {
     "status": {
+        "initStates": [
+            "New"
+        ],
         "transitions": {
             "Estimated": [
                 "New"
