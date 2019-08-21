@@ -51,7 +51,9 @@
                 {
                     "name": "dueDate"
                 },
-                false
+                {
+                    "name": "labels"
+                }
             ]
         ],
         "style": "default",

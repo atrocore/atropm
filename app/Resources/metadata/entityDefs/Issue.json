@@ -113,10 +113,11 @@
         },
         "labels": {
             "type": "linkMultiple",
-            "layoutDetailDisabled": true,
-            "layoutMassUpdateDisabled": true,
-            "importDisabled": true,
-            "noLoad": true
+            "layoutDetailDisabled": false,
+            "layoutMassUpdateDisabled": false,
+            "importDisabled": false,
+            "noLoad": false,
+            "view": "project-management:views/issue/fields/labels"
         },
         "dueDate" : {
             "type": "date",
