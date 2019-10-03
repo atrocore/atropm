@@ -142,17 +142,15 @@ class Issue
         $transitionTos = $event->getTransition()->getTos();
         foreach ($transitionTos as $to) {
             switch ($to) {
-                case 'ToDo':
-                    if ($issue->getFetched('status') == 'New') {
-                        // can't set Status to "ToDo" if Approval Status is not "Approved"
-                        if ($issue->get('approvalStatus') != 'Approved') {
-                            $event->addTransitionBlocker(
-                                new TransitionBlocker(
-                                    'The value of field "Approval Status" for Issue is not "Approved".',
-                                    '404'
-                                )
-                            );
-                        }
+                case 'To Do':
+                    // can't set Status to "To Do" if Approval Status is not "Approved"
+                    if ($issue->get('approvalStatus') != 'Approved') {
+                        $event->addTransitionBlocker(
+                            new TransitionBlocker(
+                                'The value of field "Approval Status" for Issue is not "Approved".',
+                                '404'
+                            )
+                        );
                     }
                     break;
 
@@ -208,7 +206,7 @@ class Issue
      * Field "Status", transition New->ToDo
      * @param Event $event
      */
-    public function approvalStatusTransitionFromNewToToDo(Event $event)
+    public function statusTransitionFromNewToToDo(Event $event)
     {
         // checking if install module Sales
         if ($this->checkInstallModuleSales()) {

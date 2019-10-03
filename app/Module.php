@@ -107,10 +107,10 @@ class Module extends AbstractModule
     {
         /* Expense workflow */
         $expenseWorkflow = new \ProjectManagement\Workflow\Expense($this->container);
-        // Status [any]->Estimated
+        // Status New->Estimated
         $this->container->get('eventManager')->addListener(
-            'workflow.Expense_status.entered.Estimated',
-            [$expenseWorkflow, 'statusEnteredToEstimated']
+            'workflow.Expense_status.transition.New_Estimated',
+            [$expenseWorkflow, 'statusTransitionFromNewToEstimated']
         );
         /* end Expense workflow */
 
@@ -141,10 +141,10 @@ class Module extends AbstractModule
             'workflow.Issue_approvalStatus.guard',
             [$issueWorkflow, 'guardApprovalStatus']
         );
-        // Status New->ToDo
+        // Status New->To Do
         $this->container->get('eventManager')->addListener(
-            'workflow.Issue_status.transition.New_ToDo',
-            [$issueWorkflow, 'approvalStatusTransitionFromNewToToDo']
+            'workflow.Issue_status.transition.New_To Do',
+            [$issueWorkflow, 'statusTransitionFromNewToToDo']
         );
         // Approval Status To Approve->Approved
         $this->container->get('eventManager')->addListener(

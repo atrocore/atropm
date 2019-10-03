@@ -81,10 +81,10 @@ class Expense
     }
 
     /**
-     * Field "Status", entered to Estimated
+     * Field "Status", transition New->Estimated
      * @param Event $event
      */
-    public function statusEnteredToEstimated(Event $event)
+    public function statusTransitionFromNewToEstimated(Event $event)
     {
         // get Expense entity
         $expense = $event->getSubject();

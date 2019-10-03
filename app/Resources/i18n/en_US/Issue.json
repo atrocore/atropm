@@ -35,7 +35,7 @@
         },
         "status": {
             "New": "New",
-            "ToDo": "ToDo",
+            "To Do": "To Do",
             "In Progress": "In Progress",
             "Rejected": "Rejected",
             "Frozen": "Frozen",
