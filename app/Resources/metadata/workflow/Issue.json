@@ -14,20 +14,20 @@
             "New"
         ],
         "transitions": {
-            "ToDo": [
+            "To Do": [
                 "New"
             ],
             "In Progress": [
-                "ToDo"
+                "To Do"
             ],
             "Rejected": [
                 "New",
-                "ToDo",
+                "To Do",
                 "In Progress"
             ],
             "Frozen": [
                 "New",
-                "ToDo",
+                "To Do",
                 "In Progress"
             ],
             "Done": [

@@ -42,7 +42,7 @@
             "options": [
                 "New",
                 "Estimated",
-                "Realised"
+                "Realized"
             ],
             "default": "New",
             "audited": true

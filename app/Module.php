@@ -31,6 +31,7 @@ use Treo\Core\ModuleManager\AbstractModule;
  * Class Module
  *
  * @author o.trelin <o.trelin@treolabs.com>
+ * @author d.talko <d.talko@treolabs.com>
  */
 class Module extends AbstractModule
 {
@@ -97,5 +98,59 @@ class Module extends AbstractModule
                     $data = array_merge_recursive($data, $fileDataArr);
             }
         }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function onLoad()
+    {
+        /* Expense workflow */
+        $expenseWorkflow = new \ProjectManagement\Workflow\Expense($this->container);
+        // Status New->Estimated
+        $this->container->get('eventManager')->addListener(
+            'workflow.Expense_status.transition.New_Estimated',
+            [$expenseWorkflow, 'statusTransitionFromNewToEstimated']
+        );
+        /* end Expense workflow */
+
+        /* Issue workflow */
+        $issueWorkflow = new \ProjectManagement\Workflow\Issue($this->container);
+        // Guard event for change Status
+        $this->container->get('eventManager')->addListener(
+            'workflow.Issue_status.guard',
+            [$issueWorkflow, 'guardStatus']
+        );
+        // Status [any]->Done
+        $this->container->get('eventManager')->addListener(
+            'workflow.Issue_status.entered.Done',
+            [$issueWorkflow, 'statusEnteredToDone']
+        );
+        // Status [any]->Frozen
+        $this->container->get('eventManager')->addListener(
+            'workflow.Issue_status.entered.Frozen',
+            [$issueWorkflow, 'statusEnteredToFrozen']
+        );
+        // Status [any]->Rejected
+        $this->container->get('eventManager')->addListener(
+            'workflow.Issue_status.entered.Rejected',
+            [$issueWorkflow, 'statusEnteredToRejected']
+        );
+        // Guard event for change Approval Status
+        $this->container->get('eventManager')->addListener(
+            'workflow.Issue_approvalStatus.guard',
+            [$issueWorkflow, 'guardApprovalStatus']
+        );
+        // Status New->To Do
+        $this->container->get('eventManager')->addListener(
+            'workflow.Issue_status.transition.New_To Do',
+            [$issueWorkflow, 'statusTransitionFromNewToToDo']
+        );
+        // Approval Status To Approve->Approved
+        $this->container->get('eventManager')->addListener(
+            'workflow.Issue_approvalStatus.transition.To Approve_Approved',
+            [$issueWorkflow, 'approvalStatusTransitionFromToApproveToApproved']
+        );
+        /* end Issue workflow */
     }
 }
