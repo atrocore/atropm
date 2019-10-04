@@ -42,7 +42,7 @@ class IssueEntity extends AbstractListener
      *
      * @return Entity
      */
-    private function getEntity(Event $event): Entity
+    protected function getEntity(Event $event): Entity
     {
         return $event->getArgument('entity');
     }
@@ -52,7 +52,7 @@ class IssueEntity extends AbstractListener
      *
      * @return Entity
      */
-    private function getOptions(Event $event)
+    protected function getOptions(Event $event)
     {
         return $event->getArgument('options');
     }

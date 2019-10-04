@@ -112,14 +112,14 @@ class Module extends AbstractModule
             'workflow.Expense_status.transition.New_Estimated',
             [$expenseWorkflow, 'statusTransitionFromNewToEstimated']
         );
-        /* end Expense workflow */
+        /**/
 
         /* Issue workflow */
         $issueWorkflow = new \ProjectManagement\Workflow\Issue($this->container);
-        // Guard event for change Status
+        // Status New->ToDo
         $this->container->get('eventManager')->addListener(
-            'workflow.Issue_status.guard',
-            [$issueWorkflow, 'guardStatus']
+            'workflow.Issue_status.transition.New_To Do',
+            [$issueWorkflow, 'statusTransitionFromNewToToDo']
         );
         // Status [any]->Done
         $this->container->get('eventManager')->addListener(
@@ -136,20 +136,21 @@ class Module extends AbstractModule
             'workflow.Issue_status.entered.Rejected',
             [$issueWorkflow, 'statusEnteredToRejected']
         );
+        // Guard event for change Status
+        $this->container->get('eventManager')->addListener(
+            'workflow.Issue_status.guard',
+            [$issueWorkflow, 'guardStatus']
+        );
+
+        // Approval Status ToApprove->Approved
+        $this->container->get('eventManager')->addListener(
+            'workflow.Issue_approvalStatus.transition.To Approve_Approved',
+            [$issueWorkflow, 'approvalStatusTransitionFromToApproveToApproved']
+        );
         // Guard event for change Approval Status
         $this->container->get('eventManager')->addListener(
             'workflow.Issue_approvalStatus.guard',
             [$issueWorkflow, 'guardApprovalStatus']
-        );
-        // Status New->To Do
-        $this->container->get('eventManager')->addListener(
-            'workflow.Issue_status.transition.New_To Do',
-            [$issueWorkflow, 'statusTransitionFromNewToToDo']
-        );
-        // Approval Status To Approve->Approved
-        $this->container->get('eventManager')->addListener(
-            'workflow.Issue_approvalStatus.transition.To Approve_Approved',
-            [$issueWorkflow, 'approvalStatusTransitionFromToApproveToApproved']
         );
         /* end Issue workflow */
     }

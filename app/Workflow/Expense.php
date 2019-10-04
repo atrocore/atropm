@@ -25,8 +25,6 @@ namespace ProjectManagement\Workflow;
 
 use \Treo\Core\Container;
 use Symfony\Component\Workflow\Event\Event;
-use Symfony\Component\Workflow\Event\GuardEvent;
-use Symfony\Component\Workflow\TransitionBlocker;
 
 /**
  * Class Expense
@@ -68,8 +66,8 @@ class Expense
     {
         // get Expenses entity
         $expenses = $this->getEntityManager()->getRepository('Expense')->where([
-            'parentId' => $issueId,
-            'parentType' => 'Issue'
+            'parentType' => 'Issue',
+            'parentId' => $issueId
         ])->find();
         foreach ($expenses as $expense) {
             if ($expense->get('status') != $status) {
@@ -89,18 +87,16 @@ class Expense
         // get Expense entity
         $expense = $event->getSubject();
         if ($expense->get('parentType') == 'Issue') {
-            // get issueId
+            // get IssueId
             $issueId = $expense->get('parentId');
             $status = 'Estimated';
 
             // if all Expenses has the specified status
             if ($this->isAllExpensesStatusAs($issueId, $status)) {
-                // get issue entity
+                // get Issue entity
                 $issue = $this->getEntityManager()->getEntity('Issue', $issueId);
-                // set estimationStatus
-                $issue->set([
-                    'estimationStatus' => $status
-                ]);
+                // set EstimationStatus
+                $issue->set(['estimationStatus' => $status]);
                 $this->getEntityManager()->saveEntity($issue);
             }
         }

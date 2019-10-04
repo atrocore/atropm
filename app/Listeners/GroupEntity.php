@@ -43,7 +43,7 @@ class GroupEntity extends AbstractListener
      *
      * @return Entity
      */
-    private function getEntity(Event $event): Entity
+    protected function getEntity(Event $event): Entity
     {
         return $event->getArgument('entity');
     }
@@ -53,7 +53,7 @@ class GroupEntity extends AbstractListener
      *
      * @return Entity
      */
-    private function getOptions(Event $event)
+    protected function getOptions(Event $event)
     {
         return $event->getArgument('options');
     }
@@ -92,7 +92,7 @@ class GroupEntity extends AbstractListener
         }
     }
 
-    private function checkParentGroup(string $entityId, string $parentGroupId)
+    private function checkParentGroup($entityId, $parentGroupId)
     {
         $parentGroupEntity = $this->getEntityManager()->getEntity('Group', $parentGroupId);
         if ($parentGroupEntity->get('parentGroup')) {
@@ -259,7 +259,7 @@ class GroupEntity extends AbstractListener
         }
     }
 
-    private function checkSubgroups(string $entityId, $subgroups)
+    private function checkSubgroups($entityId, $subgroups)
     {
         foreach ($subgroups as $subgroup) {
             if ($subgroup->get('id') == $entityId) {

@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace ProjectManagement\Workflow;
 
 use \Treo\Core\Container;
+use Treo\Core\Utils\Metadata;
 use Symfony\Component\Workflow\Event\Event;
 use Symfony\Component\Workflow\Event\GuardEvent;
 use Symfony\Component\Workflow\TransitionBlocker;
@@ -59,6 +60,38 @@ class Issue
     }
 
     /**
+     * Get Metadata
+     * @return Metadata
+     */
+    protected function getMetadata(): Metadata
+    {
+        return $this->container->get('metadata');
+    }
+
+    /**
+     * Field "Status", transition New->ToDo
+     * @param Event $event
+     */
+    public function statusTransitionFromNewToToDo(Event $event)
+    {
+        // if module "Sales" is installed
+        if ($this->getMetadata()->isModuleInstalled('Sales')) {
+            // get Issue entity
+            $issue = $event->getSubject();
+            // get Customer Order Items
+            $customerOrderItems = $this->getEntityManager()->getRepository('CustomerOrderItem')->where([
+                'parentType' => 'Issue',
+                'parentId' => $issue->id
+            ])->find();
+            foreach ($customerOrderItems as $customerOrderItem) {
+                // set status Accepted
+                $customerOrderItem->set(['status' => 'Accepted']);
+                $this->getEntityManager()->saveEntity($customerOrderItem);
+            }
+        }
+    }
+
+    /**
      * Field "Status", entered to Done
      * @param Event $event
      */
@@ -67,32 +100,28 @@ class Issue
         $issue = $event->getSubject();
         $this->closeIssue($issue->id);
 
-        // get expenses with parentType = Issue and parentId
+        // get related Expenses which is not Realized
         $expenses = $this->getEntityManager()->getRepository('Expense')->where([
             'parentType' => 'Issue',
-            'parentId' => $issue->id
+            'parentId' => $issue->id,
+            'status!=' => 'Realized'
         ])->find();
-
         foreach ($expenses as $expense) {
-            // set status Realized
-            $expense->set([
-                'status' => 'Realized'
-            ]);
+            // set Status to "Realized"
+            $expense->set(['status' => 'Realized']);
             $this->getEntityManager()->saveEntity($expense);
         }
 
-        // checking if install module Sales
-        if ($this->checkInstallModuleSales()) {
-            // get Customer Order Items entity
+        // if module "Sales" is installed
+        if ($this->getMetadata()->isModuleInstalled('Sales')) {
+            // get Customer Order Items
             $customerOrderItems = $this->getEntityManager()->getRepository('CustomerOrderItem')->where([
                 'parentType' => 'Issue',
                 'parentId' => $issue->id
             ])->find();
             foreach ($customerOrderItems as $customerOrderItem) {
-                // set status Delivered
-                $customerOrderItem->set([
-                    'status' => 'Delivered'
-                ]);
+                // set Status to "Delivered"
+                $customerOrderItem->set(['status' => 'Delivered']);
                 $this->getEntityManager()->saveEntity($customerOrderItem);
             }
         }
@@ -124,18 +153,16 @@ class Issue
     {
         // get Issue entity
         $issue = $this->getEntityManager()->getEntity('Issue', $issueId);
-        // set state closed
-        $issue->set([
-            'state' => 'closed'
-        ]);
+        // set State to "closed"
+        $issue->set(['state' => 'closed']);
         $this->getEntityManager()->saveEntity($issue);
     }
 
     /**
      * Guard event for field "Status"
-     * @param Event $event
+     * @param GuardEvent $event
      */
-    public function guardStatus(Event $event)
+    public function guardStatus(GuardEvent $event)
     {
         // get Issue entity
         $issue = $event->getSubject();
@@ -161,13 +188,36 @@ class Issue
     }
 
     /**
-     * Guard event for field "Approval Status"
+     * Field "Approval Status", transition ToApprove->Approved
      * @param Event $event
      */
-    public function guardApprovalStatus(Event $event)
+    public function approvalStatusTransitionFromToApproveToApproved(Event $event)
     {
-        // checking if install module Sales
-        if ($this->checkInstallModuleSales()) {
+        // if module "Sales" is installed
+        if ($this->getMetadata()->isModuleInstalled('Sales')) {
+            // get Issue entity
+            $issue = $event->getSubject();
+            // get Customer Order Items
+            $customerOrderItems = $this->getEntityManager()->getRepository('CustomerOrderItem')->where([
+                'parentType' => 'Issue',
+                'parentId' => $issue->id
+            ])->find();
+            foreach ($customerOrderItems as $customerOrderItem) {
+                // set Status to "Approved"
+                $customerOrderItem->set(['status' => 'Approved']);
+                $this->getEntityManager()->saveEntity($customerOrderItem);
+            }
+        }
+    }
+
+    /**
+     * Guard event for field "Approval Status"
+     * @param GuardEvent $event
+     */
+    public function guardApprovalStatus(GuardEvent $event)
+    {
+        // if module "Sales" is installed
+        if ($this->getMetadata()->isModuleInstalled('Sales')) {
             // get Issue entity
             $issue = $event->getSubject();
             $transitionTos = $event->getTransition()->getTos();
@@ -175,18 +225,17 @@ class Issue
                 switch ($to) {
                     case 'To Approve':
                         if ($issue->getFetched('approvalStatus') == 'New') {
-                            // get Customer Order Items entity
+                            // get Customer Order Item
                             $customerOrderItems = $this->getEntityManager()->getRepository('CustomerOrderItem')->where([
                                 'parentType' => 'Issue',
                                 'parentId' => $issue->id
                             ])->find();
                             foreach ($customerOrderItems as $customerOrderItem) {
-                                // can't set Approval Status to "To Approve" if Customer Order Items Status is not "To Approve"
+                                // can't set Approval Status to "To Approve" if Customer Order Item's Status is not "To Approve"
                                 if ($customerOrderItem->get('status') != 'To Approve') {
                                     $event->addTransitionBlocker(
                                         new TransitionBlocker(
-                                            'Cannot set Approval Status `To Approve`.'
-                                            . ' Status in Customer Order Items must by `To Approve`',
+                                            'The value of field "Status" for related Customer Order Item is not "To Approve".',
                                             '404'
                                         )
                                     );
@@ -200,70 +249,5 @@ class Issue
                 }
             }
         }
-    }
-
-    /**
-     * Field "Status", transition New->ToDo
-     * @param Event $event
-     */
-    public function statusTransitionFromNewToToDo(Event $event)
-    {
-        // checking if install module Sales
-        if ($this->checkInstallModuleSales()) {
-            // get Issue entity
-            $issue = $event->getSubject();
-            // get Customer Order Items entity
-            $customerOrderItems = $this->getEntityManager()->getRepository('CustomerOrderItem')->where([
-                'parentType' => 'Issue',
-                'parentId' => $issue->id
-            ])->find();
-            foreach ($customerOrderItems as $customerOrderItem) {
-                // set status Accepted
-                $customerOrderItem->set([
-                    'status' => 'Accepted'
-                ]);
-                $this->getEntityManager()->saveEntity($customerOrderItem);
-            }
-        }
-    }
-
-    /**
-     * Field "Approval Status", transition ToApprove->Approved
-     * @param Event $event
-     */
-    public function approvalStatusTransitionFromToApproveToApproved(Event $event)
-    {
-        // checking if install module Sales
-        if ($this->checkInstallModuleSales()) {
-            // get Issue entity
-            $issue = $event->getSubject();
-            // get Customer Order Items entity
-            $customerOrderItems = $this->getEntityManager()->getRepository('CustomerOrderItem')->where([
-                'parentType' => 'Issue',
-                'parentId' => $issue->id
-            ])->find();
-            foreach ($customerOrderItems as $customerOrderItem) {
-                // set status Approved
-                $customerOrderItem->set([
-                    'status' => 'Approved'
-                ]);
-                $this->getEntityManager()->saveEntity($customerOrderItem);
-            }
-        }
-    }
-
-    /**
-     * Check if install module Sales
-     * @return bool
-     */
-    public function checkInstallModuleSales()
-    {
-        $metadata = new \ProjectManagement\Utils\Metadata(
-            $this->container->get('fileManager'),
-            $this->container->get('moduleManager'),
-            $this->container->get('eventManager')
-        );
-
-        return $metadata->isModuleInstalled('Sales');
     }
 }
