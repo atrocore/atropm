@@ -69,26 +69,40 @@ class Issue
     }
 
     /**
+     * Change related Customer Order Items' status
+     * @param string $issueId
+     * @param string $status
+     * @param array $notAffectedStatus
+     */
+    private function changeCustomerOrderItemsStatus($issueId, $status, $notAffectedStatus = [])
+    {
+        // if module "Sales" is installed
+        if ($this->getMetadata()->isModuleInstalled('Sales')) {
+            // get Customer Order Items
+            $customerOrderItems = $this->getEntityManager()->getRepository('CustomerOrderItem')->where([
+                'parentType' => 'Issue',
+                'parentId' => $issueId,
+                'status !=' => array_merge(['Canceled'], $notAffectedStatus)
+            ])->find();
+            foreach ($customerOrderItems as $customerOrderItem) {
+                // set status Accepted
+                $customerOrderItem->set(['status' => $status]);
+                $this->getEntityManager()->saveEntity($customerOrderItem);
+            }
+        }
+    }
+
+    /**
      * Field "Status", transition New->ToDo
      * @param Event $event
      */
     public function statusTransitionFromNewToToDo(Event $event)
     {
-        // if module "Sales" is installed
-        if ($this->getMetadata()->isModuleInstalled('Sales')) {
-            // get Issue entity
-            $issue = $event->getSubject();
-            // get Customer Order Items
-            $customerOrderItems = $this->getEntityManager()->getRepository('CustomerOrderItem')->where([
-                'parentType' => 'Issue',
-                'parentId' => $issue->id
-            ])->find();
-            foreach ($customerOrderItems as $customerOrderItem) {
-                // set status Accepted
-                $customerOrderItem->set(['status' => 'Accepted']);
-                $this->getEntityManager()->saveEntity($customerOrderItem);
-            }
-        }
+        // get Issue entity
+        $issue = $event->getSubject();
+
+        // change Customer Order Items' status
+        $this->changeCustomerOrderItemsStatus($issue->id, 'Accepted');
     }
 
     /**
@@ -97,7 +111,10 @@ class Issue
      */
     public function statusEnteredToDone(Event $event)
     {
+        // get Issue entity
         $issue = $event->getSubject();
+
+        // close Issue
         $this->closeIssue($issue->id);
 
         // get related Expenses which is not Realized
@@ -112,19 +129,8 @@ class Issue
             $this->getEntityManager()->saveEntity($expense);
         }
 
-        // if module "Sales" is installed
-        if ($this->getMetadata()->isModuleInstalled('Sales')) {
-            // get Customer Order Items
-            $customerOrderItems = $this->getEntityManager()->getRepository('CustomerOrderItem')->where([
-                'parentType' => 'Issue',
-                'parentId' => $issue->id
-            ])->find();
-            foreach ($customerOrderItems as $customerOrderItem) {
-                // set Status to "Delivered"
-                $customerOrderItem->set(['status' => 'Delivered']);
-                $this->getEntityManager()->saveEntity($customerOrderItem);
-            }
-        }
+        // change Customer Order Items' status
+        $this->changeCustomerOrderItemsStatus($issue->id, 'Delivered');
     }
 
     /**
@@ -133,6 +139,7 @@ class Issue
      */
     public function statusEnteredToFrozen(Event $event)
     {
+        // close Issue
         $this->closeIssue($event->getSubject()->id);
     }
 
@@ -142,6 +149,7 @@ class Issue
      */
     public function statusEnteredToRejected(Event $event)
     {
+        // close Issue
         $this->closeIssue($event->getSubject()->id);
     }
 
@@ -153,6 +161,7 @@ class Issue
     {
         // get Issue entity
         $issue = $this->getEntityManager()->getEntity('Issue', $issueId);
+
         // set State to "closed"
         $issue->set(['state' => 'closed']);
         $this->getEntityManager()->saveEntity($issue);
@@ -193,21 +202,11 @@ class Issue
      */
     public function approvalStatusTransitionFromToApproveToApproved(Event $event)
     {
-        // if module "Sales" is installed
-        if ($this->getMetadata()->isModuleInstalled('Sales')) {
-            // get Issue entity
-            $issue = $event->getSubject();
-            // get Customer Order Items
-            $customerOrderItems = $this->getEntityManager()->getRepository('CustomerOrderItem')->where([
-                'parentType' => 'Issue',
-                'parentId' => $issue->id
-            ])->find();
-            foreach ($customerOrderItems as $customerOrderItem) {
-                // set Status to "Approved"
-                $customerOrderItem->set(['status' => 'Approved']);
-                $this->getEntityManager()->saveEntity($customerOrderItem);
-            }
-        }
+        // get Issue entity
+        $issue = $event->getSubject();
+
+        // change Customer Order Items' status
+        $this->changeCustomerOrderItemsStatus($issue->id, 'Approved');
     }
 
     /**
@@ -216,21 +215,11 @@ class Issue
      */
     public function approvalStatusTransitionFromApprovedToToApprove(Event $event)
     {
-        // if module "Sales" is installed
-        if ($this->getMetadata()->isModuleInstalled('Sales')) {
-            // get Issue entity
-            $issue = $event->getSubject();
-            // get Customer Order Items
-            $customerOrderItems = $this->getEntityManager()->getRepository('CustomerOrderItem')->where([
-                'parentType' => 'Issue',
-                'parentId' => $issue->id
-            ])->find();
-            foreach ($customerOrderItems as $customerOrderItem) {
-                // set Status to "To Approve"
-                $customerOrderItem->set(['status' => 'To Approve']);
-                $this->getEntityManager()->saveEntity($customerOrderItem);
-            }
-        }
+        // get Issue entity
+        $issue = $event->getSubject();
+
+        // change Customer Order Items' status
+        $this->changeCustomerOrderItemsStatus($issue->id, 'To Approve');
     }
 
     /**
