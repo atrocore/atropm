@@ -147,6 +147,11 @@ class Module extends AbstractModule
             'workflow.Issue_approvalStatus.transition.To Approve_Approved',
             [$issueWorkflow, 'approvalStatusTransitionFromToApproveToApproved']
         );
+        // Approval Status Approved->ToApprove
+        $this->container->get('eventManager')->addListener(
+            'workflow.Issue_approvalStatus.transition.Approved_To Approve',
+            [$issueWorkflow, 'approvalStatusTransitionFromApprovedToToApprove']
+        );
         // Guard event for change Approval Status
         $this->container->get('eventManager')->addListener(
             'workflow.Issue_approvalStatus.guard',

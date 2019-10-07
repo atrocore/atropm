@@ -211,6 +211,29 @@ class Issue
     }
 
     /**
+     * Field "Approval Status", transition Approved->ToApprove
+     * @param Event $event
+     */
+    public function approvalStatusTransitionFromApprovedToToApprove(Event $event)
+    {
+        // if module "Sales" is installed
+        if ($this->getMetadata()->isModuleInstalled('Sales')) {
+            // get Issue entity
+            $issue = $event->getSubject();
+            // get Customer Order Items
+            $customerOrderItems = $this->getEntityManager()->getRepository('CustomerOrderItem')->where([
+                'parentType' => 'Issue',
+                'parentId' => $issue->id
+            ])->find();
+            foreach ($customerOrderItems as $customerOrderItem) {
+                // set Status to "To Approve"
+                $customerOrderItem->set(['status' => 'To Approve']);
+                $this->getEntityManager()->saveEntity($customerOrderItem);
+            }
+        }
+    }
+
+    /**
      * Guard event for field "Approval Status"
      * @param GuardEvent $event
      */
