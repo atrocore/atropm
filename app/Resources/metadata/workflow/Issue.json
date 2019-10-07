@@ -59,7 +59,8 @@
         ],
         "transitions": {
             "To Estimate": [
-                "New"
+                "New",
+                "Estimated"
             ],
             "Estimated": [
                 "To Estimate"
