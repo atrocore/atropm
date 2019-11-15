@@ -1,20 +1,5 @@
 {
     "name": "treolabs/project-management",
-    "description": "Project Management module for TreoCore",
-    "authors": [
-        {
-            "name": "Oleksandr Trelin",
-            "email": "o.trelin@treolabs.com"
-        },
-        {
-            "name": "Yurii Kondratskyi",
-            "email": "y.kondratskyi@treolabs.com"
-        },
-        {
-            "name": "Dmytro Talko",
-            "email": "d.talko@treolabs.com"
-        }
-    ],
     "require": {
         "treolabs/treocore": "~3.24.0"
     },
