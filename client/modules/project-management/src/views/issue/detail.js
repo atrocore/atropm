@@ -22,6 +22,14 @@ Espo.define('project-management:views/issue/detail', 'project-management:views/d
 
     return Dep.extend({
 
+        setup() {
+             Dep.prototype.setup.call(this);
+
+             this.listenTo(this.model, 'after:save', model => {
+                 this.model.fetch();
+             });
+        },
+
         whereAdditional: {
             'labels': function () {
                 return [
