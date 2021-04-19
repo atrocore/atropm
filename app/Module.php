@@ -29,9 +29,6 @@ use Treo\Core\ModuleManager\AbstractModule;
 
 /**
  * Class Module
- *
- * @author o.trelin <o.trelin@treolabs.com>
- * @author d.talko <d.talko@treolabs.com>
  */
 class Module extends AbstractModule
 {

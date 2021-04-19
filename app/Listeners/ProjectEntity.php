@@ -30,11 +30,6 @@ use Espo\Orm\Entity;
 
 /**
  * Class ProjectEntity
- *
- * @author o.trelin <o.trelin@treolabs.com>
- * @author d.talko <d.talko@treolabs.com>
- *
- * @package ProjectManagement\Listeners
  */
 class ProjectEntity extends AbstractListener
 {

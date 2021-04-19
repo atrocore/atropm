@@ -1,23 +1,24 @@
 {
-    "name": "treolabs/project-management",
-    "require": {
-        "treolabs/treocore": ">=3.24.0 <3.26.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "ProjectManagement\\": "app/"
-        }
-    },
-    "extra": {
-        "treoId": "ProjectManagement",
-        "name": {
-            "default": "Project Management"
-        },
-        "description": {
-            "default": "Project Management module for TreoCore."
-        },
-        "tags": [
-            "project-management"
-        ]
+  "name": "atrocore/project-management",
+  "description": "",
+  "require": {
+    "atrocore/core": "~1.2.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "ProjectManagement\\": "app/"
     }
+  },
+  "extra": {
+    "treoId": "ProjectManagement",
+    "name": {
+      "default": "Project Management"
+    },
+    "description": {
+      "default": "Project Management module for AtroCore."
+    },
+    "tags": [
+      "project-management"
+    ]
+  }
 }

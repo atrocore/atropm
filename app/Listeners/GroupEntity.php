@@ -30,11 +30,6 @@ use Espo\Core\Exceptions\Error;
 
 /**
  * Class GroupEntity
- *
- * @author o.trelin <o.trelin@treolabs.com>
- * @author d.talko <d.talko@treolabs.com>
- *
- * @package ProjectManagement\Listeners
  */
 class GroupEntity extends AbstractListener
 {

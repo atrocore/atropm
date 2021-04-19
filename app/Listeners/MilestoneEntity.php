@@ -30,11 +30,6 @@ use Espo\Core\Exceptions\Error;
 
 /**
  * Class MilestoneEntity
- *
- * @author o.trelin <o.trelin@treolabs.com>
- * @author d.talko <d.talko@treolabs.com>
- *
- * @package ProjectManagement\Listeners
  */
 class MilestoneEntity extends AbstractListener
 {
@@ -62,6 +57,7 @@ class MilestoneEntity extends AbstractListener
      * Before save entity listener
      *
      * @param Event $event
+     *
      * @throws Error
      */
     public function beforeSave(Event $event)
@@ -71,8 +67,7 @@ class MilestoneEntity extends AbstractListener
 
         if (!empty($milestone->get('startDate'))
             && !empty($milestone->get('dueDate'))
-            && $milestone->get('startDate') >= $milestone->get('dueDate'))
-        {
+            && $milestone->get('startDate') >= $milestone->get('dueDate')) {
             throw new Error('Due Date must be greater than Start Date');
         }
     }
@@ -106,9 +101,11 @@ class MilestoneEntity extends AbstractListener
 
             // set all found teams to milestone
             if (!empty($teamsIds)) {
-                $milestone->set([
-                    'teamsIds' => $teamsIds
-                ]);
+                $milestone->set(
+                    [
+                        'teamsIds' => $teamsIds
+                    ]
+                );
                 $this->getEntityManager()->saveEntity(
                     $milestone,
                     array_merge($options, ['skipPMAutoAssignTeam' => true])
@@ -116,14 +113,18 @@ class MilestoneEntity extends AbstractListener
             }
 
             // get expenses of current milestone
-            $expensesEntity = $this->getEntityManager()->getRepository('Expense')->where([
-                'parentId' => $milestone->get('id'),
-                'parentType' => $milestone->getEntityType()
-            ])->find();
+            $expensesEntity = $this->getEntityManager()->getRepository('Expense')->where(
+                [
+                    'parentId'   => $milestone->get('id'),
+                    'parentType' => $milestone->getEntityType()
+                ]
+            )->find();
             foreach ($expensesEntity as $expenseEntity) {
-                $expenseEntity->set([
-                    'teamsIds' => $teamsIds
-                ]);
+                $expenseEntity->set(
+                    [
+                        'teamsIds' => $teamsIds
+                    ]
+                );
                 $this->getEntityManager()->saveEntity(
                     $expenseEntity,
                     array_merge($options, ['skipPMAutoAssignTeam' => true])
@@ -145,13 +146,17 @@ class MilestoneEntity extends AbstractListener
         // get options
         $options = $this->getOptions($event);
 
-        $issuesEntity = $this->getEntityManager()->getRepository('Issue')->where([
-            'milestoneId' => $milestone->get('id')
-        ])->find();
+        $issuesEntity = $this->getEntityManager()->getRepository('Issue')->where(
+            [
+                'milestoneId' => $milestone->get('id')
+            ]
+        )->find();
         foreach ($issuesEntity as $issueEntity) {
-            $issueEntity->set([
-                'milestoneId' => null
-            ]);
+            $issueEntity->set(
+                [
+                    'milestoneId' => null
+                ]
+            );
             $this->getEntityManager()->saveEntity($issueEntity, $options);
         }
     }

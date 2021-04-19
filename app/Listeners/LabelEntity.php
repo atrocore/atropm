@@ -30,11 +30,6 @@ use Espo\Core\Exceptions\Error;
 
 /**
  * Class LabelEntity
- *
- * @author o.trelin <o.trelin@treolabs.com>
- * @author d.talko <d.talko@treolabs.com>
- *
- * @package ProjectManagement\Listeners
  */
 class LabelEntity extends AbstractListener
 {
@@ -62,6 +57,7 @@ class LabelEntity extends AbstractListener
      * Before save entity listener
      *
      * @param Event $event
+     *
      * @throws Error
      */
     public function beforeSave(Event $event)
@@ -118,9 +114,11 @@ class LabelEntity extends AbstractListener
 
             // set all found teams to label
             if (!empty($teamsIds)) {
-                $label->set([
-                    'teamsIds' => $teamsIds
-                ]);
+                $label->set(
+                    [
+                        'teamsIds' => $teamsIds
+                    ]
+                );
                 $options['skipPMAutoAssignTeam'] = true;
                 $this->getEntityManager()->saveEntity($label, $options);
             }
@@ -134,16 +132,19 @@ class LabelEntity extends AbstractListener
      * @param string $name
      * @param string $parentType
      * @param string $parentId
+     *
      * @return bool
      */
     protected function isNameExist($id, $name, $parentType, $parentId)
     {
-        $labels = $this->getEntityManager()->getRepository('Label')->where([
-            'id!=' => $id,
-            'name' => $name,
-            'parentType' => $parentType,
-            'parentId' => $parentId
-        ])->findOne();
+        $labels = $this->getEntityManager()->getRepository('Label')->where(
+            [
+                'id!='       => $id,
+                'name'       => $name,
+                'parentType' => $parentType,
+                'parentId'   => $parentId
+            ]
+        )->findOne();
 
         return (!empty($labels));
     }
@@ -155,6 +156,7 @@ class LabelEntity extends AbstractListener
      * @param string $name
      * @param string $parentType
      * @param string $parentId
+     *
      * @throws Error
      */
     protected function checkGroupLabel($id, $name, $parentType, $parentId)
