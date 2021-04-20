@@ -4,7 +4,8 @@
   "iconClass": "fas fa-exclamation-triangle",
   "controller": "controllers/record",
   "boolFilterList": [
-    "onlyMy"
+    "onlyMy",
+    "onlyOpened"
   ],
   "views": {
     "detail": "project-management:views/issue/detail"
