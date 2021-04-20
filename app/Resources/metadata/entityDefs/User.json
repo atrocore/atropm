@@ -6,10 +6,6 @@
             "min": null,
             "max": null
         },
-        "isCustomer": {
-            "notNull": true,
-            "type": "bool"
-        },
         "projects": {
             "type": "linkMultiple",
             "layoutDetailDisabled": true,

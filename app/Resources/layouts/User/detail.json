@@ -5,11 +5,9 @@
         "rows": [
             [
                 {
-                    "name": "isCustomer"
-                },
-                {
                     "name": "unitPrice"
-                }
+                },
+                false
             ]
         ]
     }
