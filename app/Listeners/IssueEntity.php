@@ -153,16 +153,10 @@ class IssueEntity extends AbstractListener
         // count Issues for Project
         $projectEntity = $this->getEntityManager()->getEntity('Project', $entity->get('projectId'));
         if (!empty($projectEntity)) {
-            $issuesProjectEntityTotal = $this->getEntityManager()->getRepository('Issue')->where([
-                'projectId' => $entity->get('projectId')
-            ])->find();
-            $issuesProjectEntityClosed = $this->getEntityManager()->getRepository('Issue')->where([
-                'projectId' => $entity->get('projectId'),
-                'state' => 'closed'
-            ])->find();
+            $repository = $this->getEntityManager()->getRepository('Issue');
             $projectEntity->set([
-                'totalIssues' => count($issuesProjectEntityTotal),
-                'closedIssues' => count($issuesProjectEntityClosed)
+                'totalIssues' => $repository->where(['projectId' => $entity->get('projectId')])->count(),
+                'closedIssues' => $repository->where(['projectId' => $entity->get('projectId'), 'status' => 'Closed'])->count()
             ]);
             $this->getEntityManager()->saveEntity($projectEntity, ['skipAll' => true]);
 
@@ -170,16 +164,9 @@ class IssueEntity extends AbstractListener
             if (!empty($entity->get('milestoneId'))) {
                 $milestoneEntity = $this->getEntityManager()->getEntity('Milestone', $entity->get('milestoneId'));
                 if (!empty($milestoneEntity)) {
-                    $issuesMilestoneEntityTotal = $this->getEntityManager()->getRepository('Issue')->where([
-                        'milestoneId' => $milestoneEntity->get('id')
-                    ])->find();
-                    $issuesMilestoneEntityClosed = $this->getEntityManager()->getRepository('Issue')->where([
-                        'milestoneId' => $milestoneEntity->get('id'),
-                        'state' => 'closed'
-                    ])->find();
                     $milestoneEntity->set([
-                        'totalIssues' => count($issuesMilestoneEntityTotal),
-                        'closedIssues' => count($issuesMilestoneEntityClosed)
+                        'totalIssues' => $repository->where(['milestoneId' => $milestoneEntity->get('id')])->count(),
+                        'closedIssues' => $repository->where(['milestoneId' => $milestoneEntity->get('id'), 'status' => 'Closed'])->count()
                     ]);
                     $this->getEntityManager()->saveEntity($milestoneEntity, ['skipAll' => true]);
                 }
