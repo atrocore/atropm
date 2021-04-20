@@ -21,7 +21,7 @@
     "type": "Base",
     "module": "ProjectManagement",
     "object": true,
-    "isCustom": true,
+    "isCustom": false,
     "statusField": null,
     "kanbanStatusIgnoreList": []
 }

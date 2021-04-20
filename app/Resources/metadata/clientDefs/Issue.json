@@ -1,10 +1,11 @@
 {
+  "kanbanViewMode": true,
+  "color": "#7eb7da",
+  "iconClass": "fas fa-exclamation-triangle",
   "controller": "controllers/record",
   "boolFilterList": [
     "onlyMy"
   ],
-  "color": "#7eb7da",
-  "iconClass": "fas fa-exclamation-triangle",
   "views": {
     "detail": "project-management:views/issue/detail"
   },

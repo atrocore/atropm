@@ -1,0 +1,11 @@
+[
+  "name",
+  "labels",
+  "status",
+  "approvalStatus",
+  "dueDate",
+  "hours",
+  "issueType",
+  "paymentStatus",
+  "project"
+]
