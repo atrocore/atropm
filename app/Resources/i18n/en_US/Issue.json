@@ -1,56 +1,22 @@
 {
-    "fields": {
-        "issueType": "Issue Type",
-        "issueNumber": "Issue Number",
-        "state": "State",
-        "status": "Status",
-        "approvalStatus": "Approval Status",
-        "estimationStatus": "Estimation Status",
-        "project": "Project",
-        "milestone": "Milestone",
-        "labels": "Labels",
-        "dueDate": "Due Date",
-        "expenses": "Expenses"
-    },
-    "links": {
-        "project": "Project",
-        "milestone": "Milestone",
-        "labels": "Labels"
-    },
-    "labels": {
-        "expenses": "Expenses",
-        "sum": "Sum"
-    },
-    "options": {
-        "issueType": {
-            "Request": "Request",
-            "Addon": "Addon",
-            "Feature": "Feature",
-            "Bug": "Bug",
-            "Internal": "Internal"
-        },
-        "state": {
-            "open": "Open",
-            "closed": "Closed"
-        },
-        "status": {
-            "New": "New",
-            "To Do": "To Do",
-            "In Progress": "In Progress",
-            "Rejected": "Rejected",
-            "Frozen": "Frozen",
-            "Done": "Done"
-        },
-        "approvalStatus": {
-            "New": "New",
-            "To Approve": "To Approve",
-            "Approved": "Approved"
-        },
-        "estimationStatus": {
-            "New": "New",
-            "To Estimate": "To Estimate",
-            "Estimated": "Estimated"
-        },
-        "labels": []
-    }
+  "fields": {
+    "issueType": "Issue Type",
+    "issueNumber": "Issue Number",
+    "status": "Status",
+    "approvalStatus": "Approval Status",
+    "project": "Project",
+    "milestone": "Milestone",
+    "labels": "Labels",
+    "dueDate": "Due Date",
+    "expenses": "Expenses"
+  },
+  "links": {
+    "project": "Project",
+    "milestone": "Milestone",
+    "labels": "Labels"
+  },
+  "labels": {
+    "expenses": "Expenses",
+    "sum": "Sum"
+  }
 }

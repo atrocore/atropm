@@ -22,9 +22,7 @@
                 {
                     "name": "issueType"
                 },
-                {
-                    "name": "state"
-                }
+                false
             ],
             [
                 {
@@ -33,11 +31,6 @@
                 {
                     "name": "approvalStatus"
                 }
-            ],
-            [
-                {
-                    "name": "estimationStatus"
-                },false
             ],
             [
                 {

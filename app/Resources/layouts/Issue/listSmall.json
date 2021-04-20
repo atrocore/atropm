@@ -10,16 +10,10 @@
         "name": "issueType"
     },
     {
-        "name": "state"
-    },
-    {
         "name": "status"
     },
     {
         "name": "approvalStatus"
-    },
-    {
-        "name": "estimationStatus"
     },
     {
         "name": "project"

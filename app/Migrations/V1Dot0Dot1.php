@@ -1,3 +1,4 @@
+<?php
 /*
  * This file is part of premium software, which is NOT free.
  * Copyright (c) AtroCore UG (haftungsbeschränkt).
@@ -17,27 +18,41 @@
  * for your own needs, if source code is provided.
  */
 
-Espo.define('project-management:views/group/record/panels/labels', 'project-management:views/record/panels/bottom-list', function (Dep) {
+declare(strict_types=1);
 
-    return Dep.extend({
+namespace ProjectManagement\Migrations;
 
-        scope: 'Label',
+use Treo\Core\Migration\Base;
 
-        getWhereAdditional: function () {
-            return [
-                {
-                    type: 'equals',
-                    attribute: 'parentId',
-                    value: this.model.id
-                },
-                {
-                    type: 'equals',
-                    attribute: 'parentType',
-                    value: this.model.name
-                }
-            ];
+/**
+ * Migration for version 1.0.1
+ */
+class V1Dot0Dot1 extends Base
+{
+    /**
+     * @inheritDoc
+     */
+    public function up(): void
+    {
+        $this->execute("ALTER TABLE `issue` DROP state, DROP estimation_status");
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function down(): void
+    {
+    }
+
+    /**
+     * @param string $sql
+     */
+    protected function execute(string $sql)
+    {
+        try {
+            $this->getPDO()->exec($sql);
+        } catch (\Throwable $e) {
+            // ignore all
         }
-
-    });
-
-});
+    }
+}
