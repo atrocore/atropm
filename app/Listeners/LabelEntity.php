@@ -163,8 +163,6 @@ class LabelEntity extends AbstractListener
         $group = $this->getEntityManager()->getEntity('Group', $parentId);
         if ($this->isNameExist($id, $name, $parentType, $parentId)) {
             throw new Error('Name has already been taken for group ' . $group->get('name'));
-        } elseif (!empty($group->get('parentGroup'))) {
-            $this->checkGroupLabel($id, $name, $parentType, $group->get('parentGroupId'));
         }
     }
 }

@@ -29,7 +29,7 @@
         },
         "assignedUser": {
             "type": "link",
-            "required": true,
+            "required": false,
             "view": "project-management:views/fields/assigned-user-with-teams-filter"
         },
         "teams": {

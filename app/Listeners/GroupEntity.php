@@ -75,27 +75,6 @@ class GroupEntity extends AbstractListener
         if (!empty($groupsEntity)) {
             throw new Error('Group with the same name already exists');
         }
-
-        if ($group->get('parentGroup')) {
-            if ($group->get('id') == $group->get('parentGroupId')) {
-                throw new Error('Unable to set self parent group');
-            } else {
-                // check parentGroup
-                $this->checkParentGroup($group->get('id'), $group->get('parentGroupId'));
-            }
-        }
-    }
-
-    private function checkParentGroup($entityId, $parentGroupId)
-    {
-        $parentGroupEntity = $this->getEntityManager()->getEntity('Group', $parentGroupId);
-        if ($parentGroupEntity->get('parentGroup')) {
-            if ($parentGroupEntity->get('parentGroupId') == $entityId) {
-                throw new Error('This parent group is not allowed for this group');
-            } else {
-                $this->checkParentGroup($entityId, $parentGroupEntity->get('parentGroupId'));
-            }
-        }
     }
 
     /**
@@ -153,15 +132,6 @@ class GroupEntity extends AbstractListener
                 $teamsNames[$teamEntity->get('id')] = $teamEntity->get('name');
             }
 
-            // get teams of parent group
-            if (!empty($group->get('parentGroupId'))) {
-                $parentGroupEntity = $this->getEntityManager()->getEntity('Group', $group->get('parentGroupId'));
-                foreach ($parentGroupEntity->get('teams') as $team) {
-                    $teamsIds[] = $team->get('id');
-                    $teamsNames[$team->get('id')] = $team->get('name');
-                }
-            }
-
             // set all found teams to group
             if (!empty($teamsIds)) {
                 $group->set([
@@ -173,12 +143,6 @@ class GroupEntity extends AbstractListener
                     array_merge($options, ['skipPMAutoAssignTeam' => true])
                 );
             }
-
-            // get subgroups of current group
-            $subGroupsEntity = $this->getEntityManager()->getRepository('Group')->where([
-                'parentGroupId' => $group->get('id')
-            ])->find();
-            $this->setTeamsToRelatedEntities($subGroupsEntity, $teamsIds, $removedTeams, $options);
 
             // get labels of current group
             $labelsEntity = $this->getEntityManager()->getRepository('Label')->where([
@@ -233,40 +197,6 @@ class GroupEntity extends AbstractListener
     }
 
     /**
-     * Before relate entity listener
-     *
-     * @param Event $event
-     * @throws Error
-     */
-    public function beforeRelate(Event $event)
-    {
-        // get group entity
-        $group = $this->getEntity($event);
-
-        if ($event->getArgument('relationName') == 'subgroups' && $group->get('subgroups')) {
-            if ($group->get('id') == $event->getArgument('foreign')->get('id')) {
-                throw new Error('Unable to set self subgroup');
-            } else {
-                // check subgroups
-                $this->checkSubgroups($group->get('id'), $event->getArgument('foreign')->get('subgroups'));
-            }
-        }
-    }
-
-    private function checkSubgroups($entityId, $subgroups)
-    {
-        foreach ($subgroups as $subgroup) {
-            if ($subgroup->get('id') == $entityId) {
-                throw new Error('This subgroup is not allowed for this group');
-            } else {
-                if ($subgroup->get('subgroups')) {
-                    $this->checkSubgroups($entityId, $subgroup->get('subgroups'));
-                }
-            }
-        }
-    }
-
-    /**
      * Before remove entity listener
      * Before deleting a group need to delete everything related with it
      *
@@ -291,13 +221,6 @@ class GroupEntity extends AbstractListener
         );
         foreach ($relatedGroupTeams as $relatedGroupTeam) {
             $this->getEntityManager()->removeEntity($relatedGroupTeam, $options);
-        }
-
-        $groupsEntity = $this->getEntityManager()->getRepository('Group')->where([
-            'parentGroupId' => $group->get('id')
-        ])->find();
-        foreach ($groupsEntity as $groupEntity) {
-            $this->getEntityManager()->removeEntity($groupEntity, $options);
         }
 
         $labelsEntity = $this->getEntityManager()->getRepository('Label')->where([

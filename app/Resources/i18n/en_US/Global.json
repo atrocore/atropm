@@ -1,7 +1,7 @@
 {
   "scopeNames": {
     "Account": "Account",
-    "Group": "Group",
+    "Group": "Project Group",
     "Project": "Project",
     "Milestone": "Milestone",
     "Issue": "Issue",
@@ -11,7 +11,7 @@
   },
   "scopeNamesPlural": {
     "Account": "Accounts",
-    "Group": "Groups",
+    "Group": "Project Groups",
     "Project": "Projects",
     "Milestone": "Milestones",
     "Issue": "Issues",

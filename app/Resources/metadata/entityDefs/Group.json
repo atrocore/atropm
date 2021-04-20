@@ -28,7 +28,7 @@
         },
         "assignedUser": {
             "type": "link",
-            "required": true,
+            "required": false,
             "view": "project-management:views/fields/assigned-user-with-teams-filter"
         },
         "teams": {
@@ -38,24 +38,13 @@
         "groupType": {
             "type": "enum",
             "required": true,
+            "prohibitedEmptyValue": true,
             "options": [
                 "External",
                 "Internal"
             ],
             "audited": true,
             "default": "External"
-        },
-        "subgroups": {
-            "type": "linkMultiple",
-            "layoutDetailDisabled": true,
-            "layoutMassUpdateDisabled": true,
-            "noLoad": true,
-            "importDisabled": true
-        },
-        "parentGroup": {
-            "type": "link",
-            "layoutMassUpdateDisabled": true,
-            "view": "project-management:views/group/fields/parent-group"
         },
         "projects": {
             "type": "linkMultiple",
@@ -83,18 +72,6 @@
             "entity": "Team",
             "relationName": "EntityTeam",
             "layoutRelationshipsDisabled": true
-        },
-        "subgroups": {
-            "type": "hasMany",
-            "foreign": "parentGroup",
-            "entity": "Group",
-            "audited": true
-        },
-        "parentGroup": {
-            "type": "belongsTo",
-            "foreign": "subgroups",
-            "entity": "Group",
-            "audited": true
         },
         "projects": {
             "type": "hasMany",

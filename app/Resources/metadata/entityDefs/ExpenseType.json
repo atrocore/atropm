@@ -27,15 +27,6 @@
             "readOnly": true,
             "view": "views/fields/user"
         },
-        "assignedUser": {
-            "type": "link",
-            "required": true,
-            "view": "views/fields/assigned-user"
-        },
-        "teams": {
-            "type": "linkMultiple",
-            "view": "views/fields/teams"
-        },
         "unitPrice": {
             "type": "currency",
             "audited": true,
@@ -74,16 +65,6 @@
             "type": "belongsTo",
             "entity": "User"
         },
-        "assignedUser": {
-            "type": "belongsTo",
-            "entity": "User"
-        },
-        "teams": {
-            "type": "hasMany",
-            "entity": "Team",
-            "relationName": "EntityTeam",
-            "layoutRelationshipsDisabled": true
-        },
         "expenses": {
             "type": "hasMany",
             "foreign": "expenseType",
@@ -102,12 +83,6 @@
         "name": {
             "columns": [
                 "name",
-                "deleted"
-            ]
-        },
-        "assignedUser": {
-            "columns": [
-                "assignedUserId",
                 "deleted"
             ]
         }

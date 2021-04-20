@@ -1,3 +1,4 @@
+<?php
 /*
  * This file is part of premium software, which is NOT free.
  * Copyright (c) AtroCore UG (haftungsbeschränkt).
@@ -17,18 +18,34 @@
  * for your own needs, if source code is provided.
  */
 
-Espo.define('project-management:views/group/fields/parent-group', 'views/fields/link', function (Dep) {
+declare(strict_types=1);
 
-    return Dep.extend({
+namespace ProjectManagement\Migrations;
 
-        select: function (model) {
-            Dep.prototype.select.call(this, model);
+/**
+ * Migration for version 1.0.3
+ */
+class V1Dot0Dot3 extends V1Dot0Dot1
+{
+    /**
+     * @inheritDoc
+     */
+    public function up(): void
+    {
+        $this->execute("DROP INDEX IDX_PARENT_GROUP_ID ON `group`");
+        $this->execute("ALTER TABLE `group` DROP parent_group_id");
+        $this->execute("DROP INDEX IDX_ASSIGNED_USER_ID ON `expense_type`");
+        $this->execute("DROP INDEX IDX_ASSIGNED_USER ON `expense_type`");
+        $this->execute("ALTER TABLE `expense_type` DROP assigned_user_id");
+        $this->execute("DROP INDEX IDX_ASSIGNED_USER_ID ON `label`");
+        $this->execute("DROP INDEX IDX_ASSIGNED_USER ON `label`");
+        $this->execute("ALTER TABLE `label` DROP assigned_user_id");
+    }
 
-            if (this.model.isNew()) {
-                this.model.set({groupType: model.get('groupType')});
-            }
-        }
-
-    });
-
-});
+    /**
+     * @inheritDoc
+     */
+    public function down(): void
+    {
+    }
+}

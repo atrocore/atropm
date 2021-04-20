@@ -35,28 +35,14 @@ class Milestone extends \Espo\Core\SelectManagers\Base
     {
         $groups = [];
         $projectEntity = $this->getEntityManager()->getEntity('Project', $value);
-        $this->setGroup($projectEntity->get('groupId'), $groups);
 
         $result['whereClause']['OR'] = [
             [
                 ['parentType' => 'Project', 'parentId' => $value]
             ],
             [
-                ['parentType' => 'Group', 'parentId' => $groups]
+                ['parentType' => 'Group', 'parentId' => [$projectEntity->get('groupId')]]
             ]
         ];
-    }
-
-    /**
-     * @param $groupId
-     * @param $groups
-     */
-    private function setGroup($groupId, &$groups)
-    {
-        $groups[] = $groupId;
-        $groupEntity = $this->getEntityManager()->getEntity('Group', $groupId);
-        if ($groupEntity->get('parentGroupId')) {
-            $this->setGroup($groupEntity->get('parentGroupId'), $groups);
-        }
     }
 }

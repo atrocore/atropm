@@ -1,6 +1,6 @@
 {
     "fields": {
-        "group": "Group",
+        "group": "Project Group",
         "account": "Account",
         "projectType": "Project Type",
         "issues": "Issues",
@@ -9,7 +9,7 @@
         "defaultQA": "Default QA"
     },
     "links": {
-        "group": "Group",
+        "group": "Project Group",
         "account": "Account",
         "issues": "Issues",
         "defaultQA": "Default QA"

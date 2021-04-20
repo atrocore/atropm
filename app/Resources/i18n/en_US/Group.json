@@ -1,13 +1,9 @@
 {
     "fields": {
         "groupType": "Group Type",
-        "subgroups": "Subgroups",
-        "parentGroup": "Parent Group",
         "projects": "Projects"
     },
     "links": {
-        "subgroups": "Subgroups",
-        "parentGroup": "Parent Group",
         "projects": "Projects"
     },
     "labels": {
