@@ -36,6 +36,7 @@ class V1Dot0Dot1 extends Base
     {
         $this->execute("ALTER TABLE `issue` DROP state, DROP estimation_status");
         $this->execute("ALTER TABLE `issue` ADD hours DOUBLE PRECISION DEFAULT NULL COLLATE utf8mb4_unicode_ci");
+        $this->execute("ALTER TABLE `issue` ADD payment_status VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci");
     }
 
     /**

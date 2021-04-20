@@ -36,7 +36,9 @@
                 {
                     "name": "hours"
                 },
-                false
+                {
+                    "name": "paymentStatus"
+                }
             ],
             [
                 {

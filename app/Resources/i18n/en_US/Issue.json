@@ -9,7 +9,8 @@
     "labels": "Labels",
     "dueDate": "Due Date",
     "expenses": "Expenses",
-    "hours": "Hours"
+    "hours": "Hours",
+    "paymentStatus": "Payment Status"
   },
   "links": {
     "project": "Project",

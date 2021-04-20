@@ -19,6 +19,9 @@
         "name": "hours"
     },
     {
+        "name": "paymentStatus"
+    },
+    {
         "name": "project"
     },
     {
