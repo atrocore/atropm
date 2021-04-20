@@ -56,26 +56,28 @@
     "status": {
       "type": "enum",
       "required": true,
+      "prohibitedEmptyValue": true,
       "options": [
         "New",
         "To Do",
         "In Progress",
         "Rejected",
         "Frozen",
-        "Done"
+        "Done",
+        "Closed"
       ],
       "default": "New",
       "audited": true
     },
     "approvalStatus": {
       "type": "enum",
-      "required": true,
+      "required": false,
       "options": [
-        "New",
         "To Approve",
+        "NOT Approved",
         "Approved"
       ],
-      "default": "New",
+      "default": null,
       "audited": true
     },
     "project": {
@@ -99,6 +101,10 @@
     },
     "dueDate": {
       "type": "date",
+      "audited": true
+    },
+    "hours": {
+      "type": "float",
       "audited": true
     }
   },

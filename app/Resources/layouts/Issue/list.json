@@ -16,6 +16,9 @@
         "name": "approvalStatus"
     },
     {
+        "name": "hours"
+    },
+    {
         "name": "project"
     },
     {

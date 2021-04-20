@@ -34,6 +34,12 @@
             ],
             [
                 {
+                    "name": "hours"
+                },
+                false
+            ],
+            [
+                {
                     "name": "project"
                 },
                 {

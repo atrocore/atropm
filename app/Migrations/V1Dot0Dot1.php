@@ -35,6 +35,7 @@ class V1Dot0Dot1 extends Base
     public function up(): void
     {
         $this->execute("ALTER TABLE `issue` DROP state, DROP estimation_status");
+        $this->execute("ALTER TABLE `issue` ADD hours DOUBLE PRECISION DEFAULT NULL COLLATE utf8mb4_unicode_ci");
     }
 
     /**

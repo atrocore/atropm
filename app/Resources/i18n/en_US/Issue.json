@@ -8,7 +8,8 @@
     "milestone": "Milestone",
     "labels": "Labels",
     "dueDate": "Due Date",
-    "expenses": "Expenses"
+    "expenses": "Expenses",
+    "hours": "Hours"
   },
   "links": {
     "project": "Project",
