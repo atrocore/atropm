@@ -33,6 +33,8 @@ class V1Dot0Dot4 extends V1Dot0Dot1
     public function up(): void
     {
         $this->execute("ALTER TABLE `user` DROP is_customer");
+        $this->execute("DROP INDEX IDX_DEFAULT_Q_A_ID ON `project`");
+        $this->execute("ALTER TABLE `project` DROP default_q_a_id");
     }
 
     /**

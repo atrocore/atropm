@@ -72,12 +72,6 @@
             "type": "link",
             "layoutMassUpdateDisabled": true,
             "view" : "project-management:views/project/fields/group"
-        },
-        "defaultQA": {
-            "type": "link",
-            "required": true,
-            "tooltip": true,
-            "view": "project-management:views/project/fields/default-q-a"
         }
     },
     "links": {
@@ -115,12 +109,6 @@
             "type": "belongsTo",
             "foreign": "projects",
             "entity": "Group",
-            "audited": true
-        },
-        "defaultQA": {
-            "type": "belongsTo",
-            "foreign": "projects",
-            "entity": "User",
             "audited": true
         }
     },

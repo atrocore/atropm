@@ -26,12 +26,6 @@
             ],
             [
                 {
-                    "name": "defaultQA"
-                },
-                false
-            ],
-            [
-                {
                     "name": "totalIssues"
                 },
                 {

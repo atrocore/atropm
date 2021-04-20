@@ -5,14 +5,12 @@
         "projectType": "Project Type",
         "issues": "Issues",
         "totalIssues": "Total Issues",
-        "closedIssues": "Closed Issues",
-        "defaultQA": "Default QA"
+        "closedIssues": "Closed Issues"
     },
     "links": {
         "group": "Project Group",
         "account": "Account",
-        "issues": "Issues",
-        "defaultQA": "Default QA"
+        "issues": "Issues"
     },
     "labels": {
         "Create Project": "Create Project",
@@ -26,8 +24,5 @@
             "External": "External",
             "Internal": "Internal"
         }
-    },
-    "tooltips": {
-        "defaultQA": "You must link user from assigned teams."
     }
 }
