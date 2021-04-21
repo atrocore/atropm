@@ -22,34 +22,34 @@ declare(strict_types=1);
 
 namespace ProjectManagement\Services;
 
+use Espo\Core\Templates\Services\Base;
 use Espo\ORM\Entity;
 
 /**
- * Class Milestone
+ * Class AbstractService
  */
-class Milestone extends AbstractService
+abstract class AbstractService extends Base
 {
-    protected $mandatorySelectAttributeList = ['parentId', 'parentType', 'parentName', 'groupId', 'groupName', 'projectId', 'projectName'];
-
-    /**
-     * @inheritDoc
-     */
-    public function createEntity($attachment)
+    protected function prepareAttachmentParentForCreate(\stdClass $attachment, string $field, string $type): void
     {
-        $this->prepareAttachmentParentForCreate($attachment, 'group', 'Group');
-        $this->prepareAttachmentParentForCreate($attachment, 'project', 'Project');
+        if (!empty($attachment->parentType) && $attachment->parentType === $type) {
+            $id = $field . 'Id';
+            $name = $field . 'Name';
 
-        return parent::createEntity($attachment);
+            $attachment->$id = $attachment->parentId;
+            $attachment->$name = $attachment->parentName;
+            unset($attachment->parentId);
+            unset($attachment->parentType);
+            unset($attachment->parentName);
+        }
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function prepareEntityForOutput(Entity $entity)
+    protected function prepareEntityParentForOutput(Entity $entity, string $field, string $type): void
     {
-        parent::prepareEntityForOutput($entity);
-
-        $this->prepareEntityParentForOutput($entity, 'group', 'Group');
-        $this->prepareEntityParentForOutput($entity, 'project', 'Project');
+        if (!empty($entity->get($field . 'Id'))) {
+            $entity->set('parentId', $entity->get($field . 'Id'));
+            $entity->set('parentType', $type);
+            $entity->set('parentName', $entity->get($field . 'Name'));
+        }
     }
 }

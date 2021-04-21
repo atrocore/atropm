@@ -22,6 +22,34 @@ declare(strict_types=1);
 
 namespace ProjectManagement\Services;
 
-class Label extends \Espo\Core\Templates\Services\Base
+use Espo\ORM\Entity;
+
+/**
+ * Class Label
+ */
+class Label extends AbstractService
 {
+    protected $mandatorySelectAttributeList = ['parentId', 'parentType', 'parentName', 'groupId', 'groupName', 'projectId', 'projectName'];
+
+    /**
+     * @inheritDoc
+     */
+    public function createEntity($attachment)
+    {
+        $this->prepareAttachmentParentForCreate($attachment, 'group', 'Group');
+        $this->prepareAttachmentParentForCreate($attachment, 'project', 'Project');
+
+        return parent::createEntity($attachment);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function prepareEntityForOutput(Entity $entity)
+    {
+        parent::prepareEntityForOutput($entity);
+
+        $this->prepareEntityParentForOutput($entity, 'group', 'Group');
+        $this->prepareEntityParentForOutput($entity, 'project', 'Project');
+    }
 }

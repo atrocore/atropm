@@ -38,8 +38,57 @@
             "readOnly": true
         },
         "parent": {
-            "type": "linkParent",
-            "required": true
+            "type": "varchar",
+            "notStorable": true,
+            "foreignScopeList": ["Group", "Project"],
+            "view": "project-management:views/fields/link-parent"
+        },
+        "parentId": {
+            "type": "varchar",
+            "notStorable": true,
+            "layoutListDisabled": true,
+            "layoutListSmallDisabled": true,
+            "layoutDetailDisabled": true,
+            "layoutDetailSmallDisabled": true,
+            "layoutMassUpdateDisabled": true,
+            "layoutFiltersDisabled": true,
+            "exportDisabled": true,
+            "importDisabled": true,
+            "emHidden": true
+        },
+        "parentType": {
+            "type": "varchar",
+            "notStorable": true,
+            "layoutListDisabled": true,
+            "layoutListSmallDisabled": true,
+            "layoutDetailDisabled": true,
+            "layoutDetailSmallDisabled": true,
+            "layoutMassUpdateDisabled": true,
+            "layoutFiltersDisabled": true,
+            "exportDisabled": true,
+            "importDisabled": true,
+            "emHidden": true
+        },
+        "parentName": {
+            "type": "varchar",
+            "notStorable": true,
+            "layoutListDisabled": true,
+            "layoutListSmallDisabled": true,
+            "layoutDetailDisabled": true,
+            "layoutDetailSmallDisabled": true,
+            "layoutMassUpdateDisabled": true,
+            "layoutFiltersDisabled": true,
+            "exportDisabled": true,
+            "importDisabled": true,
+            "emHidden": true
+        },
+        "project": {
+            "type": "link",
+            "required": false
+        },
+        "group": {
+            "type": "link",
+            "required": false
         },
         "status": {
             "type": "enum",
@@ -97,9 +146,13 @@
             "relationName": "EntityTeam",
             "layoutRelationshipsDisabled": true
         },
-        "parent": {
-            "type": "belongsToParent",
-            "entityList": ["Group", "Project"]
+        "project": {
+            "type": "belongsTo",
+            "entity": "Project"
+        },
+        "group": {
+            "type": "belongsTo",
+            "entity": "Group"
         },
         "issues": {
             "type": "hasMany",

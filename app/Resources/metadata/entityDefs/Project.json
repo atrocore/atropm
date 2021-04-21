@@ -58,6 +58,20 @@
             "noLoad": true,
             "importDisabled": true
         },
+        "milestones": {
+            "type": "linkMultiple",
+            "layoutDetailDisabled": true,
+            "layoutMassUpdateDisabled": true,
+            "noLoad": true,
+            "importDisabled": true
+        },
+        "labels": {
+            "type": "linkMultiple",
+            "layoutDetailDisabled": true,
+            "layoutMassUpdateDisabled": true,
+            "noLoad": true,
+            "importDisabled": true
+        },
         "totalIssues": {
             "type": "int",
             "audited": true,
@@ -103,6 +117,18 @@
             "type": "hasMany",
             "foreign": "project",
             "entity": "Issue",
+            "audited": true
+        },
+        "milestones": {
+            "type": "hasMany",
+            "foreign": "project",
+            "entity": "Milestone",
+            "audited": true
+        },
+        "labels": {
+            "type": "hasMany",
+            "foreign": "project",
+            "entity": "Label",
             "audited": true
         },
         "group": {

@@ -17,26 +17,15 @@
  * for your own needs, if source code is provided.
  */
 
-Espo.define('project-management:views/project/record/panels/milestones', 'project-management:views/record/panels/bottom-list', function (Dep) {
+Espo.define('project-management:views/fields/link-parent', 'views/fields/link-parent', function (Dep) {
 
     return Dep.extend({
 
-        scope: 'Milestone',
+        setup: function () {
+            this.foreignScopeList = this.model.defs.fields.parent.foreignScopeList || [];
 
-        getWhereAdditional: function () {
-            return [
-                {
-                    type: 'equals',
-                    attribute: 'parentId',
-                    value: this.model.id
-                },
-                {
-                    type: 'equals',
-                    attribute: 'parentType',
-                    value: this.model.name
-                }
-            ];
-        }
+            Dep.prototype.setup.call(this);
+        },
 
     });
 

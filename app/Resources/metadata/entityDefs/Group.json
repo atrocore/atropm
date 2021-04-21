@@ -46,6 +46,20 @@
             "audited": true,
             "default": "External"
         },
+        "milestones": {
+            "type": "linkMultiple",
+            "layoutDetailDisabled": true,
+            "layoutMassUpdateDisabled": true,
+            "noLoad": true,
+            "importDisabled": true
+        },
+        "labels": {
+            "type": "linkMultiple",
+            "layoutDetailDisabled": true,
+            "layoutMassUpdateDisabled": true,
+            "noLoad": true,
+            "importDisabled": true
+        },
         "projects": {
             "type": "linkMultiple",
             "layoutDetailDisabled": true,
@@ -72,6 +86,18 @@
             "entity": "Team",
             "relationName": "EntityTeam",
             "layoutRelationshipsDisabled": true
+        },
+        "milestones": {
+            "type": "hasMany",
+            "foreign": "group",
+            "entity": "Milestone",
+            "audited": true
+        },
+        "labels": {
+            "type": "hasMany",
+            "foreign": "group",
+            "entity": "Label",
+            "audited": true
         },
         "projects": {
             "type": "hasMany",

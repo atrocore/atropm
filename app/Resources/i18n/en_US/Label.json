@@ -1,12 +1,16 @@
 {
-    "fields": {
-        "parent": "Parent",
-        "issues": "Issues"
-    },
-    "links": {
-        "issues": "Issues"
-    },
-    "labels": {
-        "Create Label": "Create Label"
-    }
+  "fields": {
+    "parent": "Parent",
+    "project": "Project",
+    "group": "Project Group",
+    "issues": "Issues"
+  },
+  "links": {
+    "project": "Project",
+    "group": "Project Group",
+    "issues": "Issues"
+  },
+  "labels": {
+    "Create Label": "Create Label"
+  }
 }

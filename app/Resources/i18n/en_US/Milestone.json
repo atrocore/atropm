@@ -6,9 +6,13 @@
         "closedIssues": "Closed Issues",
         "startDate": "Start Date",
         "dueDate": "Due Date",
+        "project": "Project",
+        "group": "Project Group",
         "issues": "Issues"
     },
     "links": {
+        "project": "Project",
+        "group": "Project Group",
         "issues": "Issues"
     },
     "labels": {

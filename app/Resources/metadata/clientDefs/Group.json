@@ -1,35 +1,25 @@
 {
-    "controller": "controllers/record",
-    "boolFilterList": [
-        "onlyMy"
-    ],
-    "color": "#7eb7da",
-    "iconClass": "fas fa-folder-open",
-    "views": {
-        "detail": "project-management:views/group/detail"
+  "controller": "controllers/record",
+  "boolFilterList": [
+    "onlyMy"
+  ],
+  "color": "#7eb7da",
+  "iconClass": "fas fa-folder-open",
+  "views": {
+    "detail": "project-management:views/group/detail"
+  },
+  "relationshipPanels": {
+    "projects": {
+      "select": false,
+      "rowActionsView": "views/record/row-actions/relationship-no-unlink"
     },
-    "relationshipPanels": {
-        "projects": {
-            "select": false,
-            "rowActionsView": "views/record/row-actions/relationship-no-unlink"
-        }
+    "milestones": {
+      "select": false,
+      "rowActionsView": "views/record/row-actions/relationship-no-unlink"
     },
-    "bottomPanels": {
-        "detail":  [
-            {
-                "name": "milestones",
-                "label": "milestones",
-                "view": "project-management:views/group/record/panels/milestones",
-                "rowActionsView": "views/record/row-actions/relationship-no-unlink",
-                "order": 10
-            },
-            {
-                "name": "labels",
-                "label": "labels",
-                "view": "project-management:views/group/record/panels/labels",
-                "rowActionsView": "views/record/row-actions/relationship-no-unlink",
-                "order": 10
-            }
-        ]
+    "labels": {
+      "select": false,
+      "rowActionsView": "views/record/row-actions/relationship-no-unlink"
     }
+  }
 }
