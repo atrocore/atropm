@@ -39,6 +39,16 @@ class Issue extends Base
             $entity->set('projectGroupId', $entity->get('project')->get('groupId'));
         }
 
+        if (!empty($entity->get('labels'))) {
+            $labels = [];
+            foreach ($entity->get('labels') as $label) {
+                if (in_array($label, $this->getMetadata()->get(['entityDefs', 'Issue', 'fields', 'labels', 'options'], []))) {
+                    $labels[] = $label;
+                }
+            }
+            $entity->set('labels', $labels);
+        }
+
         parent::prepareEntityForOutput($entity);
     }
 }
