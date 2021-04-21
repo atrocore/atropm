@@ -10,10 +10,16 @@
         "totalCurrency": "Total (Currency)",
         "totalConverted": "Total (Converted)",
         "dateCompleted": "Date Completed",
+        "project": "Project",
+        "milestone": "Milestone",
+        "issue": "Issue",
         "parent": "Parent"
     },
     "links": {
         "expenseType": "ExpenseType",
+        "project": "Project",
+        "milestone": "Milestone",
+        "issue": "Issue",
         "parent": "Parent"
     },
     "labels": {

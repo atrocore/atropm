@@ -32,7 +32,6 @@ Espo.define('project-management:views/project/record/panels/expenses', 'project-
         layouts: {
             Expense: [
                 {name: 'name', link: true},
-                {name: 'parent'},
                 {name: 'expenseType'},
                 {name: 'total'},
                 {name: 'assignedUser'},
@@ -42,7 +41,6 @@ Espo.define('project-management:views/project/record/panels/expenses', 'project-
 
         headLayout: [
             {name: 'name'},
-            {name: 'parent'},
             {name: 'expenseType'},
             {name: 'total'},
             {name: 'assignedUser'},
@@ -56,8 +54,8 @@ Espo.define('project-management:views/project/record/panels/expenses', 'project-
         },
 
         getTotalLabel: function (value) {
-            return '<div class="total-container pull-right">' + this.translate('sum', 'labels', this.model.name) + ':' + value + '</div>';
-        }
+            return '<div style="margin-right: 55px" class="total-container pull-right">' + this.translate('sum', 'labels', this.model.name) + ':' + value + '</div>';
+        },
 
     });
 

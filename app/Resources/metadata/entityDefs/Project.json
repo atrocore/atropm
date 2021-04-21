@@ -131,6 +131,12 @@
             "entity": "Label",
             "audited": true
         },
+        "expenses": {
+            "type": "hasMany",
+            "foreign": "project",
+            "entity": "Expense",
+            "audited": true
+        },
         "group": {
             "type": "belongsTo",
             "foreign": "projects",

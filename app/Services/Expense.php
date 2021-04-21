@@ -22,6 +22,36 @@ declare(strict_types=1);
 
 namespace ProjectManagement\Services;
 
-class Expense extends \Espo\Core\Templates\Services\Base
+use Espo\ORM\Entity;
+
+/**
+ * Class Expense
+ */
+class Expense extends AbstractService
 {
+    protected $mandatorySelectAttributeList = ['parentId', 'parentType', 'parentName', 'issueId', 'issueName', 'milestoneId', 'milestoneName', 'projectId', 'projectName'];
+
+    /**
+     * @inheritDoc
+     */
+    public function createEntity($attachment)
+    {
+        $this->prepareAttachmentParentForCreate($attachment, 'issue', 'Issue');
+        $this->prepareAttachmentParentForCreate($attachment, 'milestone', 'Milestone');
+        $this->prepareAttachmentParentForCreate($attachment, 'project', 'Project');
+
+        return parent::createEntity($attachment);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function prepareEntityForOutput(Entity $entity)
+    {
+        parent::prepareEntityForOutput($entity);
+
+        $this->prepareEntityParentForOutput($entity, 'issue', 'Issue');
+        $this->prepareEntityParentForOutput($entity, 'milestone', 'Milestone');
+        $this->prepareEntityParentForOutput($entity, 'project', 'Project');
+    }
 }

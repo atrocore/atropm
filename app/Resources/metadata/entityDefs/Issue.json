@@ -99,6 +99,9 @@
       "noLoad": false,
       "view": "project-management:views/issue/fields/labels"
     },
+    "expenses": {
+      "type": "linkMultiple"
+    },
     "dueDate": {
       "type": "date",
       "audited": true
@@ -141,6 +144,12 @@
       "type": "belongsTo",
       "foreign": "issues",
       "entity": "Project",
+      "audited": true
+    },
+    "expenses": {
+      "type": "hasMany",
+      "foreign": "issue",
+      "entity": "Expense",
       "audited": true
     },
     "milestone": {

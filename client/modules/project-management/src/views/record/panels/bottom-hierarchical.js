@@ -43,6 +43,16 @@ Espo.define('project-management:views/record/panels/bottom-hierarchical', ['view
             this.setupTitle();
 
             this.prepareHeadLayout();
+
+            this.buttonList.push(
+                {
+                    "title": "Create",
+                    "action": "createRelatedExpense",
+                    "acl": "create",
+                    "aclScope": "Expense",
+                    "html": "<span class=\"fas fa-plus\"></span>"
+                }
+            );
         },
 
         prepareHeadLayout: function () {
@@ -64,6 +74,29 @@ Espo.define('project-management:views/record/panels/bottom-hierarchical', ['view
                     view.render();
                 })
             });
+        },
+
+        actionCreateRelatedExpense: function () {
+            const link = 'expenses';
+            const scope = 'Expense';
+            const foreignLink = this.model.defs['links'][link].foreign;
+
+            this.notify('Loading...');
+
+            var viewName = this.getMetadata().get('clientDefs.' + scope + '.modalViews.edit') || 'views/modals/edit';
+            this.createView('quickCreate', viewName, {
+                scope: scope,
+                relate: {
+                    model: this.model,
+                    link: foreignLink,
+                }
+            }, function (view) {
+                view.render();
+                view.notify(false);
+                this.listenToOnce(view, 'after:save', function () {
+                    this.getParentView().getView('expenses').actionRefresh()
+                }, this);
+            }.bind(this));
         },
 
         createCollection: function () {

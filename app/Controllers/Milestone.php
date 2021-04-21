@@ -31,10 +31,7 @@ class Milestone extends \Espo\Core\Templates\Controllers\Base
         $list = [];
         if ($milestoneId) {
             // get all milestone Expenses
-            $expenses = $this->getEntityManager()->getRepository('Expense')->where([
-                'parentId' => $milestoneId,
-                'parentType' => 'Milestone'
-            ])->find();
+            $expenses = $this->getEntityManager()->getRepository('Expense')->where(['milestoneId' => $milestoneId])->find();
             foreach ($expenses as $expense) {
                 $expenseItem = [
                     'type' => $expense->getEntityType(),
@@ -66,10 +63,7 @@ class Milestone extends \Espo\Core\Templates\Controllers\Base
                 }
 
                 // get all issue Expenses
-                $expenses = $this->getEntityManager()->getRepository('Expense')->where([
-                    'parentId' => $issue->get('id'),
-                    'parentType' => $issue->getEntityType()
-                ])->find();
+                $expenses = $this->getEntityManager()->getRepository('Expense')->where(['issueId' => $issue->get('id')])->find();
                 $expenseTotal = 0;
                 $expenseCurrency = '';
                 foreach ($expenses as $expense) {
@@ -114,6 +108,6 @@ class Milestone extends \Espo\Core\Templates\Controllers\Base
             $result['list'][] = $e;
         }
 
-        return json_encode($result);
+        return $result;
     }
 }

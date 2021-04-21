@@ -22,18 +22,28 @@ declare(strict_types=1);
 
 namespace ProjectManagement\Controllers;
 
-class Project extends \Espo\Core\Templates\Controllers\Base
+use Espo\Core\Templates\Controllers\Base;
+
+/**
+ * Class Project
+ */
+class Project extends Base
 {
-    public function getActionGetMilestonesAndIssues($params, $data, $request)
+    /**
+     * @param mixed $params
+     * @param mixed $data
+     * @param mixed $request
+     *
+     * @return array
+     */
+    public function getActionGetMilestonesAndIssues($params, $data, $request): array
     {
         $projectId = isset($params['id']) ? $params['id'] : null;
 
         $list = ['milestones' => [], 'issues' => []];
-        if ($projectId) {
+        if ($projectId && !empty($project = $this->getEntityManager()->getEntity('Project', $projectId))) {
             // get all project Issues
-            $issues = $this->getEntityManager()->getRepository('Issue')->where([
-                'projectId' => $projectId
-            ])->find();
+            $issues = $project->get('issues');
             foreach ($issues as $issue) {
                 $issueValue = [
                     'type' => $issue->getEntityType(),
@@ -48,10 +58,7 @@ class Project extends \Espo\Core\Templates\Controllers\Base
                 }
 
                 // get all issue Expenses
-                $expenses = $this->getEntityManager()->getRepository('Expense')->where([
-                    'parentId' => $issue->get('id'),
-                    'parentType' => $issue->getEntityType()
-                ])->find();
+                $expenses = $issue->get('expenses');
                 $expenseTotal = 0;
                 $expenseCurrency = '';
                 foreach ($expenses as $expense) {
@@ -115,20 +122,24 @@ class Project extends \Espo\Core\Templates\Controllers\Base
             }
         }
 
-        return json_encode($result);
+        return $result;
     }
 
-    public function getActionGetProjectExpenses($params, $data, $request)
+    /**
+     * @param mixed $params
+     * @param mixed $data
+     * @param mixed $request
+     *
+     * @return array
+     */
+    public function getActionGetProjectExpenses($params, $data, $request): array
     {
         $projectId = isset($params['id']) ? $params['id'] : null;
 
         $list = [];
-        if ($projectId) {
+        if ($projectId && !empty($project = $this->getEntityManager()->getEntity('Project', $projectId))) {
             // get all project Expenses
-            $expenses = $this->getEntityManager()->getRepository('Expense')->where([
-                'parentId' => $projectId,
-                'parentType' => 'Project'
-            ])->find();
+            $expenses = $project->get('expenses');
             $service = $this->getRecordService();
             foreach ($expenses as $expense) {
                 $service->loadAdditionalFieldsForList($expense);
@@ -164,6 +175,6 @@ class Project extends \Espo\Core\Templates\Controllers\Base
             $result['list'][] = $e;
         }
 
-        return json_encode($result);
+        return $result;
     }
 }

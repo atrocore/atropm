@@ -68,7 +68,7 @@ Espo.define('project-management:views/milestone/record/panels/expenses', 'projec
         },
 
         getTotalLabel: function (value) {
-            return '<div class="total-container pull-right">' + this.translate('sum', 'labels', this.model.name) + ':' + value + '</div>';
+            return '<div style="margin-right: 55px" class="total-container pull-right">' + this.translate('sum', 'labels', this.model.name) + ':' + value + '</div>';
         }
 
     });

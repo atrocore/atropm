@@ -31,10 +31,7 @@ class Issue extends \Espo\Core\Templates\Controllers\Base
         $list = [];
         if ($issueId) {
             // get all issue Expenses
-            $expenses = $this->getEntityManager()->getRepository('Expense')->where([
-                'parentId' => $issueId,
-                'parentType' => 'Issue'
-            ])->find();
+            $expenses = $this->getEntityManager()->getRepository('Expense')->where(['issueId' => $issueId])->find();
             $service = $this->getRecordService();
             foreach ($expenses as $expense) {
                 $service->loadAdditionalFieldsForList($expense);
@@ -70,6 +67,6 @@ class Issue extends \Espo\Core\Templates\Controllers\Base
             $result['list'][] = $e;
         }
 
-        return json_encode($result);
+        return $result;
     }
 }

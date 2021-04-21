@@ -1,67 +1,67 @@
 {
-    "controller": "controllers/record",
-    "boolFilterList": [
-        "onlyMy"
-    ],
-    "color": "#7eb7da",
-    "iconClass": "fas fa-gem",
-    "relationshipPanels": {
-        "issues": {
-            "selectDisabled": true,
-            "viewDisabled": true,
-            "view": "project-management:views/project/record/panels/issues"
-        },
-        "milestones": {
-            "select": false,
-            "rowActionsView": "views/record/row-actions/relationship-no-unlink"
-        },
-        "labels": {
-            "select": false,
-            "rowActionsView": "views/record/row-actions/relationship-no-unlink"
-        }
+  "controller": "controllers/record",
+  "boolFilterList": [
+    "onlyMy"
+  ],
+  "color": "#7eb7da",
+  "iconClass": "fas fa-gem",
+  "relationshipPanels": {
+    "issues": {
+      "selectDisabled": true,
+      "viewDisabled": true,
+      "view": "project-management:views/project/record/panels/issues"
     },
-    "bottomPanels": {
-        "detail":  [
-            {
-                "name": "expenses",
-                "label": "expenses",
-                "view": "project-management:views/project/record/panels/expenses",
-                "order": 10
-            }
-        ]
+    "milestones": {
+      "select": false,
+      "rowActionsView": "views/record/row-actions/relationship-no-unlink"
     },
-    "dynamicLogic": {
-        "fields": {
-            "group": {
-                "readOnly": {
-                    "conditionGroup": [
-                        {
-                            "type": "isNotEmpty",
-                            "attribute": "id"
-                        }
-                    ]
-                }
-            },
-            "totalIssues": {
-                "visible": {
-                    "conditionGroup": [
-                        {
-                            "type": "isNotEmpty",
-                            "attribute": "id"
-                        }
-                    ]
-                }
-            },
-            "closedIssues": {
-                "visible": {
-                    "conditionGroup": [
-                        {
-                            "type": "isNotEmpty",
-                            "attribute": "id"
-                        }
-                    ]
-                }
-            }
-        }
+    "labels": {
+      "select": false,
+      "rowActionsView": "views/record/row-actions/relationship-no-unlink"
     }
+  },
+  "bottomPanels": {
+    "detail": [
+      {
+        "name": "expenses",
+        "label": "expenses",
+        "view": "project-management:views/project/record/panels/expenses",
+        "order": 10
+      }
+    ]
+  },
+  "dynamicLogic": {
+    "fields": {
+      "group": {
+        "readOnly": {
+          "conditionGroup": [
+            {
+              "type": "isNotEmpty",
+              "attribute": "id"
+            }
+          ]
+        }
+      },
+      "totalIssues": {
+        "visible": {
+          "conditionGroup": [
+            {
+              "type": "isNotEmpty",
+              "attribute": "id"
+            }
+          ]
+        }
+      },
+      "closedIssues": {
+        "visible": {
+          "conditionGroup": [
+            {
+              "type": "isNotEmpty",
+              "attribute": "id"
+            }
+          ]
+        }
+      }
+    }
+  }
 }

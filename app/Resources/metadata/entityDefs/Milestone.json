@@ -41,7 +41,12 @@
             "type": "varchar",
             "notStorable": true,
             "foreignScopeList": ["Group", "Project"],
-            "view": "project-management:views/fields/link-parent"
+            "view": "project-management:views/fields/link-parent",
+            "layoutMassUpdateDisabled": true,
+            "layoutFiltersDisabled": true,
+            "exportDisabled": true,
+            "importDisabled": true,
+            "emHidden": true
         },
         "parentId": {
             "type": "varchar",
@@ -125,6 +130,14 @@
             "layoutMassUpdateDisabled": true,
             "noLoad": true,
             "importDisabled": true
+        },
+        "expenses": {
+            "type": "linkMultiple",
+            "layoutDetailDisabled": true,
+            "layoutListDisabled": true,
+            "layoutMassUpdateDisabled": true,
+            "noLoad": true,
+            "importDisabled": true
         }
     },
     "links": {
@@ -158,6 +171,12 @@
             "type": "hasMany",
             "foreign": "milestone",
             "entity": "Issue",
+            "audited": true
+        },
+        "expenses": {
+            "type": "hasMany",
+            "foreign": "milestone",
+            "entity": "Expense",
             "audited": true
         }
     },
