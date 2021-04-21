@@ -32,6 +32,7 @@ Espo.define('project-management:views/issue/fields/labels', 'views/fields/link-m
             data['map'] = this.ids.map(id => {
                 return {id, name: this.nameHash[id]};
             });
+
             return data;
         },
 
@@ -56,7 +57,7 @@ Espo.define('project-management:views/issue/fields/labels', 'views/fields/link-m
                     maxOptions: 10,
                     load: (query, callback) => {
                         this.ajaxGetRequest('Label', {
-                            select: 'id,name',
+                            select: 'id,name,textColor,backgroundColor',
                             q: query,
                             maxSize: 10,
                             offset: 0,

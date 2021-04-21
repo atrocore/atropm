@@ -38,10 +38,10 @@ class Milestone extends \Espo\Core\SelectManagers\Base
 
         $result['whereClause']['OR'] = [
             [
-                ['parentType' => 'Project', 'parentId' => $value]
+                ['projectId' => $value]
             ],
             [
-                ['parentType' => 'Group', 'parentId' => [$projectEntity->get('groupId')]]
+                ['groupId' => [$projectEntity->get('groupId')]]
             ]
         ];
     }

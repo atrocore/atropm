@@ -1,6 +1,5 @@
 {
   "kanbanViewMode": true,
-  "color": "#7eb7da",
   "iconClass": "fas fa-exclamation-triangle",
   "controller": "controllers/record",
   "boolFilterList": [

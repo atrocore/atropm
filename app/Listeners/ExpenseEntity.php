@@ -67,14 +67,11 @@ class ExpenseEntity extends AbstractListener
         if (empty($options['skipPMAutoAssignTeam'])) {
             $teamsIds = [];
 
-            // get teams of parent entity
-            if (!empty($expense->get('parentId'))) {
-                $parentEntity = $this->getEntityManager()->getEntity(
-                    $expense->get('parentType'),
-                    $expense->get('parentId')
-                );
-                foreach ($parentEntity->get('teams') as $teamId) {
-                    $teamsIds[] = $teamId->get('id');
+            foreach (['project', 'issue', 'milestone'] as $parentEntityType) {
+                if (!empty($parentEntity = $expense->get($parentEntityType))) {
+                    foreach ($parentEntity->get('teams') as $teamId) {
+                        $teamsIds[] = $teamId->get('id');
+                    }
                 }
             }
 

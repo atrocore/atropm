@@ -3,6 +3,8 @@
     "parent": "Parent",
     "project": "Project",
     "group": "Project Group",
+    "textColor": "Text Color",
+    "backgroundColor": "Background Color",
     "issues": "Issues"
   },
   "links": {

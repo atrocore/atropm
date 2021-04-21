@@ -1,132 +1,143 @@
 {
-    "fields": {
-        "name": {
-            "type": "varchar",
-            "required": true,
-            "trim": true
-        },
-        "description": {
-            "type": "text"
-        },
-        "createdAt": {
-            "type": "datetime",
-            "readOnly": true
-        },
-        "modifiedAt": {
-            "type": "datetime",
-            "readOnly": true
-        },
-        "createdBy": {
-            "type": "link",
-            "readOnly": true,
-            "view": "views/fields/user"
-        },
-        "modifiedBy": {
-            "type": "link",
-            "readOnly": true,
-            "view": "views/fields/user"
-        },
-        "parent": {
-            "type": "varchar",
-            "notStorable": true,
-            "foreignScopeList": ["Group", "Project"],
-            "view": "project-management:views/fields/link-parent",
-            "layoutMassUpdateDisabled": true,
-            "layoutFiltersDisabled": true,
-            "exportDisabled": true,
-            "importDisabled": true,
-            "emHidden": true
-        },
-        "parentId": {
-            "type": "varchar",
-            "notStorable": true,
-            "layoutListDisabled": true,
-            "layoutListSmallDisabled": true,
-            "layoutDetailDisabled": true,
-            "layoutDetailSmallDisabled": true,
-            "layoutMassUpdateDisabled": true,
-            "layoutFiltersDisabled": true,
-            "exportDisabled": true,
-            "importDisabled": true,
-            "emHidden": true
-        },
-        "parentType": {
-            "type": "varchar",
-            "notStorable": true,
-            "layoutListDisabled": true,
-            "layoutListSmallDisabled": true,
-            "layoutDetailDisabled": true,
-            "layoutDetailSmallDisabled": true,
-            "layoutMassUpdateDisabled": true,
-            "layoutFiltersDisabled": true,
-            "exportDisabled": true,
-            "importDisabled": true,
-            "emHidden": true
-        },
-        "parentName": {
-            "type": "varchar",
-            "notStorable": true,
-            "layoutListDisabled": true,
-            "layoutListSmallDisabled": true,
-            "layoutDetailDisabled": true,
-            "layoutDetailSmallDisabled": true,
-            "layoutMassUpdateDisabled": true,
-            "layoutFiltersDisabled": true,
-            "exportDisabled": true,
-            "importDisabled": true,
-            "emHidden": true
-        },
-        "project": {
-            "type": "link",
-            "required": false
-        },
-        "group": {
-            "type": "link",
-            "required": false
-        },
-        "issues": {
-            "type": "linkMultiple",
-            "layoutDetailDisabled": true,
-            "layoutMassUpdateDisabled": true,
-            "importDisabled": true,
-            "noLoad": true
-        }
+  "fields": {
+    "name": {
+      "type": "varchar",
+      "required": true,
+      "trim": true
     },
-    "links": {
-        "createdBy": {
-            "type": "belongsTo",
-            "entity": "User"
-        },
-        "modifiedBy": {
-            "type": "belongsTo",
-            "entity": "User"
-        },
-        "project": {
-            "type": "belongsTo",
-            "entity": "Project"
-        },
-        "group": {
-            "type": "belongsTo",
-            "entity": "Group"
-        },
-        "issues": {
-            "type": "hasMany",
-            "relationName": "issueLabel",
-            "foreign": "labels",
-            "entity": "Issue",
-            "audited": true
-        }
+    "description": {
+      "type": "text"
     },
-    "collection": {
-        "orderBy": "createdAt",
-        "order": "desc"
+    "createdAt": {
+      "type": "datetime",
+      "readOnly": true
     },
-    "indexes": {
-        "name": {
-            "columns": [
-                "name",
-                "deleted"
-            ]
-        }
+    "modifiedAt": {
+      "type": "datetime",
+      "readOnly": true
+    },
+    "createdBy": {
+      "type": "link",
+      "readOnly": true,
+      "view": "views/fields/user"
+    },
+    "modifiedBy": {
+      "type": "link",
+      "readOnly": true,
+      "view": "views/fields/user"
+    },
+    "textColor": {
+      "type": "color",
+      "required": false
+    },
+    "backgroundColor": {
+      "type": "color",
+      "required": false
+    },
+    "parent": {
+      "type": "varchar",
+      "notStorable": true,
+      "foreignScopeList": [
+        "Group",
+        "Project"
+      ],
+      "view": "project-management:views/fields/link-parent",
+      "layoutMassUpdateDisabled": true,
+      "layoutFiltersDisabled": true,
+      "exportDisabled": true,
+      "importDisabled": true,
+      "emHidden": true
+    },
+    "parentId": {
+      "type": "varchar",
+      "notStorable": true,
+      "layoutListDisabled": true,
+      "layoutListSmallDisabled": true,
+      "layoutDetailDisabled": true,
+      "layoutDetailSmallDisabled": true,
+      "layoutMassUpdateDisabled": true,
+      "layoutFiltersDisabled": true,
+      "exportDisabled": true,
+      "importDisabled": true,
+      "emHidden": true
+    },
+    "parentType": {
+      "type": "varchar",
+      "notStorable": true,
+      "layoutListDisabled": true,
+      "layoutListSmallDisabled": true,
+      "layoutDetailDisabled": true,
+      "layoutDetailSmallDisabled": true,
+      "layoutMassUpdateDisabled": true,
+      "layoutFiltersDisabled": true,
+      "exportDisabled": true,
+      "importDisabled": true,
+      "emHidden": true
+    },
+    "parentName": {
+      "type": "varchar",
+      "notStorable": true,
+      "layoutListDisabled": true,
+      "layoutListSmallDisabled": true,
+      "layoutDetailDisabled": true,
+      "layoutDetailSmallDisabled": true,
+      "layoutMassUpdateDisabled": true,
+      "layoutFiltersDisabled": true,
+      "exportDisabled": true,
+      "importDisabled": true,
+      "emHidden": true
+    },
+    "project": {
+      "type": "link",
+      "required": false
+    },
+    "group": {
+      "type": "link",
+      "required": false
+    },
+    "issues": {
+      "type": "linkMultiple",
+      "layoutDetailDisabled": true,
+      "layoutMassUpdateDisabled": true,
+      "importDisabled": true,
+      "noLoad": true
     }
+  },
+  "links": {
+    "createdBy": {
+      "type": "belongsTo",
+      "entity": "User"
+    },
+    "modifiedBy": {
+      "type": "belongsTo",
+      "entity": "User"
+    },
+    "project": {
+      "type": "belongsTo",
+      "entity": "Project"
+    },
+    "group": {
+      "type": "belongsTo",
+      "entity": "Group"
+    },
+    "issues": {
+      "type": "hasMany",
+      "relationName": "issueLabel",
+      "foreign": "labels",
+      "entity": "Issue",
+      "audited": true
+    }
+  },
+  "collection": {
+    "orderBy": "createdAt",
+    "order": "desc"
+  },
+  "indexes": {
+    "name": {
+      "columns": [
+        "name",
+        "deleted"
+      ]
+    }
+  }
 }

@@ -3,7 +3,6 @@
   "boolFilterList": [
     "onlyMy"
   ],
-  "color": "#7eb7da",
   "iconClass": "fas fa-folder-open",
   "views": {
     "detail": "project-management:views/group/detail"

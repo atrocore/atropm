@@ -153,10 +153,7 @@ class ProjectEntity extends AbstractListener
             }
 
             // get labels of current project
-            $labelsEntity = $this->getEntityManager()->getRepository('Label')->where([
-                'parentId' => $project->get('id'),
-                'parentType' => 'Project'
-            ])->find();
+            $labelsEntity = $this->getEntityManager()->getRepository('Label')->where(['projectId' => $project->get('id')])->find();
             $this->setTeamsToRelatedEntities(
                 $labelsEntity,
                 $teamsIds,
@@ -165,10 +162,7 @@ class ProjectEntity extends AbstractListener
             );
 
             // get milestones of current project
-            $milestonesEntity = $this->getEntityManager()->getRepository('Milestone')->where([
-                'parentId' => $project->get('id'),
-                'parentType' => 'Project'
-            ])->find();
+            $milestonesEntity = $this->getEntityManager()->getRepository('Milestone')->where(['projectId' => $project->get('id')])->find();
             $this->setTeamsToRelatedEntities($milestonesEntity, $teamsIds, $removedTeams, $options);
 
             // get issues of current project
@@ -178,10 +172,7 @@ class ProjectEntity extends AbstractListener
             $this->setTeamsToRelatedEntities($issuesEntity, $teamsIds, $removedTeams, $options);
 
             // get expenses of current project
-            $expensesEntity = $this->getEntityManager()->getRepository('Expense')->where([
-                'parentId' => $project->get('id'),
-                'parentType' => 'Project'
-            ])->find();
+            $expensesEntity = $this->getEntityManager()->getRepository('Expense')->where(['projectId' => $project->get('id')])->find();
             $this->setTeamsToRelatedEntities(
                 $expensesEntity,
                 $teamsIds,
@@ -243,18 +234,12 @@ class ProjectEntity extends AbstractListener
             $this->getEntityManager()->removeEntity($relatedProjectTeam, $options);
         }
 
-        $labelsEntity = $this->getEntityManager()->getRepository('Label')->where([
-            'parentType' => 'Project',
-            'parentId' => $project->get('id')
-        ])->find();
+        $labelsEntity = $this->getEntityManager()->getRepository('Label')->where(['projectId' => $project->get('id')])->find();
         foreach ($labelsEntity as $labelEntity) {
             $this->getEntityManager()->removeEntity($labelEntity, $options);
         }
 
-        $milestonesEntity = $this->getEntityManager()->getRepository('Milestone')->where([
-            'parentType' => 'Project',
-            'parentId' => $project->get('id')
-        ])->find();
+        $milestonesEntity = $this->getEntityManager()->getRepository('Milestone')->where(['projectId' => $project->get('id')])->find();
         foreach ($milestonesEntity as $milestoneEntity) {
             $this->getEntityManager()->removeEntity($milestoneEntity, $options);
         }

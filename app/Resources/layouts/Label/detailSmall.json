@@ -12,6 +12,14 @@
                     "name": "description",
                     "fullWidth": true
                 }
+            ],
+            [
+                {
+                    "name": "textColor"
+                },
+                {
+                    "name": "backgroundColor"
+                }
             ]
         ],
         "style": "default",

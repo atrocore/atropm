@@ -67,10 +67,7 @@ class IssueEntity extends AbstractListener
 
         // set "Date Completed" in Expenses of current Issue if state has changed to "closed"
         if ($issue->isAttributeChanged('state') && $issue->get('state') == 'closed') {
-            $expensesEntity = $this->getEntityManager()->getRepository('Expense')->where([
-                'parentId' => $issue->get('id'),
-                'parentType' => $issue->getEntityType()
-            ])->find();
+            $expensesEntity = $issue->get('expenses');
 
             foreach ($expensesEntity as $expenseEntity) {
                 $expenseEntity->set([
@@ -104,10 +101,7 @@ class IssueEntity extends AbstractListener
             }
 
             // get expenses of current issue
-            $expensesEntity = $this->getEntityManager()->getRepository('Expense')->where([
-                'parentId' => $issue->get('id'),
-                'parentType' => $issue->getEntityType()
-            ])->find();
+            $expensesEntity = $issue->get('expenses');
             foreach ($expensesEntity as $expenseEntity) {
                 $expenseEntity->set([
                     'teamsIds' => $teamsIds

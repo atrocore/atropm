@@ -87,14 +87,11 @@ class MilestoneEntity extends AbstractListener
         if (empty($options['skipPMAutoAssignTeam'])) {
             $teamsIds = [];
 
-            // get teams of parent entity
-            if (!empty($milestone->get('parentId'))) {
-                $parentEntity = $this->getEntityManager()->getEntity(
-                    $milestone->get('parentType'),
-                    $milestone->get('parentId')
-                );
-                foreach ($parentEntity->get('teams') as $team) {
-                    $teamsIds[] = $team->get('id');
+            foreach (['project', 'group'] as $parentEntityType) {
+                if (!empty($parentEntity = $milestone->get($parentEntityType))) {
+                    foreach ($parentEntity->get('teams') as $teamId) {
+                        $teamsIds[] = $teamId->get('id');
+                    }
                 }
             }
 
@@ -112,12 +109,7 @@ class MilestoneEntity extends AbstractListener
             }
 
             // get expenses of current milestone
-            $expensesEntity = $this->getEntityManager()->getRepository('Expense')->where(
-                [
-                    'parentId'   => $milestone->get('id'),
-                    'parentType' => $milestone->getEntityType()
-                ]
-            )->find();
+            $expensesEntity = $milestone->get('expenses');
             foreach ($expensesEntity as $expenseEntity) {
                 $expenseEntity->set(
                     [

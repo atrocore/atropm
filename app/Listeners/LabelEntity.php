@@ -64,23 +64,16 @@ class LabelEntity extends AbstractListener
         // get label entity
         $label = $this->getEntity($event);
 
-        $parentType = $label->get('parentType');
-        $parentId = $label->get('parentId');
-        if ($parentType == 'Project') {
-            if ($this->isNameExist($label->get('id'), $label->get('name'), $parentType, $parentId)) {
+        if (!empty($label->get('projectId'))) {
+            if ($this->isNameExist($label->get('id'), $label->get('name'), 'projectId', $label->get('projectId'))) {
                 throw new Error('Name has already been taken for this project');
-            }
-
-            // get project group
-            $project = $this->getEntityManager()->getEntity('Project', $parentId);
-            if ($project->get('groupId')) {
-                $parentType = 'Group';
-                $parentId = $project->get('groupId');
             }
         }
 
-        if ($parentType == 'Group') {
-            $this->checkGroupLabel($label->get('id'), $label->get('name'), $parentType, $parentId);
+        if (!empty($label->get('groupId'))) {
+            if ($this->isNameExist($label->get('id'), $label->get('name'), 'groupId', $label->get('groupId'))) {
+                throw new Error('Name has already been taken for this group');
+            }
         }
     }
 
@@ -100,14 +93,11 @@ class LabelEntity extends AbstractListener
         if (empty($options['skipPMAutoAssignTeam'])) {
             $teamsIds = [];
 
-            // get teams of parent entity
-            if (!empty($label->get('parentId'))) {
-                $parentEntity = $this->getEntityManager()->getEntity(
-                    $label->get('parentType'),
-                    $label->get('parentId')
-                );
-                foreach ($parentEntity->get('teams') as $team) {
-                    $teamsIds[] = $team->get('id');
+            foreach (['project', 'group'] as $parentEntityType) {
+                if (!empty($parentEntity = $label->get($parentEntityType))) {
+                    foreach ($parentEntity->get('teams') as $teamId) {
+                        $teamsIds[] = $teamId->get('id');
+                    }
                 }
             }
 
@@ -138,31 +128,12 @@ class LabelEntity extends AbstractListener
     {
         $labels = $this->getEntityManager()->getRepository('Label')->where(
             [
-                'id!='       => $id,
-                'name'       => $name,
-                'parentType' => $parentType,
-                'parentId'   => $parentId
+                'id!='      => $id,
+                'name'      => $name,
+                $parentType => $parentId
             ]
         )->findOne();
 
         return (!empty($labels));
-    }
-
-    /**
-     * Check group label
-     *
-     * @param string $id
-     * @param string $name
-     * @param string $parentType
-     * @param string $parentId
-     *
-     * @throws Error
-     */
-    protected function checkGroupLabel($id, $name, $parentType, $parentId)
-    {
-        $group = $this->getEntityManager()->getEntity('Group', $parentId);
-        if ($this->isNameExist($id, $name, $parentType, $parentId)) {
-            throw new Error('Name has already been taken for group ' . $group->get('name'));
-        }
     }
 }

@@ -145,10 +145,7 @@ class GroupEntity extends AbstractListener
             }
 
             // get labels of current group
-            $labelsEntity = $this->getEntityManager()->getRepository('Label')->where([
-                'parentId' => $group->get('id'),
-                'parentType' => 'Group'
-            ])->find();
+            $labelsEntity = $this->getEntityManager()->getRepository('Label')->where(['groupId' => $group->get('id')])->find();
             $this->setTeamsToRelatedEntities(
                 $labelsEntity,
                 $teamsIds,
@@ -157,10 +154,7 @@ class GroupEntity extends AbstractListener
             );
 
             // get milestones of current group
-            $milestonesEntity = $this->getEntityManager()->getRepository('Milestone')->where([
-                'parentId' => $group->get('id'),
-                'parentType' => 'Group'
-            ])->find();
+            $milestonesEntity = $this->getEntityManager()->getRepository('Milestone')->where(['groupId' => $group->get('id')])->find();
             $this->setTeamsToRelatedEntities($milestonesEntity, $teamsIds, $removedTeams, $options);
 
             // get projects of current group
@@ -223,18 +217,12 @@ class GroupEntity extends AbstractListener
             $this->getEntityManager()->removeEntity($relatedGroupTeam, $options);
         }
 
-        $labelsEntity = $this->getEntityManager()->getRepository('Label')->where([
-            'parentType' => 'Group',
-            'parentId' => $group->get('id')
-        ])->find();
+        $labelsEntity = $this->getEntityManager()->getRepository('Label')->where(['groupId' => $group->get('id')])->find();
         foreach ($labelsEntity as $labelEntity) {
             $this->getEntityManager()->removeEntity($labelEntity, $options);
         }
 
-        $milestonesEntity = $this->getEntityManager()->getRepository('Milestone')->where([
-            'parentType' => 'Group',
-            'parentId' => $group->get('id')
-        ])->find();
+        $milestonesEntity = $this->getEntityManager()->getRepository('Milestone')->where(['groupId' => $group->get('id')])->find();
         foreach ($milestonesEntity as $milestoneEntity) {
             $this->getEntityManager()->removeEntity($milestoneEntity, $options);
         }

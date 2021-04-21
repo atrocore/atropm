@@ -20,28 +20,25 @@
 
 declare(strict_types=1);
 
-namespace ProjectManagement\SelectManagers;
+namespace ProjectManagement\Migrations;
 
-class Label extends \Espo\Core\SelectManagers\Base
+/**
+ * Migration for version 1.0.6
+ */
+class V1Dot0Dot6 extends V1Dot0Dot1
 {
-    protected $additionalFilterTypeList = ['inCategory', 'isUserFromTeams', 'inProjectAndParentGroups'];
+    /**
+     * @inheritDoc
+     */
+    public function up(): void
+    {
+        $this->execute("ALTER TABLE `label` ADD text_color VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci, ADD background_color VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci");
+    }
 
     /**
-     * @param $field
-     * @param $value
-     * @param $result
+     * @inheritDoc
      */
-    public function applyInProjectAndParentGroups($field, $value, &$result)
+    public function down(): void
     {
-        $projectEntity = $this->getEntityManager()->getEntity('Project', $value);
-
-        $result['whereClause']['OR'] = [
-            [
-                ['projectId' => $value]
-            ],
-            [
-                ['groupId' => [$projectEntity->get('groupId')]]
-            ]
-        ];
     }
 }
