@@ -14,8 +14,7 @@
   },
   "links": {
     "project": "Project",
-    "milestone": "Milestone",
-    "labels": "Labels"
+    "milestone": "Milestone"
   },
   "labels": {
     "expenses": "Expenses",

@@ -50,13 +50,6 @@ class Project extends Base
                     'entity' => (array) $issue->getValueMap()
                 ];
 
-                // get all issue Labels
-                $labels = $this->getEntityManager()->getRepository('Issue')->findRelated($issue, 'labels');
-                foreach ($labels as $label) {
-                    $issueValue['entity']['labelsIds'][] = $label->get('id');
-                    $issueValue['entity']['labelsNames'][$label->get('id')] = $label->get('name');
-                }
-
                 // get all issue Expenses
                 $expenses = $issue->get('expenses');
                 $expenseTotal = 0;

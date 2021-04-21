@@ -16,6 +16,9 @@
         "name": "approvalStatus"
     },
     {
+        "name": "labels"
+    },
+    {
         "name": "hours"
     },
     {

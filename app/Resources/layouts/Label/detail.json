@@ -17,11 +17,9 @@
             ],
             [
                 {
-                    "name": "textColor"
-                },
-                {
                     "name": "backgroundColor"
-                }
+                },
+                false
             ]
         ],
         "style": "default",

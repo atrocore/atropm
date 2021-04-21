@@ -32,7 +32,9 @@ class V1Dot0Dot6 extends V1Dot0Dot1
      */
     public function up(): void
     {
-        $this->execute("ALTER TABLE `label` ADD text_color VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci, ADD background_color VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci");
+        $this->execute("ALTER TABLE `label` ADD background_color VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci");
+        $this->execute("DROP TABLE issue_label");
+        $this->execute("ALTER TABLE `issue` ADD labels MEDIUMTEXT DEFAULT NULL COLLATE utf8mb4_unicode_ci");
     }
 
     /**

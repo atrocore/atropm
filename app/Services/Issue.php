@@ -22,6 +22,23 @@ declare(strict_types=1);
 
 namespace ProjectManagement\Services;
 
-class Issue extends \Espo\Core\Templates\Services\Base
+use Espo\Core\Templates\Services\Base;
+use Espo\ORM\Entity;
+
+/**
+ * Class Issue
+ */
+class Issue extends Base
 {
+    /**
+     * @inheritDoc
+     */
+    public function prepareEntityForOutput(Entity $entity)
+    {
+        if ($entity->get('projectId')) {
+            $entity->set('projectGroupId', $entity->get('project')->get('groupId'));
+        }
+
+        parent::prepareEntityForOutput($entity);
+    }
 }

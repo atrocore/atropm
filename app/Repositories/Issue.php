@@ -22,6 +22,11 @@ declare(strict_types=1);
 
 namespace ProjectManagement\Repositories;
 
-class Issue extends \Espo\Core\Templates\Repositories\Base
+use Espo\Core\Templates\Repositories\Base;
+
+/**
+ * Class Issue
+ */
+class Issue extends Base
 {
 }
