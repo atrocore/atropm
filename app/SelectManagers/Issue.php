@@ -30,6 +30,24 @@ use Treo\Core\SelectManagers\Base;
 class Issue extends Base
 {
     /**
+     * @inheritDoc
+     */
+    public function applyAdditional(array &$result, array $params)
+    {
+        parent::applyAdditional($result, $params);
+
+        foreach ($result['whereClause'] as $v) {
+            if (isset($v['archived'])) {
+                return;
+            }
+        }
+
+        $result['whereClause'][] = [
+            'archived!=' => true
+        ];
+    }
+
+    /**
      * @param mixed $result
      */
     protected function boolFilterOnlyOpened(&$result)
@@ -52,18 +70,38 @@ class Issue extends Base
     /**
      * @inheritDoc
      */
-    public function applyAdditional(array &$result, array $params)
+    protected function accessPortalOnlyAccount(&$result)
     {
-        parent::applyAdditional($result, $params);
+        $d = [];
+        $accountIdList = $this->getUser()->getLinkMultipleIdList('accounts');
+        if (count($accountIdList)) {
+            $d['project.accountId'] = $accountIdList;
+        }
 
-        foreach ($result['whereClause'] as $v) {
-            if (isset($v['archived'])) {
-                return;
+        $contactId = $this->getUser()->get('contactId');
+        if ($contactId) {
+            if ($this->getSeed()->hasAttribute('contactId')) {
+                $d['contactId'] = $contactId;
+            }
+            if ($this->getSeed()->hasRelation('contacts')) {
+                $this->addLeftJoin(['contacts', 'contactsAccess'], $result);
+                $this->setDistinct(true, $result);
+                $d['contactsAccess.id'] = $contactId;
             }
         }
 
-        $result['whereClause'][] = [
-            'archived!=' => true
-        ];
+        if ($this->getSeed()->hasAttribute('createdById')) {
+            $d['createdById'] = $this->getUser()->id;
+        }
+
+        if (!empty($d)) {
+            $result['whereClause'][] = [
+                'OR' => $d
+            ];
+        } else {
+            $result['whereClause'][] = [
+                'id' => null
+            ];
+        }
     }
 }

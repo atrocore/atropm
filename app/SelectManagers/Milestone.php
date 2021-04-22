@@ -22,7 +22,12 @@ declare(strict_types=1);
 
 namespace ProjectManagement\SelectManagers;
 
-class Milestone extends \Espo\Core\SelectManagers\Base
+use Espo\Core\SelectManagers\Base;
+
+/**
+ * Class Milestone
+ */
+class Milestone extends Base
 {
     protected $additionalFilterTypeList = ['inCategory', 'isUserFromTeams', 'inProjectAndParentGroups'];
 
@@ -33,7 +38,6 @@ class Milestone extends \Espo\Core\SelectManagers\Base
      */
     public function applyInProjectAndParentGroups($field, $value, &$result)
     {
-        $groups = [];
         $projectEntity = $this->getEntityManager()->getEntity('Project', $value);
 
         $result['whereClause']['OR'] = [
@@ -44,5 +48,54 @@ class Milestone extends \Espo\Core\SelectManagers\Base
                 ['groupId' => [$projectEntity->get('groupId')]]
             ]
         ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function accessPortalOnlyAccount(&$result)
+    {
+        $d = [];
+        $accountIdList = $this->getUser()->getLinkMultipleIdList('accounts');
+
+        if (count($accountIdList)) {
+            $d['project.accountId'] = $accountIdList;
+
+            $accountsIds = implode("','", $accountIdList);
+
+            $pdo = $this->getEntityManager()->getPDO();
+            $sth = $pdo->prepare(
+                "SELECT i.milestone_id FROM `issue` AS i LEFT JOIN `project` AS p ON p.id=i.project_id WHERE i.deleted=0 AND p.deleted=0 AND p.account_id IN ('$accountsIds') AND i.milestone_id IS NOT NULL"
+            );
+            $sth->execute();
+
+            $d['id'] = $sth->fetchAll(\PDO::FETCH_COLUMN);
+        }
+
+        $contactId = $this->getUser()->get('contactId');
+        if ($contactId) {
+            if ($this->getSeed()->hasAttribute('contactId')) {
+                $d['contactId'] = $contactId;
+            }
+            if ($this->getSeed()->hasRelation('contacts')) {
+                $this->addLeftJoin(['contacts', 'contactsAccess'], $result);
+                $this->setDistinct(true, $result);
+                $d['contactsAccess.id'] = $contactId;
+            }
+        }
+
+        if ($this->getSeed()->hasAttribute('createdById')) {
+            $d['createdById'] = $this->getUser()->id;
+        }
+
+        if (!empty($d)) {
+            $result['whereClause'][] = [
+                'OR' => $d
+            ];
+        } else {
+            $result['whereClause'][] = [
+                'id' => null
+            ];
+        }
     }
 }
