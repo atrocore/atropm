@@ -1,5 +1,5 @@
 {
-  "name": "atrocore/project-management",
+  "name": "atrocore/pm",
   "description": "",
   "require": {
     "atrocore/core": "~1.2.2"
@@ -12,7 +12,7 @@
   "extra": {
     "treoId": "ProjectManagement",
     "name": {
-      "default": "Project Management"
+      "default": "PM"
     },
     "description": {
       "default": "Project Management module for AtroCore."
