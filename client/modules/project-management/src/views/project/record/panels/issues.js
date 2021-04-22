@@ -30,15 +30,15 @@ Espo.define('project-management:views/project/record/panels/issues', 'project-ma
 
         layouts: {
             Milestone: [
-                {name: 'name', link: true, view: 'project-management:views/fields/varchar-with-caret'}
+                {name: 'name', link: true, "width": '40%', view: 'project-management:views/fields/varchar-with-caret'}
             ],
             Issue: [
-                {name: 'name', link: true, view: 'project-management:views/fields/varchar-with-caret'}
+                {name: 'name', link: true, "width": '40%', view: 'project-management:views/fields/varchar-with-caret'}
             ]
         },
 
         headLayout: [
-            {name: 'name'}
+            {name: 'name', "width": '40%'}
         ],
 
         setup: function () {
