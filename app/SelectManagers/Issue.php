@@ -38,4 +38,32 @@ class Issue extends Base
             'closed!=' => true
         ];
     }
+
+    /**
+     * @param mixed $result
+     */
+    protected function boolFilterOnlyArchived(&$result)
+    {
+        $result['whereClause'][] = [
+            'archived' => true
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function applyAdditional(array &$result, array $params)
+    {
+        parent::applyAdditional($result, $params);
+
+        foreach ($result['whereClause'] as $v) {
+            if (isset($v['archived'])) {
+                return;
+            }
+        }
+
+        $result['whereClause'][] = [
+            'archived!=' => true
+        ];
+    }
 }

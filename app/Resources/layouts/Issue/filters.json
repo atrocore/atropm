@@ -1,6 +1,7 @@
 [
   "name",
   "labels",
+  "repositories",
   "status",
   "approvalStatus",
   "dueDate",

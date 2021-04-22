@@ -7,6 +7,7 @@
     "project": "Project",
     "milestone": "Milestone",
     "labels": "Labels",
+    "repositories": "Repositories",
     "dueDate": "Due Date",
     "expenses": "Expenses",
     "hours": "Hours",

@@ -20,6 +20,8 @@
     "Label": "Labels"
   },
   "boolFilters": {
-    "onlyOpened": "Only Opened"
+    "onlyMy": "My",
+    "onlyOpened": "Opened",
+    "onlyArchived": "Archived"
   }
 }

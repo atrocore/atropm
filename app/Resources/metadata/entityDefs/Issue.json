@@ -111,6 +111,29 @@
       "optionColors": [],
       "view": "project-management:views/issue/fields/labels-colored"
     },
+    "repositories": {
+      "type": "multiEnum",
+      "storeArrayValues": true,
+      "required": false,
+      "options": [
+        "core",
+        "pim",
+        "pm",
+        "completeness",
+        "dam",
+        "export",
+        "import",
+        "navigation",
+        "ownership",
+        "pdf-generator",
+        "pdf-productsheets",
+        "preview",
+        "pricing",
+        "revisions",
+        "tasks",
+        "variants"
+      ]
+    },
     "expenses": {
       "type": "linkMultiple"
     },

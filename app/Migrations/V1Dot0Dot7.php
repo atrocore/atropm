@@ -34,6 +34,7 @@ class V1Dot0Dot7 extends V1Dot0Dot1
     {
         $this->execute("ALTER TABLE `issue` ADD estimate DOUBLE PRECISION DEFAULT NULL COLLATE utf8mb4_unicode_ci");
         $this->execute("ALTER TABLE `issue` ADD archived TINYINT(1) DEFAULT '0' NOT NULL COLLATE utf8mb4_unicode_ci, ADD closed TINYINT(1) DEFAULT '0' NOT NULL COLLATE utf8mb4_unicode_ci");
+        $this->execute("ALTER TABLE `issue` ADD repositories MEDIUMTEXT DEFAULT NULL COLLATE utf8mb4_unicode_ci");
     }
 
     /**

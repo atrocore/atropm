@@ -65,6 +65,12 @@
       ],
       [
         {
+          "name": "repositories"
+        },
+        false
+      ],
+      [
+        {
           "name": "archived"
         },
         {
