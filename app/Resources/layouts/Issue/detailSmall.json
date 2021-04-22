@@ -1,61 +1,78 @@
 [
-    {
-        "rows": [
-            [
-                {
-                    "name": "name",
-                    "fullWidth": true
-                }
-            ],
-            [
-                {
-                    "name": "issueNumber"
-                },false
-            ],
-            [
-                {
-                    "name": "description",
-                    "fullWidth": true
-                }
-            ],
-            [
-                {
-                    "name": "issueType"
-                },
-                false
-            ],
-            [
-                {
-                    "name": "status"
-                },
-                {
-                    "name": "approvalStatus"
-                }
-            ],
-            [
-                {
-                    "name": "hours"
-                },
-                {
-                    "name": "paymentStatus"
-                }
-            ],
-            [
-                {
-                    "name": "project"
-                },
-                {
-                    "name": "milestone"
-                }
-            ],
-            [
-                {
-                    "name": "dueDate"
-                },
-                false
-            ]
-        ],
-        "style": "default",
-        "label": ""
-    }
+  {
+    "rows": [
+      [
+        {
+          "name": "name",
+          "fullWidth": true
+        }
+      ],
+      [
+        {
+          "name": "issueNumber"
+        },
+        false
+      ],
+      [
+        {
+          "name": "description",
+          "fullWidth": true
+        }
+      ],
+      [
+        {
+          "name": "issueType"
+        },
+        false
+      ],
+      [
+        {
+          "name": "status"
+        },
+        {
+          "name": "approvalStatus"
+        }
+      ],
+      [
+        {
+          "name": "estimate"
+        },
+        {
+          "name": "hours"
+        }
+      ],
+      [
+        {
+          "name": "paymentStatus"
+        },
+        false
+      ],
+      [
+        {
+          "name": "project"
+        },
+        {
+          "name": "milestone"
+        }
+      ],
+      [
+        {
+          "name": "dueDate"
+        },
+        {
+          "name": "labels"
+        }
+      ],
+      [
+        {
+          "name": "archived"
+        },
+        {
+          "name": "closed"
+        }
+      ]
+    ],
+    "style": "default",
+    "label": ""
+  }
 ]

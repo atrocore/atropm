@@ -22,6 +22,7 @@ declare(strict_types=1);
 
 namespace ProjectManagement\Listeners;
 
+use Espo\Core\Utils\Json;
 use Treo\Core\EventManager\Event;
 use Espo\Core\Utils\Util;
 use Treo\Listeners\AbstractListener;
@@ -56,6 +57,12 @@ class Metadata extends AbstractListener
      */
     protected function getAllLabels(): array
     {
+        $cacheFile = 'data/cache/all-labels.json';
+
+        if (file_exists($cacheFile)){
+            return Json::decode(file_get_contents($cacheFile), true);
+        }
+
         try {
             $sth = $this
                 ->getContainer()
@@ -63,6 +70,7 @@ class Metadata extends AbstractListener
                 ->prepare("SELECT id, name, background_color as backgroundColor, project_id as projectId, group_id as groupId FROM label WHERE deleted=0 AND (project_id IS NOT NULL OR group_id IS NOT NULL)");
             $sth->execute();
             $labels = $sth->fetchAll(\PDO::FETCH_ASSOC);
+            file_put_contents($cacheFile, Json::encode($labels));
         } catch (\Throwable $e) {
             $labels = [];
         }

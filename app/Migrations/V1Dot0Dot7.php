@@ -20,22 +20,26 @@
 
 declare(strict_types=1);
 
-namespace ProjectManagement\SelectManagers;
-
-use Treo\Core\SelectManagers\Base;
+namespace ProjectManagement\Migrations;
 
 /**
- * Class Issue
+ * Migration for version 1.0.7
  */
-class Issue extends Base
+class V1Dot0Dot7 extends V1Dot0Dot1
 {
     /**
-     * @param mixed $result
+     * @inheritDoc
      */
-    protected function boolFilterOnlyOpened(&$result)
+    public function up(): void
     {
-        $result['whereClause'][] = [
-            'closed!=' => true
-        ];
+        $this->execute("ALTER TABLE `issue` ADD estimate DOUBLE PRECISION DEFAULT NULL COLLATE utf8mb4_unicode_ci");
+        $this->execute("ALTER TABLE `issue` ADD archived TINYINT(1) DEFAULT '0' NOT NULL COLLATE utf8mb4_unicode_ci, ADD closed TINYINT(1) DEFAULT '0' NOT NULL COLLATE utf8mb4_unicode_ci");
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function down(): void
+    {
     }
 }

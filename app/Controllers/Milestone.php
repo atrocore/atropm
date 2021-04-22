@@ -55,13 +55,6 @@ class Milestone extends \Espo\Core\Templates\Controllers\Base
                     'children' => []
                 ];
 
-                // get all issue Labels
-                $labels = $this->getEntityManager()->getRepository('Issue')->findRelated($issue, 'labels');
-                foreach ($labels as $label) {
-                    $issueItem['entity']['labelsIds'][] = $label->get('id');
-                    $issueItem['entity']['labelsNames'][$label->get('id')] = $label->get('name');
-                }
-
                 // get all issue Expenses
                 $expenses = $this->getEntityManager()->getRepository('Expense')->where(['issueId' => $issue->get('id')])->find();
                 $expenseTotal = 0;

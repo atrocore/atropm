@@ -63,8 +63,7 @@
         "In Progress",
         "Rejected",
         "Frozen",
-        "Done",
-        "Closed"
+        "Done"
       ],
       "default": "New",
       "audited": true
@@ -117,6 +116,18 @@
     },
     "dueDate": {
       "type": "date",
+      "audited": true
+    },
+    "estimate": {
+      "type": "float",
+      "audited": true
+    },
+    "archived": {
+      "type": "bool",
+      "audited": true
+    },
+    "closed": {
+      "type": "bool",
       "audited": true
     },
     "hours": {

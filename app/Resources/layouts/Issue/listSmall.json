@@ -19,6 +19,9 @@
         "name": "labels"
     },
     {
+        "name": "estimate"
+    },
+    {
         "name": "hours"
     },
     {

@@ -10,6 +10,9 @@
     "dueDate": "Due Date",
     "expenses": "Expenses",
     "hours": "Hours",
+    "estimate": "Estimate",
+    "archived": "Archived",
+    "closed": "Closed",
     "paymentStatus": "Payment Status"
   },
   "links": {
