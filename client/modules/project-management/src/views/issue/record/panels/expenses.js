@@ -53,6 +53,20 @@ Espo.define('project-management:views/issue/record/panels/expenses', 'project-ma
             return 'Issue/getIssueExpenses/' + this.model.id;
         },
 
+        setup: function () {
+            Dep.prototype.setup.call(this);
+
+            this.buttonList.push(
+                {
+                    "title": "Create",
+                    "action": "createRelatedExpense",
+                    "acl": "create",
+                    "aclScope": "Expense",
+                    "html": "<span class=\"fas fa-plus\"></span>"
+                }
+            );
+        },
+
         getTotalLabel: function (value) {
             return '<div style="margin-right: 55px" class="total-container pull-right">' + this.translate('sum', 'labels', this.model.name) + ':' + value + '</div>';
         }

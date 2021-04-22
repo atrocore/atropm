@@ -43,16 +43,6 @@ Espo.define('project-management:views/record/panels/bottom-hierarchical', ['view
             this.setupTitle();
 
             this.prepareHeadLayout();
-
-            this.buttonList.push(
-                {
-                    "title": "Create",
-                    "action": "createRelatedExpense",
-                    "acl": "create",
-                    "aclScope": "Expense",
-                    "html": "<span class=\"fas fa-plus\"></span>"
-                }
-            );
         },
 
         prepareHeadLayout: function () {
