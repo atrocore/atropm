@@ -59,10 +59,10 @@
       "prohibitedEmptyValue": true,
       "options": [
         "New",
-        "To Do",
         "In Progress",
-        "Rejected",
-        "Frozen",
+        "Feedback",
+        "To Release",
+        "Released",
         "Done"
       ],
       "default": "New",

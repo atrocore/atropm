@@ -22,6 +22,8 @@ declare(strict_types=1);
 
 namespace ProjectManagement\Controllers;
 
+use Espo\Core\Exceptions\BadRequest;
+use Espo\Core\Exceptions\Forbidden;
 use Espo\Core\Templates\Controllers\Base;
 
 /**
@@ -35,87 +37,22 @@ class Project extends Base
      * @param mixed $request
      *
      * @return array
+     * @throws BadRequest
+     * @throws Forbidden
      */
     public function getActionGetMilestonesAndIssues($params, $data, $request): array
     {
-        $projectId = isset($params['id']) ? $params['id'] : null;
-
-        $list = ['milestones' => [], 'issues' => []];
-        if ($projectId && !empty($project = $this->getEntityManager()->getEntity('Project', $projectId))) {
-            // get all project Issues
-            $issues = $project->get('issues');
-            foreach ($issues as $issue) {
-                $issueValue = [
-                    'type' => $issue->getEntityType(),
-                    'entity' => (array) $issue->getValueMap()
-                ];
-
-                // get all issue Expenses
-                $expenses = $issue->get('expenses');
-                $expenseTotal = 0;
-                $expenseCurrency = '';
-                foreach ($expenses as $expense) {
-                    if (!is_null($expenseTotal)) {
-                        if (empty($expenseCurrency) || $expenseCurrency == $expense->get('totalCurrency')) {
-                            $expenseTotal += $expense->get('total');
-                            $expenseCurrency = $expense->get('totalCurrency');
-                        } else {
-                            $expenseTotal = null;
-                            $expenseCurrency = null;
-                            break;
-                        }
-                    }
-                }
-                $issueValue['entity']['expenses'] = $expenseTotal;
-                $issueValue['entity']['expensesCurrency'] = $expenseCurrency;
-
-                // get issue Milestone
-                if ($milestoneId = $issue->get('milestoneId') && $milestone =
-                        $this->getEntityManager()->getEntity('Milestone', $issue->get('milestoneId')))
-                {
-                    $milestoneId = $milestone->get('id');
-                    if (!isset($list['milestones'][$milestoneId])) {
-                        $list['milestones'][$milestoneId] = [
-                            'type' => $milestone->getEntityType(),
-                            'entity' => (array)$milestone->getValueMap(),
-                            'children' => []
-                        ];
-                        $list['milestones'][$milestoneId]['entity']['expenses'] = 0;
-                        $list['milestones'][$milestoneId]['entity']['expensesCurrency'] = '';
-                    }
-
-                    if (!is_null($list['milestones'][$milestoneId]['entity']['expenses'])) {
-                        if ((empty($list['milestones'][$milestoneId]['entity']['expensesCurrency'])
-                                || ($list['milestones'][$milestoneId]['entity']['expensesCurrency'] ==
-                                    $issueValue['entity']['expensesCurrency']))
-                            && !is_null($issueValue['entity']['expenses']))
-                        {
-                            $list['milestones'][$milestoneId]['entity']['expenses'] +=
-                                $issueValue['entity']['expenses'];
-                            $list['milestones'][$milestoneId]['entity']['expensesCurrency'] =
-                                $issueValue['entity']['expensesCurrency'];
-                        } else {
-                            $list['milestones'][$milestoneId]['entity']['expenses'] = null;
-                            $list['milestones'][$milestoneId]['entity']['expensesCurrency'] = null;
-                        }
-                    }
-                    $list['milestones'][$milestoneId]['children'][] = $issueValue;
-                } else {
-                    $list['issues'][$issue->get('id')] = $issueValue;
-                }
-            }
+        if (!$request->isGet() || empty($params['id'])) {
+            throw new BadRequest();
         }
 
-        $result = [
-            'list' => []
-        ];
-        foreach ($list as $item) {
-            foreach ($item as $e) {
-                $result['list'][] = $e;
-            }
+        if (!$this->getAcl()->check($this->name, 'create')) {
+            throw new Forbidden();
         }
 
-        return $result;
+        return $this
+            ->getRecordService()
+            ->getActionGetMilestonesAndIssues((string)$params['id']);
     }
 
     /**
