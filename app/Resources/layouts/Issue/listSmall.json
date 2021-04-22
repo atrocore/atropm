@@ -13,22 +13,7 @@
         "name": "status"
     },
     {
-        "name": "approvalStatus"
-    },
-    {
         "name": "labels"
-    },
-    {
-        "name": "repositories"
-    },
-    {
-        "name": "estimate"
-    },
-    {
-        "name": "hours"
-    },
-    {
-        "name": "paymentStatus"
     },
     {
         "name": "project"

@@ -30,28 +30,54 @@ Espo.define('project-management:views/project/record/panels/issues', 'project-ma
 
         layouts: {
             Milestone: [
-                {name: 'name', link: true, view: 'project-management:views/fields/varchar-with-caret'},
-                {name: 'status'},
-                {name: 'labels'},
-                {name: 'expenses', type: 'currency'},
-                {name: 'assignedUser'}
+                {name: 'name', link: true, view: 'project-management:views/fields/varchar-with-caret'}
             ],
             Issue: [
-                {name: 'name', link: true, view: 'project-management:views/fields/varchar-with-caret'},
-                {name: 'status'},
-                {name: 'labels'},
-                {name: 'expenses', type: 'currency'},
-                {name: 'assignedUser'}
+                {name: 'name', link: true, view: 'project-management:views/fields/varchar-with-caret'}
             ]
         },
 
         headLayout: [
-            {name: 'name'},
-            {name: 'status'},
-            {name: 'labels'},
-            {name: 'expenses'},
-            {name: 'assignedUser'}
+            {name: 'name'}
         ],
+
+        setup: function () {
+            this.wait(true);
+            this.ajaxGetRequest(`Issue/layout/listSmall?isAdminPage=false`).then(issue => {
+                issue.forEach(row => {
+                    this.pushUnique(this.headLayout, row);
+                    this.pushUnique(this.layouts.Milestone, row);
+                    this.pushUnique(this.layouts.Issue, row);
+                });
+                this.wait(false);
+            });
+
+            Dep.prototype.setup.call(this);
+        },
+
+        pushUnique: function (data, row) {
+            if (row.name === 'name') {
+                return false;
+            }
+
+            if (row.name === 'milestone') {
+                return false;
+            }
+
+            if (row.name === 'project') {
+                return false;
+            }
+
+            data.forEach(v => {
+                if (v.name === row.name) {
+                    return false;
+                }
+            });
+
+            data.push(row);
+
+            return true;
+        },
 
         getCollectionUrl: function () {
             return 'Project/getMilestonesAndIssues/' + this.model.id;
