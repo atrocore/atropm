@@ -21,7 +21,23 @@ Espo.define('project-management:views/issue/fields/labels-colored', 'views/field
 
     return Dep.extend({
 
-        setup: function () {
+        setup() {
+            this.prepareLabelsOptions();
+
+            Dep.prototype.setup.call(this);
+        },
+
+        afterRender() {
+            Dep.prototype.afterRender.call(this);
+
+            this.listenTo(this.model, 'change:projectId', () => {
+                this.model.set('labels', null);
+                this.prepareLabelsOptions();
+                this.reRender();
+            });
+        },
+
+        prepareLabelsOptions() {
             this.params.options = [];
             this.params.optionColors = [];
             this.translatedOptions = {};
@@ -33,8 +49,6 @@ Espo.define('project-management:views/issue/fields/labels-colored', 'views/field
                     this.translatedOptions[label.id] = label.name;
                 }
             });
-
-            Dep.prototype.setup.call(this);
         },
 
     });

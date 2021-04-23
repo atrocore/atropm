@@ -49,6 +49,16 @@
             }
           ]
         }
+      },
+      "labels": {
+        "readOnly": {
+          "conditionGroup": [
+            {
+              "type": "isEmpty",
+              "attribute": "projectId"
+            }
+          ]
+        }
       }
     }
   }
