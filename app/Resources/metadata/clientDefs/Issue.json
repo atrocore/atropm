@@ -3,6 +3,7 @@
   "iconClass": "fas fa-exclamation-triangle",
   "controller": "controllers/record",
   "acl": "project-management:acl/issue",
+  "aclPortal": "project-management:acl-portal/issue",
   "boolFilterList": [
     "onlyMy",
     "onlyOpen",

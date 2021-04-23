@@ -37,6 +37,7 @@ class Issue extends Base
     {
         $projectTeamsIds = ['no-such-id'];
         if (!empty($project = $entity->get('project'))) {
+            $entity->set('projectAccountId', $project->get('accountId'));
             $entity->set('projectGroupId', $project->get('groupId'));
             $projectTeamsIds = array_merge($projectTeamsIds, $project->getLinkMultipleIdList('teams'));
         }
