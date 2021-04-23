@@ -21,7 +21,8 @@
   },
   "boolFilters": {
     "onlyMy": "My",
-    "onlyOpened": "Open",
+    "onlyOpen": "Open",
+    "onlyClosed": "Closed",
     "onlyArchived": "Archived"
   }
 }

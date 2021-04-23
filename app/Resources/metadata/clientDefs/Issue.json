@@ -4,7 +4,8 @@
   "controller": "controllers/record",
   "boolFilterList": [
     "onlyMy",
-    "onlyOpened",
+    "onlyOpen",
+    "onlyClosed",
     "onlyArchived"
   ],
   "views": {

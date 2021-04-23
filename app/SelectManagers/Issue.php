@@ -50,10 +50,20 @@ class Issue extends Base
     /**
      * @param mixed $result
      */
-    protected function boolFilterOnlyOpened(&$result)
+    protected function boolFilterOnlyOpen(&$result)
     {
         $result['whereClause'][] = [
             'closed!=' => true
+        ];
+    }
+
+    /**
+     * @param mixed $result
+     */
+    protected function boolFilterOnlyClosed(&$result)
+    {
+        $result['whereClause'][] = [
+            'closed' => true
         ];
     }
 
