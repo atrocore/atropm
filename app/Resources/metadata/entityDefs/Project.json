@@ -34,7 +34,7 @@
         },
         "teams": {
             "type": "linkMultiple",
-            "required": true,
+            "required": false,
             "view": "views/fields/teams"
         },
         "account": {
