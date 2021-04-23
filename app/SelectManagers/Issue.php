@@ -70,6 +70,39 @@ class Issue extends Base
     /**
      * @inheritDoc
      */
+    protected function accessOnlyTeam(&$result)
+    {
+        $this->setDistinct(true, $result);
+        $this->addLeftJoin(['teams', 'teamsAccess'], $result);
+
+        $d = ['teamsAccess.id' => $this->getUser()->getLinkMultipleIdList('teams')];
+
+        $sqlTeamsIds = implode("','", $d['teamsAccess.id']);
+        $pdo = $this->getEntityManager()->getPDO();
+        $sth = $pdo->prepare(
+            "SELECT i.id FROM `issue` AS i LEFT JOIN `project` AS p ON p.id=i.project_id LEFT JOIN `entity_team` AS et ON et.entity_id=p.id WHERE i.deleted=0 AND p.deleted=0 AND et.deleted=0 AND et.entity_type='Project' AND et.team_id IN ('$sqlTeamsIds')"
+        );
+        $sth->execute();
+        $d['id'] = $sth->fetchAll(\PDO::FETCH_COLUMN);
+
+        if ($this->hasOwnerUserField()) {
+            $d['ownerUserId'] = $this->getUser()->id;
+        }
+
+        if ($this->hasAssignedUserField()) {
+            $d['assignedUserId'] = $this->getUser()->id;
+        }
+
+        if ($this->hasCreatedByField() && !$this->hasAssignedUserField() && !$this->hasOwnerUserField()) {
+            $d['createdById'] = $this->getUser()->id;
+        }
+
+        $result['whereClause'][] = ['OR' => $d];
+    }
+
+    /**
+     * @inheritDoc
+     */
     protected function accessPortalOnlyAccount(&$result)
     {
         $d = [];

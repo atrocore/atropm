@@ -49,13 +49,14 @@ Espo.define('project-management:views/fields/assigned-user-with-teams-filter', [
         },
 
         getWhereAdditional: function () {
-            var teamsIds = Espo.Utils.clone(this.model.get('teamsIds'));
-            var value = null;
+            const teamsIds = Espo.Utils.clone(this.model.get('teamsIds'));
+            let value = Espo.Utils.clone(this.model.get('projectTeamsIds'));
             if (Array.isArray(teamsIds) && teamsIds.length) {
-                value = Espo.Utils.clone(this.model.get('teamsIds'));
-            } else {
-                value = [''];
+                teamsIds.forEach(id => {
+                    value.push(id);
+                });
             }
+
             return [
                 {
                     type: 'linkedWith',

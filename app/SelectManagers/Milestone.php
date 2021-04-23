@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace ProjectManagement\SelectManagers;
 
-use Espo\Core\SelectManagers\Base;
+use Treo\Core\SelectManagers\Base;
 
 /**
  * Class Milestone
@@ -48,6 +48,42 @@ class Milestone extends Base
                 ['groupId' => [$projectEntity->get('groupId')]]
             ]
         ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function accessOnlyTeam(&$result)
+    {
+        $this->setDistinct(true, $result);
+        $this->addLeftJoin(['teams', 'teamsAccess'], $result);
+
+        $d = ['teamsAccess.id' => $this->getUser()->getLinkMultipleIdList('teams')];
+
+        $sqlTeamsIds = implode("','", $d['teamsAccess.id']);
+
+        $pdo = $this->getEntityManager()->getPDO();
+
+        $sth = $pdo->prepare(
+            "SELECT m.id FROM `milestone` AS m LEFT JOIN `project` AS p ON p.id=m.project_id LEFT JOIN `entity_team` AS et ON et.entity_id=p.id WHERE m.deleted=0 AND p.deleted=0 AND et.deleted=0 AND et.entity_type='Project' AND et.team_id IN ('$sqlTeamsIds')"
+        );
+        $sth->execute();
+
+        $d['id'] = array_merge($sth->fetchAll(\PDO::FETCH_COLUMN), \ProjectManagement\Acl\Milestone::getMilestoneIdsByIssues($pdo, $d['teamsAccess.id']));
+
+        if ($this->hasOwnerUserField()) {
+            $d['ownerUserId'] = $this->getUser()->id;
+        }
+
+        if ($this->hasAssignedUserField()) {
+            $d['assignedUserId'] = $this->getUser()->id;
+        }
+
+        if ($this->hasCreatedByField() && !$this->hasAssignedUserField() && !$this->hasOwnerUserField()) {
+            $d['createdById'] = $this->getUser()->id;
+        }
+
+        $result['whereClause'][] = ['OR' => $d];
     }
 
     /**

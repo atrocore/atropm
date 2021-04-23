@@ -66,7 +66,7 @@ class IssueEntity extends AbstractListener
         $this->countIssues($issue);
 
         // set "Date Completed" in Expenses of current Issue if state has changed to "closed"
-        if ($issue->isAttributeChanged('state') && $issue->get('state') == 'closed') {
+        if ($issue->isAttributeChanged('closed') && $issue->get('closed')) {
             $expensesEntity = $issue->get('expenses');
 
             foreach ($expensesEntity as $expenseEntity) {
@@ -74,42 +74,6 @@ class IssueEntity extends AbstractListener
                     'dateCompleted' => date('Y-m-d')
                 ]);
                 $this->getEntityManager()->saveEntity($expenseEntity, $options);
-            }
-        }
-
-        // auto assign teams
-        if (empty($options['skipPMAutoAssignTeam'])) {
-            $teamsIds = [];
-
-            // get teams of project
-            if (!empty($issue->get('projectId'))) {
-                $projectEntity = $this->getEntityManager()->getEntity('Project', $issue->get('projectId'));
-                foreach ($projectEntity->get('teams') as $team) {
-                    $teamsIds[] = $team->get('id');
-                }
-            }
-
-            // set all found teams to issue
-            if (!empty($teamsIds)) {
-                $issue->set([
-                    'teamsIds' => $teamsIds
-                ]);
-                $this->getEntityManager()->saveEntity(
-                    $issue,
-                    array_merge($options, ['skipPMAutoAssignTeam' => true])
-                );
-            }
-
-            // get expenses of current issue
-            $expensesEntity = $issue->get('expenses');
-            foreach ($expensesEntity as $expenseEntity) {
-                $expenseEntity->set([
-                    'teamsIds' => $teamsIds
-                ]);
-                $this->getEntityManager()->saveEntity(
-                    $expenseEntity,
-                    array_merge($options, ['skipPMAutoAssignTeam' => true])
-                );
             }
         }
     }

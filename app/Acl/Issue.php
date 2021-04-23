@@ -20,9 +20,10 @@
 
 declare(strict_types=1);
 
-namespace ProjectManagement\Services;
+namespace ProjectManagement\Acl;
 
-use Espo\Core\Templates\Services\Base;
+use Espo\Core\Acl\Base;
+use Espo\Entities\User;
 use Espo\ORM\Entity;
 
 /**
@@ -33,25 +34,30 @@ class Issue extends Base
     /**
      * @inheritDoc
      */
-    public function prepareEntityForOutput(Entity $entity)
+    public function checkInTeam(User $user, Entity $entity)
     {
-        $projectTeamsIds = ['no-such-id'];
+        $userTeamIdList = $user->getLinkMultipleIdList('teams');
+
+        if (!$entity->hasRelation('teams') || !$entity->hasAttribute('teamsIds')) {
+            return false;
+        }
+
+        $entityTeamIdList = $entity->getLinkMultipleIdList('teams');
+
         if (!empty($project = $entity->get('project'))) {
-            $entity->set('projectGroupId', $project->get('groupId'));
-            $projectTeamsIds = array_merge($projectTeamsIds, $project->getLinkMultipleIdList('teams'));
+            $entityTeamIdList = array_merge($entityTeamIdList, $project->getLinkMultipleIdList('teams'));
         }
-        $entity->set('projectTeamsIds', $projectTeamsIds);
 
-        if (!empty($entity->get('labels'))) {
-            $labels = [];
-            foreach ($entity->get('labels') as $label) {
-                if (in_array($label, $this->getMetadata()->get(['entityDefs', 'Issue', 'fields', 'labels', 'options'], []))) {
-                    $labels[] = $label;
-                }
+        if (empty($entityTeamIdList)) {
+            return false;
+        }
+
+        foreach ($userTeamIdList as $id) {
+            if (in_array($id, $entityTeamIdList)) {
+                return true;
             }
-            $entity->set('labels', $labels);
         }
-
-        parent::prepareEntityForOutput($entity);
+        return false;
     }
 }
+
