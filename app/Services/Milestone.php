@@ -23,6 +23,7 @@ declare(strict_types=1);
 namespace ProjectManagement\Services;
 
 use Espo\ORM\Entity;
+use ProjectManagement\Acl\Milestone as Acl;
 
 /**
  * Class Milestone
@@ -51,5 +52,7 @@ class Milestone extends AbstractService
 
         $this->prepareEntityParentForOutput($entity, 'group', 'Group');
         $this->prepareEntityParentForOutput($entity, 'project', 'Project');
+
+        $entity->set('inProjectTeams', in_array($entity->get('id'), Acl::getMilestoneIdsByIssues($this->getEntityManager()->getPDO(), $this->getUser()->getLinkMultipleIdList('teams'))));
     }
 }

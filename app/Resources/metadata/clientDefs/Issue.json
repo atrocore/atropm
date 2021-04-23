@@ -2,6 +2,7 @@
   "kanbanViewMode": true,
   "iconClass": "fas fa-exclamation-triangle",
   "controller": "controllers/record",
+  "acl": "project-management:acl/issue",
   "boolFilterList": [
     "onlyMy",
     "onlyOpen",

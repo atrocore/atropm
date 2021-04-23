@@ -1,5 +1,6 @@
 {
     "controller": "controllers/record",
+    "acl": "project-management:acl/milestone",
     "boolFilterList": [
         "onlyMy"
     ],
