@@ -5,7 +5,7 @@
         "projectType": "Project Type",
         "issues": "Issues",
         "totalIssues": "Total Issues",
-        "closedIssues": "Closed Issues"
+        "openIssues": "Open Issues"
     },
     "links": {
         "group": "Project Group",

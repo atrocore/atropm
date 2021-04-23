@@ -3,7 +3,7 @@
         "parent": "Parent",
         "status": "Status",
         "totalIssues": "Total Issues",
-        "closedIssues": "Closed Issues",
+        "openIssues": "Open Issues",
         "startDate": "Start Date",
         "dueDate": "Due Date",
         "project": "Project",

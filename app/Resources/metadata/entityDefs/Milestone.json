@@ -110,7 +110,7 @@
             "audited": true,
             "readOnly": true
         },
-        "closedIssues": {
+        "openIssues": {
             "type": "int",
             "audited": true,
             "readOnly": true

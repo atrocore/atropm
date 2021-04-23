@@ -16,6 +16,6 @@
         "name": "totalIssues"
     },
     {
-        "name": "closedIssues"
+        "name": "openIssues"
     }
 ]

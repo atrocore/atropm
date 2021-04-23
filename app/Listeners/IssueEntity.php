@@ -114,7 +114,7 @@ class IssueEntity extends AbstractListener
             $repository = $this->getEntityManager()->getRepository('Issue');
             $projectEntity->set([
                 'totalIssues' => $repository->where(['projectId' => $entity->get('projectId')])->count(),
-                'closedIssues' => $repository->where(['projectId' => $entity->get('projectId'), 'status' => 'Closed'])->count()
+                'openIssues' => $repository->where(['projectId' => $entity->get('projectId'), 'closed!=' => true])->count()
             ]);
             $this->getEntityManager()->saveEntity($projectEntity, ['skipAll' => true]);
 
@@ -124,7 +124,7 @@ class IssueEntity extends AbstractListener
                 if (!empty($milestoneEntity)) {
                     $milestoneEntity->set([
                         'totalIssues' => $repository->where(['milestoneId' => $milestoneEntity->get('id')])->count(),
-                        'closedIssues' => $repository->where(['milestoneId' => $milestoneEntity->get('id'), 'status' => 'Closed'])->count()
+                        'openIssues' => $repository->where(['milestoneId' => $milestoneEntity->get('id'), 'closed!=' => true])->count()
                     ]);
                     $this->getEntityManager()->saveEntity($milestoneEntity, ['skipAll' => true]);
                 }
