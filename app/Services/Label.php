@@ -52,4 +52,79 @@ class Label extends AbstractService
         $this->prepareEntityParentForOutput($entity, 'group', 'Group');
         $this->prepareEntityParentForOutput($entity, 'project', 'Project');
     }
+
+    /**
+     * @inheritDoc
+     */
+    protected function afterCreateEntity(Entity $entity, $data)
+    {
+        parent::afterCreateEntity($entity, $data);
+
+        $this->clearCache();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function afterCreateProcessDuplicating(Entity $entity, $data)
+    {
+        parent::afterCreateProcessDuplicating($entity, $data);
+
+        $this->clearCache();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function afterUpdateEntity(Entity $entity, $data)
+    {
+        parent::afterUpdateEntity($entity, $data);
+
+        $this->clearCache();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function afterMassUpdate(array $idList, $data)
+    {
+        parent::afterMassUpdate($idList, $data);
+
+        $this->clearCache();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function afterDeleteEntity(Entity $entity)
+    {
+        parent::afterDeleteEntity($entity);
+
+        $this->clearCache();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function afterMassRemove(array $idList)
+    {
+        parent::afterMassRemove($idList);
+
+        $this->clearCache();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function init()
+    {
+        parent::init();
+
+        $this->addDependency('dataManager');
+    }
+
+    protected function clearCache(): void
+    {
+        $this->getInjection('dataManager')->clearCache();
+    }
 }

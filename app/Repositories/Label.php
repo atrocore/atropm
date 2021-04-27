@@ -23,40 +23,10 @@ declare(strict_types=1);
 namespace ProjectManagement\Repositories;
 
 use Espo\Core\Templates\Repositories\Base;
-use Espo\ORM\Entity;
 
 /**
  * Class Label
  */
 class Label extends Base
 {
-    /**
-     * @inheritDoc
-     */
-    protected function afterSave(Entity $entity, array $options = [])
-    {
-        $this->getInjection('dataManager')->clearCache();
-
-        parent::afterSave($entity, $options);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function afterRemove(Entity $entity, array $options = [])
-    {
-        $this->getInjection('dataManager')->clearCache();
-
-        parent::afterRemove($entity, $options);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function init()
-    {
-        parent::init();
-
-        $this->addDependency('dataManager');
-    }
 }
