@@ -46,7 +46,7 @@ class Project extends Base
             throw new BadRequest();
         }
 
-        if (!$this->getAcl()->check($this->name, 'create')) {
+        if (!$this->getAcl()->check($this->name, 'read')) {
             throw new Forbidden();
         }
 
