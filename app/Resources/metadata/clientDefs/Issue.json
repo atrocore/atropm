@@ -53,6 +53,16 @@
           ]
         }
       },
+      "assignedUser": {
+        "readOnly": {
+          "conditionGroup": [
+            {
+              "type": "isEmpty",
+              "attribute": "projectId"
+            }
+          ]
+        }
+      },
       "labels": {
         "readOnly": {
           "conditionGroup": [

@@ -49,19 +49,16 @@ Espo.define('project-management:views/fields/assigned-user-with-teams-filter', [
         },
 
         getWhereAdditional: function () {
-            const teamsIds = Espo.Utils.clone(this.model.get('teamsIds'));
-            let value = Espo.Utils.clone(this.model.get('projectTeamsIds'));
-            if (Array.isArray(teamsIds) && teamsIds.length) {
-                teamsIds.forEach(id => {
-                    value.push(id);
-                });
-            }
+            const teamsIds = this.model.get('teamsIds') || ['no-such-id'];
 
             return [
                 {
-                    type: 'linkedWith',
-                    attribute: 'teams',
-                    value: value
+                    type: 'bool',
+                    value: 'issueAssignedUsers',
+                    data: {
+                        projectId: this.model.get('projectId'),
+                        teamsIds: teamsIds
+                    }
                 }
             ];
         }

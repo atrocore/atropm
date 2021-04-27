@@ -36,8 +36,7 @@ class Module extends AbstractModule
      */
     public static function getLoadOrder(): int
     {
-        // this value must be less then value in module "Sales"
-        return 150;
+        return 5000;
     }
 
     /**

@@ -1,5 +1,11 @@
 {
-    "modalViews": {
-        "select": "project-management:views/modals/select-records"
-    }
+  "modalViews": {
+    "select": "project-management:views/modals/select-records"
+  },
+  "boolFilterList": [
+    "issueAssignedUsers"
+  ],
+  "hiddenBoolFilterList": [
+    "issueAssignedUsers"
+  ]
 }
