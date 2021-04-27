@@ -55,4 +55,12 @@ class Milestone extends AbstractService
 
         $entity->set('inProjectTeams', in_array($entity->get('id'), Acl::getMilestoneIdsByIssues($this->getEntityManager()->getPDO(), $this->getUser()->getLinkMultipleIdList('teams'))));
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function isPermittedAssignedUser(Entity $entity)
+    {
+        return true;
+    }
 }

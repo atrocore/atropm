@@ -1,0 +1,32 @@
+{
+  "mandatory": {
+    "scopeLevel": {
+      "User": {
+        "read": "account",
+        "edit": "no",
+        "delete": "no",
+        "stream": "no",
+        "create": "no"
+      },
+      "Team": {
+        "read": "own",
+        "edit": "no",
+        "delete": "no",
+        "stream": "no",
+        "create": "no"
+      }
+    }
+  },
+  "strictDefault": {
+    "fieldLevel": {
+      "assignedUser": {
+        "read": "yes",
+        "edit": "yes"
+      },
+      "teams": {
+        "read": "yes",
+        "edit": "no"
+      }
+    }
+  }
+}

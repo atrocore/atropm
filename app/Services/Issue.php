@@ -55,4 +55,12 @@ class Issue extends Base
 
         parent::prepareEntityForOutput($entity);
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function isPermittedAssignedUser(Entity $entity)
+    {
+        return true;
+    }
 }

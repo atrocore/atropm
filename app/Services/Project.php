@@ -24,6 +24,7 @@ namespace ProjectManagement\Services;
 
 use Espo\Core\Exceptions\NotFound;
 use Espo\Core\Templates\Services\Base;
+use Espo\ORM\Entity;
 
 /**
  * Class Project
@@ -120,5 +121,13 @@ class Project extends Base
         }
 
         return $result;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isPermittedAssignedUser(Entity $entity)
+    {
+        return true;
     }
 }

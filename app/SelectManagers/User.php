@@ -63,4 +63,31 @@ class User extends \Treo\SelectManagers\User
             'value'     => $teamsIds,
         ];
     }
+
+    /**
+     * @inheritDoc
+     */
+    protected function accessPortalOnlyAccount(&$result)
+    {
+        $d = [];
+        $accountIdList = $this->getUser()->getLinkMultipleIdList('accounts');
+
+        if (count($accountIdList)) {
+            $d['id'] = \ProjectManagement\AclPortal\User::getProjectsUsersIds($this->getEntityManager()->getPDO(), $accountIdList);
+        }
+
+        if ($this->getSeed()->hasAttribute('createdById')) {
+            $d['createdById'] = $this->getUser()->id;
+        }
+
+        if (!empty($d)) {
+            $result['whereClause'][] = [
+                'OR' => $d
+            ];
+        } else {
+            $result['whereClause'][] = [
+                'id' => null
+            ];
+        }
+    }
 }
