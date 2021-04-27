@@ -25,10 +25,6 @@ Espo.define('project-management:views/issue/fields/labels-colored', 'views/field
             this.prepareLabelsOptions();
 
             Dep.prototype.setup.call(this);
-        },
-
-        afterRender() {
-            Dep.prototype.afterRender.call(this);
 
             this.listenTo(this.model, 'change:projectId', () => {
                 this.model.set('labels', null);
@@ -42,13 +38,35 @@ Espo.define('project-management:views/issue/fields/labels-colored', 'views/field
             this.params.optionColors = [];
             this.translatedOptions = {};
 
-            (this.getMetadata().get('entityDefs.Issue.fields.labels.allLabels') || []).forEach(label => {
-                if ((this.model.get('projectId') && label.projectId === this.model.get('projectId')) || (this.model.get('projectGroupId') && label.groupId === this.model.get('projectGroupId')) || (!this.model.get('projectId') && !this.model.get('projectGroupId'))) {
+            const allLabels = this.getMetadata().get('entityDefs.Issue.fields.labels.allLabels') || [];
+
+            if ((this.mode === 'detail' || this.mode === 'edit') && this.model.get('projectId')) {
+                this.ajaxGetRequest(`Project/${this.model.get('projectId')}`, {}, {async: false}).then(response => {
+                    if (response.groupId) {
+                        allLabels.forEach(label => {
+                            if (label.groupId === response.groupId) {
+                                this.params.options.push(label.id);
+                                this.params.optionColors.push(label.backgroundColor);
+                                this.translatedOptions[label.id] = label.name;
+                            }
+                        });
+                    }
+
+                    allLabels.forEach(label => {
+                        if (label.projectId === this.model.get('projectId')) {
+                            this.params.options.push(label.id);
+                            this.params.optionColors.push(label.backgroundColor);
+                            this.translatedOptions[label.id] = label.name;
+                        }
+                    });
+                });
+            } else {
+                allLabels.forEach(label => {
                     this.params.options.push(label.id);
                     this.params.optionColors.push(label.backgroundColor);
                     this.translatedOptions[label.id] = label.name;
-                }
-            });
+                });
+            }
         },
 
     });
