@@ -42,7 +42,13 @@ Espo.define('project-management:acl/issue', 'acl', function (Dep) {
                 if (!model.has('teamsIds')) {
                     return null;
                 }
-                let teamIdList = model.getTeamIdList();
+                
+                let teamIdList = [];
+
+                model.getTeamIdList().forEach(id => {
+                    teamIdList.push(id);
+                });
+                
                 (model.get('projectTeamsIds') || []).forEach(id => {
                     teamIdList.push(id);
                 });
