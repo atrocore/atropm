@@ -13,6 +13,9 @@
   "views": {
     "detail": "project-management:views/issue/detail"
   },
+  "recordViews": {
+    "kanban": "project-management:views/issue/record/kanban"
+  },
   "relationshipPanels": {
     "labels": {
       "create": false

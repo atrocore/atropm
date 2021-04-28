@@ -20,36 +20,25 @@
 
 declare(strict_types=1);
 
-namespace ProjectManagement\Repositories;
-
-use Espo\Core\Templates\Repositories\Base;
-use Espo\ORM\Entity;
+namespace ProjectManagement\Migrations;
 
 /**
- * Class Issue
+ * Migration for version 1.0.17
  */
-class Issue extends Base
+class V1Dot0Dot17 extends V1Dot0Dot1
 {
     /**
      * @inheritDoc
      */
-    protected function beforeSave(Entity $entity, array $options = [])
+    public function up(): void
     {
-        if ($entity->isNew()) {
-            $entity->set('position', $this->findPosition((string)$entity->get('status')));
-        }
-
-        parent::beforeSave($entity, $options);
+        $this->execute("ALTER TABLE `issue` ADD position INT DEFAULT NULL COLLATE utf8mb4_unicode_ci");
     }
 
-    protected function findPosition(string $status): int
+    /**
+     * @inheritDoc
+     */
+    public function down(): void
     {
-        $last = $this
-            ->select(['position'])
-            ->where(['status' => $status])
-            ->order('position', 'DESC')
-            ->findOne();
-
-        return empty($last) ? 1 : $last->get('position') + 1;
     }
 }

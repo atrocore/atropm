@@ -22,6 +22,7 @@ declare(strict_types=1);
 
 namespace ProjectManagement\Services;
 
+use Espo\Core\Exceptions\NotFound;
 use Espo\Core\Templates\Services\Base;
 use Espo\ORM\Entity;
 
@@ -61,5 +62,62 @@ class Issue extends Base
     public function isPermittedAssignedUser(Entity $entity)
     {
         return true;
+    }
+
+    protected function isEntityUpdated(Entity $entity, \stdClass $data): bool
+    {
+        if (property_exists($data, 'beforeIssueId')) {
+            return true;
+        }
+
+        return parent::isEntityUpdated($entity, $data);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function afterUpdateEntity(Entity $entity, $data)
+    {
+        if (property_exists($data, 'beforeIssueId')) {
+            $this->updatePosition($entity, (string)$data->beforeIssueId);
+        }
+
+        parent::afterUpdateEntity($entity, $data);
+    }
+
+    /**
+     * @param Entity $entity
+     * @param string $beforeIssueId
+     *
+     * @throws NotFound
+     * @throws \Espo\Core\Exceptions\Error
+     */
+    protected function updatePosition(Entity $entity, string $beforeIssueId): void
+    {
+        /** @var \ProjectManagement\Repositories\Issue $repository */
+        $repository = $this->getEntityManager()->getRepository('Issue');
+
+        if (empty($beforeIssueId)) {
+            $entity->set('position', 1);
+        } else {
+            $beforeIssue = $repository->get($beforeIssueId);
+            if (empty($beforeIssue)) {
+                throw new NotFound();
+            }
+            $entity->set('position', (int)$beforeIssue->get('position') + 1);
+        }
+
+        $this->getEntityManager()->saveEntity($entity);
+
+        $issues = $repository
+            ->select(['id', 'position'])
+            ->where(['status' => $entity->get('status'), 'position>' => $entity->get('position') - 1, 'id!=' => $entity->get('id')])
+            ->order('position')
+            ->find();
+
+        foreach ($issues as $issue) {
+            $issue->set('position', $issue->get('position') + 1);
+            $this->getEntityManager()->saveEntity($issue);
+        }
     }
 }
