@@ -21,7 +21,34 @@ Espo.define('project-management:views/issue/record/kanban', 'views/record/kanban
 
     return Dep.extend({
 
-        initSortable: function () {
+        ignoreRefresh: false,
+
+        setup() {
+            Dep.prototype.setup.call(this);
+
+            this.initRealTimeMode();
+        },
+
+        initRealTimeMode() {
+            let issuesUpdateTimestamp = localStorage.getItem('pd_issuesUpdateTimestamp');
+
+            let interval = setInterval(() => {
+                if ($('.list-kanban').length === 0) {
+                    clearInterval(interval);
+                    return false;
+                }
+
+                if (issuesUpdateTimestamp !== localStorage.getItem('pd_issuesUpdateTimestamp')) {
+                    if (!this.ignoreRefresh) {
+                        this.collection.fetch();
+                    }
+                    issuesUpdateTimestamp = localStorage.getItem('pd_issuesUpdateTimestamp');
+                    this.ignoreRefresh = false;
+                }
+            }, 500);
+        },
+
+        initSortable() {
             const $list = this.$listKanban.find('.group-column-list');
 
             $list.find('> .item').on('touchstart', function (e) {
@@ -60,12 +87,9 @@ Espo.define('project-management:views/issue/record/kanban', 'views/record/kanban
 
                     this.handleAttributesOnGroupChange(model, attributes, group);
 
-                    $list.sortable('disable');
-
                     model.save(attributes, {patch: true, isDrop: true}).then(function () {
+                        this.ignoreRefresh = true;
                         Espo.Ui.success(this.translate('Saved'));
-                        $list.sortable('destroy');
-                        this.initSortable();
                     }.bind(this)).fail(function () {
                         $list.sortable('cancel');
                         $list.sortable('enable');

@@ -22,6 +22,7 @@ declare(strict_types=1);
 
 namespace ProjectManagement\Services;
 
+use Espo\Core\DataManager;
 use Espo\Core\Exceptions\NotFound;
 use Espo\Core\Templates\Services\Base;
 use Espo\ORM\Entity;
@@ -74,18 +75,6 @@ class Issue extends Base
     }
 
     /**
-     * @inheritDoc
-     */
-    protected function afterUpdateEntity(Entity $entity, $data)
-    {
-        if (property_exists($data, 'beforeIssueId')) {
-            $this->updatePosition($entity, (string)$data->beforeIssueId);
-        }
-
-        parent::afterUpdateEntity($entity, $data);
-    }
-
-    /**
      * @param Entity $entity
      * @param string $beforeIssueId
      *
@@ -119,5 +108,74 @@ class Issue extends Base
             $issue->set('position', $issue->get('position') + 1);
             $this->getEntityManager()->saveEntity($issue);
         }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function afterCreateEntity(Entity $entity, $data)
+    {
+        parent::afterCreateEntity($entity, $data);
+
+        $this->refreshIssueTimestamp();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function afterCreateProcessDuplicating(Entity $entity, $data)
+    {
+        parent::afterCreateProcessDuplicating($entity, $data);
+
+        $this->refreshIssueTimestamp();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function afterUpdateEntity(Entity $entity, $data)
+    {
+        if (property_exists($data, 'beforeIssueId')) {
+            $this->updatePosition($entity, (string)$data->beforeIssueId);
+        }
+
+        parent::afterUpdateEntity($entity, $data);
+
+        $this->refreshIssueTimestamp();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function afterMassUpdate(array $idList, $data)
+    {
+        parent::afterMassUpdate($idList, $data);
+
+        $this->refreshIssueTimestamp();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function afterDeleteEntity(Entity $entity)
+    {
+        parent::afterDeleteEntity($entity);
+
+        $this->refreshIssueTimestamp();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function afterMassRemove(array $idList)
+    {
+        parent::afterMassRemove($idList);
+
+        $this->refreshIssueTimestamp();
+    }
+
+    protected function refreshIssueTimestamp(): void
+    {
+        DataManager::pushPublicData('issuesUpdateTimestamp', (new \DateTime())->getTimestamp());
     }
 }
