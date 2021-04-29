@@ -27,6 +27,11 @@
       "readOnly": true,
       "view": "views/fields/user"
     },
+    "ownerUser": {
+      "type": "link",
+      "required": false,
+      "view": "views/fields/owner-user"
+    },
     "assignedUser": {
       "type": "link",
       "required": false,
@@ -220,6 +225,10 @@
       "type": "belongsTo",
       "entity": "User"
     },
+    "ownerUser": {
+      "type": "belongsTo",
+      "entity": "User"
+    },
     "assignedUser": {
       "type": "belongsTo",
       "entity": "User"
@@ -260,6 +269,12 @@
     "name": {
       "columns": [
         "name",
+        "deleted"
+      ]
+    },
+    "ownerUser": {
+      "columns": [
+        "ownerUserId",
         "deleted"
       ]
     },

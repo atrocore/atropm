@@ -43,9 +43,13 @@ class Metadata extends AbstractListener
         $labels = $this->getAllLabels();
 
         $data['entityDefs']['Issue']['fields']['labels']['allLabels'] = $labels;
-        foreach ($labels as $label){
+        foreach ($labels as $label) {
             $data['entityDefs']['Issue']['fields']['labels']['options'][] = $label['id'];
             $data['entityDefs']['Issue']['fields']['labels']['optionColors'][] = $label['backgroundColor'];
+        }
+
+        if (isset($data['entityDefs']['ImportFeed']['fields']['type'])) {
+            $data['entityDefs']['ImportFeed']['fields']['type']['options'][] = 'Trello';
         }
 
         // set data
@@ -59,7 +63,7 @@ class Metadata extends AbstractListener
     {
         $cacheFile = 'data/cache/all-labels.json';
 
-        if (file_exists($cacheFile)){
+        if (file_exists($cacheFile)) {
             return Json::decode(file_get_contents($cacheFile), true);
         }
 
@@ -67,7 +71,9 @@ class Metadata extends AbstractListener
             $sth = $this
                 ->getContainer()
                 ->get('pdo')
-                ->prepare("SELECT id, name, background_color as backgroundColor, project_id as projectId, group_id as groupId FROM label WHERE deleted=0 AND (project_id IS NOT NULL OR group_id IS NOT NULL)");
+                ->prepare(
+                    "SELECT id, name, background_color as backgroundColor, project_id as projectId, group_id as groupId FROM label WHERE deleted=0 AND (project_id IS NOT NULL OR group_id IS NOT NULL)"
+                );
             $sth->execute();
             $labels = $sth->fetchAll(\PDO::FETCH_ASSOC);
             file_put_contents($cacheFile, Json::encode($labels));
