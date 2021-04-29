@@ -22,13 +22,12 @@ declare(strict_types=1);
 
 namespace ProjectManagement\Repositories;
 
-use Espo\Core\Templates\Repositories\Base;
 use Espo\ORM\Entity;
 
 /**
  * Class Issue
  */
-class Issue extends Base
+class Issue extends AbstractRepository
 {
     /**
      * @inheritDoc
@@ -51,5 +50,44 @@ class Issue extends Base
             ->findOne();
 
         return empty($last) ? 1 : $last->get('position') + 1;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function afterSave(Entity $entity, array $options = [])
+    {
+        if ($entity->isAttributeChanged('projectId')) {
+            $this->calculateEntityTotal($entity->get('project'));
+        }
+
+        if ($entity->isAttributeChanged('milestoneId')) {
+            $this->calculateEntityTotal($entity->getFetched('milestone'));
+            $this->calculateEntityTotal($entity->get('milestone'));
+        }
+
+        // set "Date Completed" in Expenses of current Issue if state has changed to "closed"
+        if ($entity->isAttributeChanged('closed') && $entity->get('closed')) {
+            $expenses = $entity->get('expenses');
+            if ($expenses->count() > 0) {
+                foreach ($expenses as $expense) {
+                    $expense->set('dateCompleted', date('Y-m-d'));
+                    $this->getEntityManager()->saveEntity($expense);
+                }
+            }
+        }
+
+        parent::afterSave($entity, $options);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function afterRemove(Entity $entity, array $options = [])
+    {
+        $this->calculateEntityTotal($entity->get('project'));
+        $this->calculateEntityTotal($entity->get('milestone'));
+
+        parent::afterRemove($entity, $options);
     }
 }

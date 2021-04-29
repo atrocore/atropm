@@ -123,32 +123,4 @@ class MilestoneEntity extends AbstractListener
             }
         }
     }
-
-    /**
-     * Before remove entity listener
-     * Before deleting a milestone need to delete everything related with it
-     *
-     * @param Event $event
-     */
-    public function beforeRemove(Event $event)
-    {
-        // get milestone entity
-        $milestone = $this->getEntity($event);
-        // get options
-        $options = $this->getOptions($event);
-
-        $issuesEntity = $this->getEntityManager()->getRepository('Issue')->where(
-            [
-                'milestoneId' => $milestone->get('id')
-            ]
-        )->find();
-        foreach ($issuesEntity as $issueEntity) {
-            $issueEntity->set(
-                [
-                    'milestoneId' => null
-                ]
-            );
-            $this->getEntityManager()->saveEntity($issueEntity, $options);
-        }
-    }
 }

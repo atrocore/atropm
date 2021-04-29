@@ -22,22 +22,36 @@ declare(strict_types=1);
 
 namespace ProjectManagement\Repositories;
 
+use Espo\Core\Templates\Repositories\Base;
 use Espo\ORM\Entity;
 
 /**
- * Class Milestone
+ * Class AbstractRepository
  */
-class Milestone extends AbstractRepository
+abstract class AbstractRepository extends Base
 {
-    /**
-     * @inheritDoc
-     */
-    protected function afterUnrelate(Entity $entity, $relationName, $foreign, array $options = [])
+    protected function calculateEntityTotal(?Entity $entity): void
     {
-        if ($relationName == 'issues') {
-            $this->calculateEntityTotal($entity);
+        if (empty($entity)) {
+            return;
         }
 
-        parent::afterUnrelate($entity, $relationName, $foreign, $options);
+        $issues = $entity->get('issues');
+
+        $totalIssues = $issues->count();
+        $openIssues = 0;
+
+        if ($totalIssues > 0) {
+            foreach ($issues as $issue) {
+                if (empty($issue->get('closed'))) {
+                    $openIssues++;
+                }
+            }
+        }
+
+        $entity->set('totalIssues', $totalIssues);
+        $entity->set('openIssues', $openIssues);
+
+        $this->getEntityManager()->saveEntity($entity, ['skipAll' => true]);
     }
 }
