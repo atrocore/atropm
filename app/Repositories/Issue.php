@@ -38,6 +38,10 @@ class Issue extends AbstractRepository
             $entity->set('position', $this->findPosition((string)$entity->get('status')));
         }
 
+        if ($entity->isAttributeChanged('status')) {
+            $this->updateOwnership($entity);
+        }
+
         parent::beforeSave($entity, $options);
     }
 
@@ -89,5 +93,18 @@ class Issue extends AbstractRepository
         $this->calculateEntityTotal($entity->get('milestone'));
 
         parent::afterRemove($entity, $options);
+    }
+
+    protected function updateOwnership(Entity $entity): void
+    {
+        if ($entity->get('status') == 'In Progress') {
+            $entity->set('assignedUserId', $entity->get('ownerUserId'));
+        }
+        if ($entity->get('status') == 'To Release') {
+            $entity->set('assignedUserId', '564c9d8fff9ed9c1cd0d8502'); // to r.ratsun
+        }
+        if ($entity->get('status') == 'Released') {
+            $entity->set('assignedUserId', '55083dae7040d54e03f21a98'); // to o.zinchenko
+        }
     }
 }

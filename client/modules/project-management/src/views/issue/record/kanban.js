@@ -90,6 +90,7 @@ Espo.define('project-management:views/issue/record/kanban', 'views/record/kanban
                     model.save(attributes, {patch: true, isDrop: true}).then(function () {
                         this.ignoreRefresh = true;
                         Espo.Ui.success(this.translate('Saved'));
+                        this.collection.fetch();
                     }.bind(this)).fail(function () {
                         $list.sortable('cancel');
                         $list.sortable('enable');
