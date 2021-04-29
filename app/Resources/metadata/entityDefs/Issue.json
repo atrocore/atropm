@@ -190,7 +190,33 @@
       "audited": true
     },
     "estimate": {
-      "type": "float",
+      "type": "enum",
+      "required": false,
+      "options": [
+        "0",
+        "0.5",
+        "1",
+        "2",
+        "3",
+        "5",
+        "8",
+        "13",
+        "20",
+        "40"
+      ],
+      "optionColors": [
+        "EBECF0",
+        "51E898",
+        "51E898",
+        "51E898",
+        "61BD4F",
+        "61BD4F",
+        "F2D600",
+        "F2D600",
+        "FF9F1A",
+        "FF9F1A"
+      ],
+      "default": "0",
       "audited": true
     },
     "archived": {
