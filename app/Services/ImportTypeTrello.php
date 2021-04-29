@@ -137,8 +137,8 @@ class ImportTypeTrello extends QueueManagerBase
                     $description .= "\nTRELLO ATTACHMENT: " . $attachment['url'];
                 }
             }
+            $issue->set('description', $description);
 
-            $issue->set('description', $card['desc']);
             $issue->set('projectId', 'atrocore');
 
             if (isset($statuses[$card['idList']])) {
