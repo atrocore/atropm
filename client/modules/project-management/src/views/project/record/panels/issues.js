@@ -28,21 +28,33 @@ Espo.define('project-management:views/project/record/panels/issues', 'project-ma
             Issue: 'views/record/row-actions/relationship-no-unlink'
         },
 
-        layouts: {
-            Milestone: [
-                {name: 'name', link: true, "width": '40%', view: 'project-management:views/fields/varchar-with-caret'}
-            ],
-            Issue: [
-                {name: 'name', link: true, "width": '40%', view: 'project-management:views/fields/varchar-with-caret'}
-            ]
-        },
+        layouts: null,
 
-        headLayout: [
-            {name: 'name', "width": '40%'}
-        ],
+        headLayout: null,
 
         setup: function () {
             this.wait(true);
+
+            this.layouts = {
+                Milestone: [
+                    {
+                        name: 'name',
+                        link: true,
+                        "width": '40%',
+                        view: 'project-management:views/fields/varchar-with-caret'
+                    }
+                ],
+                Issue: [
+                    {
+                        name: 'name',
+                        link: true,
+                        "width": '40%',
+                        view: 'project-management:views/fields/varchar-with-caret'
+                    }
+                ]
+            };
+            this.headLayout = [{name: 'name', "width": '40%'}];
+
             this.ajaxGetRequest(`Issue/layout/listSmall?isAdminPage=false`).then(issue => {
                 issue.forEach(row => {
                     this.pushUnique(this.headLayout, row);
