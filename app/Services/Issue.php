@@ -87,27 +87,32 @@ class Issue extends Base
         $repository = $this->getEntityManager()->getRepository('Issue');
 
         if (empty($beforeIssueId)) {
-            $entity->set('position', 1);
+            $position = 1;
         } else {
             $beforeIssue = $repository->get($beforeIssueId);
             if (empty($beforeIssue)) {
                 throw new NotFound();
             }
-            $entity->set('position', (int)$beforeIssue->get('position') + 1);
+            $position = (int)$beforeIssue->get('position') + 1;
         }
 
-        $this->getEntityManager()->saveEntity($entity);
+        $this->updatePositionQuery($position, (string)$entity->get('id'));
 
         $issues = $repository
-            ->select(['id', 'position'])
-            ->where(['status' => $entity->get('status'), 'position>' => $entity->get('position') - 1, 'id!=' => $entity->get('id')])
+            ->select(['id'])
+            ->where(['status' => $entity->get('status'), 'position>' => $position - 1, 'id!=' => $entity->get('id')])
             ->order('position')
             ->find();
 
         foreach ($issues as $issue) {
-            $issue->set('position', $issue->get('position') + 1);
-            $this->getEntityManager()->saveEntity($issue);
+            $position++;
+            $this->updatePositionQuery($position, (string)$issue->get('id'));
         }
+    }
+
+    protected function updatePositionQuery(int $position, string $id): void
+    {
+        $this->getEntityManager()->getPDO()->exec("UPDATE `issue` SET position=$position WHERE id='$id'");
     }
 
     /**
