@@ -29,12 +29,12 @@
     },
     "ownerUser": {
       "type": "link",
-      "required": false,
+      "required": true,
       "view": "views/fields/owner-user"
     },
     "assignedUser": {
       "type": "link",
-      "required": false,
+      "required": true,
       "view": "project-management:views/fields/assigned-user-with-teams-filter"
     },
     "teams": {

@@ -20,7 +20,6 @@
     "Label": "Labels"
   },
   "boolFilters": {
-    "onlyMy": "My",
     "onlyOpen": "Open",
     "onlyClosed": "Closed",
     "onlyArchived": "Archived"
