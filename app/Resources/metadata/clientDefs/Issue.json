@@ -6,6 +6,8 @@
   "aclPortal": "project-management:acl-portal/issue",
   "boolFilterList": [
     "onlyMy",
+    "ownedByMe",
+    "assignedToMe",
     "onlyOpen",
     "onlyClosed",
     "onlyArchived"

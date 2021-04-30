@@ -1,7 +1,9 @@
 {
   "controller": "controllers/record",
   "boolFilterList": [
-    "onlyMy"
+    "onlyMy",
+    "ownedByMe",
+    "assignedToMe"
   ],
   "iconClass": "fas fa-tag",
   "modalViews": {

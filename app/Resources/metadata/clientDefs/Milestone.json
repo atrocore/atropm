@@ -1,50 +1,52 @@
 {
-    "controller": "controllers/record",
-    "acl": "project-management:acl/milestone",
-    "boolFilterList": [
-        "onlyMy"
-    ],
-    "iconClass": "fas fa-flag",
-    "modalViews": {
-        "select": "project-management:views/modals/select-records"
-    },
-    "relationshipPanels": {
-        "issues": {
-            "select": false
-        }
-    },
-    "bottomPanels": {
-        "detail": [
-            {
-                "name": "expenses",
-                "label": "expenses",
-                "view": "project-management:views/milestone/record/panels/expenses",
-                "order": 10
-            }
-        ]
-    },
-    "dynamicLogic": {
-        "fields": {
-            "status": {
-                "readOnly": {
-                    "conditionGroup": [
-                        {
-                            "type": "isEmpty",
-                            "attribute": "id"
-                        }
-                    ]
-                }
-            },
-            "parent": {
-                "readOnly": {
-                    "conditionGroup": [
-                        {
-                            "type": "isNotEmpty",
-                            "attribute": "id"
-                        }
-                    ]
-                }
-            }
-        }
+  "controller": "controllers/record",
+  "acl": "project-management:acl/milestone",
+  "boolFilterList": [
+    "onlyMy",
+    "ownedByMe",
+    "assignedToMe"
+  ],
+  "iconClass": "fas fa-flag",
+  "modalViews": {
+    "select": "project-management:views/modals/select-records"
+  },
+  "relationshipPanels": {
+    "issues": {
+      "select": false
     }
+  },
+  "bottomPanels": {
+    "detail": [
+      {
+        "name": "expenses",
+        "label": "expenses",
+        "view": "project-management:views/milestone/record/panels/expenses",
+        "order": 10
+      }
+    ]
+  },
+  "dynamicLogic": {
+    "fields": {
+      "status": {
+        "readOnly": {
+          "conditionGroup": [
+            {
+              "type": "isEmpty",
+              "attribute": "id"
+            }
+          ]
+        }
+      },
+      "parent": {
+        "readOnly": {
+          "conditionGroup": [
+            {
+              "type": "isNotEmpty",
+              "attribute": "id"
+            }
+          ]
+        }
+      }
+    }
+  }
 }

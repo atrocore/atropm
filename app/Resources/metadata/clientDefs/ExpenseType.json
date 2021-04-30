@@ -1,7 +1,9 @@
 {
-    "controller": "controllers/record",
-    "boolFilterList": [
-        "onlyMy"
-    ],
-    "iconClass": "fas fa-cube"
+  "controller": "controllers/record",
+  "boolFilterList": [
+    "onlyMy",
+    "ownedByMe",
+    "assignedToMe"
+  ],
+  "iconClass": "fas fa-cube"
 }
