@@ -38,10 +38,6 @@ class Issue extends AbstractRepository
             $entity->set('position', $this->findPosition((string)$entity->get('status')));
         }
 
-        if ($entity->isAttributeChanged('status')) {
-            $this->updateOwnership($entity);
-        }
-
         parent::beforeSave($entity, $options);
     }
 
@@ -93,32 +89,5 @@ class Issue extends AbstractRepository
         $this->calculateEntityTotal($entity->get('milestone'));
 
         parent::afterRemove($entity, $options);
-    }
-
-    protected function updateOwnership(Entity $entity): void
-    {
-        if ($entity->get('status') == 'In Progress') {
-            if (!empty($user = $entity->get('ownerUser'))) {
-                $entity->set('assignedUserId', $user->get('id'));
-                $entity->set('assignedUserName', $user->get('name'));
-            }
-        }
-        if ($entity->get('status') == 'To Release') {
-            if (!empty($user = $this->getUserByUserName('r.ratsun'))) {
-                $entity->set('assignedUserId', $user->get('id'));
-                $entity->set('assignedUserName', $user->get('name'));
-            }
-        }
-        if ($entity->get('status') == 'Released') {
-            if (!empty($user = $this->getUserByUserName('o.zinchenko'))) {
-                $entity->set('assignedUserId', $user->get('id'));
-                $entity->set('assignedUserName', $user->get('name'));
-            }
-        }
-    }
-
-    protected function getUserByUserName(string $userName): ?\ProjectManagement\Entities\User
-    {
-        return $this->getEntityManager()->getRepository('User')->where(['userName' => $userName])->findOne();
     }
 }
