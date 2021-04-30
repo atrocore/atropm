@@ -23,24 +23,34 @@ Espo.define('project-management:views/issue/record/kanban', 'views/record/kanban
 
         ignoreRefresh: false,
 
+        rendered: false,
+
         setup() {
+            this.rendered = false;
+
             Dep.prototype.setup.call(this);
 
             this.initRealTimeMode();
+        },
+
+        afterRender() {
+            Dep.prototype.afterRender.call(this);
+
+            this.rendered = true;
         },
 
         initRealTimeMode() {
             let issuesUpdateTimestamp = localStorage.getItem('pd_issuesUpdateTimestamp');
 
             let interval = setInterval(() => {
-                if ($('.list-kanban').length === 0) {
+                if ($('.list-kanban').length === 0 && this.rendered) {
                     clearInterval(interval);
                     return false;
                 }
 
                 if (issuesUpdateTimestamp !== localStorage.getItem('pd_issuesUpdateTimestamp')) {
                     if (!this.ignoreRefresh) {
-                        this.collection.fetch();
+                        $('button[data-action="search"]').click();
                     }
                     issuesUpdateTimestamp = localStorage.getItem('pd_issuesUpdateTimestamp');
                     this.ignoreRefresh = false;
