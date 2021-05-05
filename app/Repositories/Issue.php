@@ -36,6 +36,10 @@ class Issue extends AbstractRepository
     {
         if ($entity->isNew()) {
             $entity->set('position', $this->findPosition((string)$entity->get('status')));
+        } else {
+            if ($entity->isAttributeChanged('status')) {
+                $entity->set('position', $this->findPosition((string)$entity->get('status')));
+            }
         }
 
         parent::beforeSave($entity, $options);

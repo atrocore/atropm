@@ -32,6 +32,8 @@ use Espo\ORM\Entity;
  */
 class Issue extends Base
 {
+    protected $mandatorySelectAttributeList = ['assignedUserId', 'assignedUserName'];
+
     /**
      * @inheritDoc
      */
