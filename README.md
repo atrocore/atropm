@@ -32,13 +32,13 @@ Yes, there are many other open-source solutions on the market. But most of them 
 - More then one Team can be assigned to a Project Group or a Project, all Teams assigned to Project Group get automatically access to all Projects of that Project Group
 
 ### Ownership Information
-- You can have both, owner and assigned user for any entity in the system.
+- You can have both, the owner and assigned user for any entity in the system
 
 ## Admin features
-- Configurable data model --> Want to have sub-tasks? No problem, configure them as an additional entity.
+- Configurable data model --> Want to have sub-tasks? No problem, configure them as an additional entity
 - Configurable layouts, incl Kanban Board
-- Dynamic field logic --> You can hide, make read-only or required some fields if certain conditions are met.
-- Configurable roles (with access levels and permissions on the field level)
+- Dynamic field logic --> You can hide, make read-only or required some fields if certain conditions are met
+- Configurable roles, with access levels and permissions on the field level
 
 and more…
 
