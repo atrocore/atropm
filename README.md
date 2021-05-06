@@ -52,6 +52,8 @@ Yes, there are many other open-source solutions on the market. But most of them 
 
 and more…
 
+![atropm-issue-panel](/_assets/atropm-issue-panel.png)
+
 ## What Are the Advantages of AtroPM?
 
 - Many out-of-the-box features
