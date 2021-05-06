@@ -1,5 +1,5 @@
 ## What is AtroPM?
-AtroPM is a simple but powerful configurable open-source Project Management solution, inspired by Github and Gitlab Project Management, which is based on the [AtroCore](https://github.com/atrocore/atrocore) software platform. AtroPM (as well as AtroCore) is distributed under GPLv3 License and is free. It has a lot of features right out-of-the-box and thus is an excellent tool for managing any kind of projects.
+AtroPM is a simple, but powerful, configurable, open-source Project Management Software, inspired by Github and Gitlab Project Management, which is based on the [AtroCore](https://github.com/atrocore/atrocore) software platform. AtroPM (as well as AtroCore) is distributed under GPLv3 License and is free. It has a lot of features right out-of-the-box and thus is an excellent tool for managing any kind of projects.
 
 AtroPM is a single page application (SPA) with an API-centric and service-oriented architecture (SOA). It has a flexible data model based on entities and relations of all kinds among them.  
 
@@ -27,10 +27,12 @@ Yes, there are many other open-source solutions on the market. But most of them 
 - Use Markdown in Descriptions and Notes
 - Mention other users for them to be notified
 - Follow chosen Issues
+- Archived Issues are not shown per default
 
 ### Labels
 - Can be assigned to a Project or Project Group
 - Only labels assigned to a Project or its Project Group can be used for its Issues
+- Will help you to implement any process or workflow you want to have
 
 ### Teams
 - Are created automatically during creation of a new Project Group or a Project
