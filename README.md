@@ -12,11 +12,11 @@ Yes, there are many other open-source solutions on the market. But most of them 
 - Many Project Groups are possible
 - Labels and Milestones can be assigned to a Project Group
 
-## Projects
+### Projects
 - Many Projects are possible
 - Use Milestones and Labels assigned to a Project or its Project Group
 
-## Milestones
+### Milestones
 - Can be assigned to a Project Group, and, thus, be valid for all projects of that Project Group, or to a Project
 - Use Milestones as Sprints, if you have SCRUM implemented
 
