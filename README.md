@@ -3,6 +3,8 @@ AtroPM is a simple, but powerful, configurable, open-source Project Management S
 
 AtroPM is a single page application (SPA) with an API-centric and service-oriented architecture (SOA). It has a flexible data model based on entities and relations of all kinds among them.  
 
+![kanban-board](/_assets/atropm-kanban-board.png)
+
 ## Why have we developed our own solution?
 Yes, there are many other open-source solutions on the market. But most of them are complicated and are not flexible at all. If you are not happy with the processes,  structures and layouts you need to choose some other solution, but it still does not guarantee, that you will be happy with it. By using our solution, you can configure it exactly how you want to have it. Moreover, you can implement any processes, regardless of the complexity of your projects.
 
@@ -22,7 +24,7 @@ Yes, there are many other open-source solutions on the market. But most of them 
 
 ### Issues
 - Can be assigned to any project
-- Use Kanban Board
+- Use Kanban Board, with real-time actualization, just like Trello
 - USe Story Points
 - Use Markdown in Descriptions and Notes
 - Mention other users for them to be notified
