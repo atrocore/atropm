@@ -10,21 +10,25 @@ Yes, there are many other open-source solutions on the market. But most of them 
 
 ### Project Groups
 - Many Project Groups are possible
-- Labels and milestones can be assigned to a Project Group
+- Labels and Milestones can be assigned to a Project Group
 
 ## Milestones
-- Can be assigned to a Project Group, and thus be valid for all projects of that group, or to a Project
+- Can be assigned to a Project Group, and, thus, be valid for all projects of that Project Group, or to a Project
 
 ### Issues
 - Can be assigned to any project
-- Kanban Board
+- Use Kanban Board
+- Use Markdown in Descriptions and Notes
+- Mention other users for them to be notified
+- Follow chosen Issues
 
 ### Labels
-- can be assigned to a Project or Project Group
-- 
+- Can be assigned to a Project or Project Group
+- Only labels assigned to a Project or its Project Group can be used for its Issues
+
 ### Teams
-- are created automatically during creation of a new Project Group or a Project
-- Many Project Teams are possible
+- Are created automatically during creation of a new Project Group or a Project
+- You can create additional Teams
 - More then one Team can be assigned to a Project Group or a Project, all Teams assigned to Project Group get automatically access to all Projects of that Project Group
 
 ### Ownership Information
@@ -34,7 +38,8 @@ Yes, there are many other open-source solutions on the market. But most of them 
 - Configurable data model --> Want to have sub-tasks? No problem, configure them as an additional entity.
 - Configurable layouts, incl Kanban Board
 - Dynamic field logic --> You can hide, make read-only or required some fields if certain conditions are met.
-- Configurable roles 
+- Configurable roles (with access levels and permissions on the field level)
+
 and more…
 
 ## What Are the Advantages of AtroPM?
