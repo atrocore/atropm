@@ -44,6 +44,8 @@ Yes, there are many other open-source solutions on the market. But most of them 
 ### Ownership Information
 - You can have both, the owner and assigned user for any entity in the system
 
+and more…
+
 ## Admin features
 - Configurable data model --> Want to have sub-tasks? No problem, configure them as an additional entity
 - Configurable layouts, incl Kanban Board
