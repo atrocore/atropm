@@ -47,9 +47,9 @@ Yes, there are many other open-source solutions on the market. But most of them 
 and more…
 
 ## Admin features
-- Configurable data model --> Want to have sub-tasks? No problem, configure them as an additional entity
+- Configurable data model → Want to have sub-tasks? No problem, configure them as an additional entity
 - Configurable layouts, incl Kanban Board
-- Dynamic field logic --> You can hide, make read-only or required some fields if certain conditions are met
+- Dynamic field logic → You can hide, make read-only or required some fields if certain conditions are met
 - Configurable roles, with access levels and permissions on the field level
 
 and more…
