@@ -25,6 +25,7 @@ Yes, there are many other open-source solutions on the market. But most of them 
 ### Issues
 - Can be assigned to any project
 - Use Kanban Board, with real-time actualization, just like Trello
+- Issues are placed on the Kanban Board Lists accordingly to their deadlines, if no deadline is set the issue is set as a last item
 - USe Story Points
 - Use Markdown in Descriptions and Notes
 - Mention other users for them to be notified
