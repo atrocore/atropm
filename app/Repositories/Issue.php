@@ -31,6 +31,7 @@ declare(strict_types=1);
 
 namespace ProjectManagement\Repositories;
 
+use Espo\Core\Exceptions\NotFound;
 use Espo\ORM\Entity;
 
 /**
@@ -38,6 +39,39 @@ use Espo\ORM\Entity;
  */
 class Issue extends AbstractRepository
 {
+    /**
+     * @param Entity $entity
+     * @param string $beforeIssueId
+     *
+     * @throws NotFound
+     * @throws \Espo\Core\Exceptions\Error
+     */
+    public function updatePosition(Entity $entity, string $beforeIssueId): void
+    {
+        if (empty($beforeIssueId)) {
+            $position = 1;
+        } else {
+            $beforeIssue = $this->get($beforeIssueId);
+            if (empty($beforeIssue)) {
+                throw new NotFound();
+            }
+            $position = (int)$beforeIssue->get('position') + 1;
+        }
+
+        $this->updatePositionQuery($position, (string)$entity->get('id'));
+
+        $issues = $this
+            ->select(['id'])
+            ->where(['status' => $entity->get('status'), 'position>' => $position - 1, 'id!=' => $entity->get('id')])
+            ->order('position')
+            ->find();
+
+        foreach ($issues as $issue) {
+            $position++;
+            $this->updatePositionQuery($position, (string)$issue->get('id'));
+        }
+    }
+
     /**
      * @inheritDoc
      */
@@ -90,6 +124,10 @@ class Issue extends AbstractRepository
             }
         }
 
+        if ($entity->isAttributeChanged('dueDate') && !empty($entity->get('dueDate'))) {
+            $this->updatePosition($entity, $this->findIssueByDueDate((string)$entity->get('status'), (string)$entity->get('dueDate')));
+        }
+
         parent::afterSave($entity, $options);
     }
 
@@ -102,5 +140,28 @@ class Issue extends AbstractRepository
         $this->calculateEntityTotal($entity->get('milestone'));
 
         parent::afterRemove($entity, $options);
+    }
+
+    protected function findIssueByDueDate(string $status, string $dueDate): string
+    {
+        $last = $this
+            ->select(['id'])
+            ->where(
+                [
+                    'status'     => $status,
+                    'closed!='   => true,
+                    'archived!=' => true,
+                    'dueDate<'   => $dueDate,
+                ]
+            )
+            ->order('dueDate', 'DESC')
+            ->findOne();
+
+        return empty($last) ? '' : (string)$last->get('id');
+    }
+
+    protected function updatePositionQuery(int $position, string $id): void
+    {
+        $this->getEntityManager()->getPDO()->exec("UPDATE `issue` SET position=$position WHERE id='$id'");
     }
 }

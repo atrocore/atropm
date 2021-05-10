@@ -187,7 +187,8 @@
     },
     "dueDate": {
       "type": "date",
-      "audited": true
+      "audited": true,
+      "view": "project-management:views/issue/fields/due-date"
     },
     "estimate": {
       "type": "enum",

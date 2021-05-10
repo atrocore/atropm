@@ -86,47 +86,6 @@ class Issue extends Base
     }
 
     /**
-     * @param Entity $entity
-     * @param string $beforeIssueId
-     *
-     * @throws NotFound
-     * @throws \Espo\Core\Exceptions\Error
-     */
-    protected function updatePosition(Entity $entity, string $beforeIssueId): void
-    {
-        /** @var \ProjectManagement\Repositories\Issue $repository */
-        $repository = $this->getEntityManager()->getRepository('Issue');
-
-        if (empty($beforeIssueId)) {
-            $position = 1;
-        } else {
-            $beforeIssue = $repository->get($beforeIssueId);
-            if (empty($beforeIssue)) {
-                throw new NotFound();
-            }
-            $position = (int)$beforeIssue->get('position') + 1;
-        }
-
-        $this->updatePositionQuery($position, (string)$entity->get('id'));
-
-        $issues = $repository
-            ->select(['id'])
-            ->where(['status' => $entity->get('status'), 'position>' => $position - 1, 'id!=' => $entity->get('id')])
-            ->order('position')
-            ->find();
-
-        foreach ($issues as $issue) {
-            $position++;
-            $this->updatePositionQuery($position, (string)$issue->get('id'));
-        }
-    }
-
-    protected function updatePositionQuery(int $position, string $id): void
-    {
-        $this->getEntityManager()->getPDO()->exec("UPDATE `issue` SET position=$position WHERE id='$id'");
-    }
-
-    /**
      * @inheritDoc
      */
     protected function afterCreateEntity(Entity $entity, $data)
@@ -152,7 +111,7 @@ class Issue extends Base
     protected function afterUpdateEntity(Entity $entity, $data)
     {
         if (property_exists($data, 'beforeIssueId')) {
-            $this->updatePosition($entity, (string)$data->beforeIssueId);
+            $this->getEntityManager()->getRepository('Issue')->updatePosition($entity, (string)$data->beforeIssueId);
         }
 
         parent::afterUpdateEntity($entity, $data);
