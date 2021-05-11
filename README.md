@@ -1,56 +1,56 @@
 ## What is AtroPM?
-AtroPM is a simple, but powerful, configurable, open-source Project Management Software, inspired by Github and Gitlab, which is based on the [AtroCore](https://github.com/atrocore/atrocore) software platform. AtroPM (as well as AtroCore) is distributed under GPLv3 License and is free. It has a lot of features right out-of-the-box and thus is an excellent tool for managing any kind of projects.
+AtroPM is a simple, but powerful, configurable, open-source Project Management Software, inspired by Github and Gitlab, which is based on the [AtroCore](https://github.com/atrocore/atrocore) software platform. AtroPM (as well as AtroCore) is distributed under GPLv3 License and is free. It has a lot of features right out-of-the-box and is thus an excellent tool for managing any kind of project.
 
-AtroPM is a single page application (SPA) with an API-centric and service-oriented architecture (SOA). It has a flexible data model based on entities and relations of all kinds among them.  
+AtroPM is a single page application (SPA) with API-centric and service-oriented architecture (SOA). It has a flexible data model based on entities and relations of all kinds.  
 
 ![kanban-board](/_assets/atropm-kanban-board.png)
 
 ## Why have we developed our own solution?
-Yes, there are many other open-source solutions on the market. But most of them are complicated and are not flexible at all. If you are not happy with the processes,  structures and layouts you need to choose some other solution, but it still does not guarantee, that you will be happy with it. By using our solution, you can configure it exactly how you want to have it. Moreover, you can implement any processes, regardless of the complexity of your projects.
+Yes, there are many other open-source solutions on the market. But most of them are complicated and not flexible at all. If you are not happy with the processes,  structures and layouts you have to choose some other solution, but this still does not guarantee, that you will be happy. By using our solution, you can configure it exactly as you want. Moreover, you can implement any processes, regardless of the complexity of your projects.
 
 ## User features
 
 ### Project Groups
 - Many Project Groups are possible
-- Labels and Milestones can be assigned to a Project Group
+- Labels and Milestones can be assigned to a Project Group.
 
 ### Projects
 - Many Projects are possible
-- Use Milestones and Labels assigned to a Project or its Project Group
+- Use Milestones and Labels assigned to a Project or its Project Group.
 
 ### Milestones
-- Can be assigned to a Project Group, and, thus, be valid for all projects of that Project Group, or to a Project
-- Use Milestones as Sprints, if you have SCRUM implemented
+- Can be assigned to a Project or Project Group and be thus valid for all projects of that Project Group
+- Use Milestones as Sprints, if you have implemented SCRUM.
 
 ### Issues
 - Can be assigned to any project
-- Use Kanban Board, with real-time actualization, just like Trello
-- Issues are placed on the Kanban Board Lists accordingly to their deadlines, if no deadline is set the issue is set as a last item
+- Use the Kanban Board, with real-time actualization, just like Trello
+- Issues are placed on the Kanban Board Lists accordingly to their deadlines, if no deadline is set the issue is set as the last item
 - Use Story Points
 - Use Markdown in Descriptions and Notes
-- Mention other users for them to be notified
+- Mention other users so they will be notified
 - Follow chosen Issues
-- Archived Issues are not shown per default
+- Archived Issues are not shown by default.
 
 ### Labels
 - Can be assigned to a Project or Project Group
 - Only labels assigned to a Project or its Project Group can be used for its Issues
-- Will help you to implement any process or workflow you want to have
+- Will help you to implement any process or workflow you want.
 
 ### Teams
 - Are created automatically during creation of a new Project Group or a Project
 - You can create additional Teams
-- More then one Team can be assigned to a Project Group or a Project, all Teams assigned to Project Group get automatically access to all Projects of that Project Group
+- More than one Team can be assigned to a Project Group or a Project, all Teams assigned to a Project Group get automatic access to all Projects of that Project Group.
 
 ### Ownership Information
-- You can have both, the owner and assigned user for any entity in the system
+- You can have both, the owner and assigned user for any entity on the system
 
 and more…
 
 ## Admin features
 - Configurable data model → Want to have sub-tasks? No problem, configure them as an additional entity
-- Configurable layouts, incl Kanban Board
-- Dynamic field logic → You can hide, make read-only or required some fields if certain conditions are met
+- Configurable layouts, include Kanban Board
+- Dynamic field logic → You can hide, make read-only or require some fields if certain conditions are met
 - Configurable roles, with access levels and permissions on the field level
 
 and more…
@@ -84,7 +84,7 @@ Please, [ask](https://atrocore.com/contact), if you want to know more.
 
 ### Installation
 
-Installation Guide is available [here](https://github.com/atrocore/atrocore-docs/blob/master/en/administration/installation.md).
+The Installation Guide is available [here](https://github.com/atrocore/atrocore-docs/blob/master/en/administration/installation.md).
 
 ## License
 
