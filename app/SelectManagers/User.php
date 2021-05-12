@@ -99,4 +99,21 @@ class User extends \Treo\SelectManagers\User
             ];
         }
     }
+
+    /**
+     * @inheritDoc
+     */
+    protected function access(&$result)
+    {
+        \Espo\Core\SelectManagers\Base::access($result);
+
+        if (!$this->getUser()->isAdmin()) {
+            $result['whereClause'][] = array(
+                'isActive' => true
+            );
+        }
+        $result['whereClause'][] = array(
+            'isSuperAdmin' => false
+        );
+    }
 }
