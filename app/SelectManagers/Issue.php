@@ -127,7 +127,8 @@ class Issue extends Base
         $d = [];
         $accountIdList = $this->getUser()->getLinkMultipleIdList('accounts');
         if (count($accountIdList)) {
-            $d['project.accountId'] = $accountIdList;
+            $this->addLeftJoin(['project', 'p1'], $result);
+            $d['p1.accountId'] = $accountIdList;
         }
 
         $contactId = $this->getUser()->get('contactId');
