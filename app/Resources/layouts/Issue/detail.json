@@ -71,10 +71,10 @@
       ],
       [
         {
-          "name": "archived"
+          "name": "closed"
         },
         {
-          "name": "closed"
+          "name": "archived"
         }
       ]
     ],
