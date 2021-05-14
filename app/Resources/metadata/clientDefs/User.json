@@ -7,5 +7,19 @@
   ],
   "hiddenBoolFilterList": [
     "issueAssignedUsers"
-  ]
+  ],
+  "dynamicLogic": {
+    "fields": {
+      "unitPrice": {
+        "visible": {
+          "conditionGroup": [
+            {
+              "type": "isFalse",
+              "attribute": "isPortalUser"
+            }
+          ]
+        }
+      }
+    }
+  }
 }

@@ -1,14 +1,22 @@
 [
-    {
-        "label": "Project Management Settings",
-        "style": "default",
-        "rows": [
-            [
-                {
-                    "name": "unitPrice"
-                },
-                false
-            ]
-        ]
-    }
+  {
+    "label": "Project Management Settings",
+    "style": "default",
+    "dynamicLogicVisible": {
+      "conditionGroup": [
+        {
+          "type": "isFalse",
+          "attribute": "isPortalUser"
+        }
+      ]
+    },
+    "rows": [
+      [
+        {
+          "name": "unitPrice"
+        },
+        false
+      ]
+    ]
+  }
 ]

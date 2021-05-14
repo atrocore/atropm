@@ -1,10 +1,10 @@
 {
-    "fields": {
-        "unitPrice": {
-            "type": "currency",
-            "audited": true,
-            "min": null,
-            "max": null
-        }
+  "fields": {
+    "unitPrice": {
+      "type": "currency",
+      "audited": true,
+      "min": null,
+      "max": null
     }
+  }
 }
