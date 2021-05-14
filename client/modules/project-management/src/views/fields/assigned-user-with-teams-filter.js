@@ -43,6 +43,11 @@ Espo.define('project-management:views/fields/assigned-user-with-teams-filter', [
                     this.model.set(data);
                 }
             }, this);
+
+            this.listenTo(this.model, 'change:projectId', () => {
+                this.model.set('assignedUserId', null);
+                this.model.set('assignedUserName', null);
+            });
         },
 
         getAutocompleteUrl: function () {
@@ -58,7 +63,8 @@ Espo.define('project-management:views/fields/assigned-user-with-teams-filter', [
         },
 
         getWhereAdditional: function () {
-            const teamsIds = this.model.get('teamsIds') || ['no-such-id'];
+            const teamsIds = this.model.get('teamsIds') || [];
+            teamsIds.push('no-such-id')
 
             return [
                 {

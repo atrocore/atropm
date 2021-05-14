@@ -30,7 +30,7 @@
     "ownerUser": {
       "type": "link",
       "required": true,
-      "view": "views/fields/owner-user"
+      "view": "project-management:views/issue/fields/owner-user"
     },
     "assignedUser": {
       "type": "link",
