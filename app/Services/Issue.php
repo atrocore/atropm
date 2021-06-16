@@ -76,6 +76,14 @@ class Issue extends Base
         return true;
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function isPermittedOwnerUser(Entity $entity): bool
+    {
+        return true;
+    }
+
     protected function isEntityUpdated(Entity $entity, \stdClass $data): bool
     {
         if (property_exists($data, 'beforeIssueId')) {

@@ -1,0 +1,6 @@
+{
+  "views/record/detail-side": [
+    "__APPEND__",
+    "project-management"
+  ]
+}
