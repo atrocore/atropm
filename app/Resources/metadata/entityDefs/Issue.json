@@ -241,6 +241,13 @@
       ],
       "default": null,
       "audited": true
+    },
+    "file": {
+      "type": "asset",
+      "required": false,
+      "previewSize": "small",
+      "audited": true,
+      "assetType": "File"
     }
   },
   "links": {
@@ -283,6 +290,11 @@
       "foreign": "issues",
       "entity": "Milestone",
       "audited": true
+    },
+    "file": {
+      "type": "belongsTo",
+      "entity": "Attachment",
+      "skipOrmDefs": true
     }
   },
   "collection": {

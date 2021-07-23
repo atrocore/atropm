@@ -76,6 +76,12 @@
         {
           "name": "archived"
         }
+      ],
+      [
+        {
+          "name": "file"
+        },
+        false
       ]
     ],
     "style": "default",

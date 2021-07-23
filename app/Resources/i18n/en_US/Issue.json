@@ -15,10 +15,12 @@
     "archived": "Archived",
     "closed": "Closed",
     "position": "Position",
-    "paymentStatus": "Payment Status"
+    "paymentStatus": "Payment Status",
+    "file": "File"
   },
   "links": {
     "project": "Project",
+    "file": "File",
     "milestone": "Milestone"
   },
   "labels": {
