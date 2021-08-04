@@ -31,7 +31,6 @@ declare(strict_types=1);
 
 namespace ProjectManagement\Repositories;
 
-use Espo\Core\Exceptions\NotFound;
 use Espo\ORM\Entity;
 
 /**
@@ -40,35 +39,54 @@ use Espo\ORM\Entity;
 class Issue extends AbstractRepository
 {
     /**
-     * @param Entity $entity
-     * @param string $beforeIssueId
-     *
-     * @throws NotFound
-     * @throws \Espo\Core\Exceptions\Error
+     * @param Entity     $entity
+     * @param string|int $value
      */
-    public function updatePosition(Entity $entity, string $beforeIssueId): void
+    public function updatePosition(Entity $entity, $value): void
     {
-        if (empty($beforeIssueId)) {
-            $position = 1;
+        if (is_string($value)) {
+            $beforeIssueId = $value;
         } else {
-            $beforeIssue = $this->get($beforeIssueId);
-            if (empty($beforeIssue)) {
-                throw new NotFound();
-            }
-            $position = (int)$beforeIssue->get('position') + 1;
+            $position = $value;
         }
-
-        $this->updatePositionQuery($position, (string)$entity->get('id'));
 
         $issues = $this
             ->select(['id'])
-            ->where(['status' => $entity->get('status'), 'position>' => $position - 1, 'id!=' => $entity->get('id')])
+            ->where(['status' => $entity->get('status')])
             ->order('position')
-            ->find();
+            ->find()
+            ->toArray();
+
+        $orderedIds = [];
+        if (isset($beforeIssueId)) {
+            if (empty($beforeIssueId)) {
+                $orderedIds[] = $entity->get('id');
+            }
+        } else {
+            if ($position == 1) {
+                $orderedIds[] = $entity->get('id');
+            }
+        }
 
         foreach ($issues as $issue) {
-            $position++;
-            $this->updatePositionQuery($position, (string)$issue->get('id'));
+            if ($entity->get('id') == $issue['id']) {
+                continue;
+            }
+            $orderedIds[] = $issue['id'];
+
+            if (isset($beforeIssueId)) {
+                if ($issue['id'] === $beforeIssueId) {
+                    $orderedIds[] = $entity->get('id');
+                }
+            } else {
+                if (count($orderedIds) == $position - 1) {
+                    $orderedIds[] = $entity->get('id');
+                }
+            }
+        }
+
+        foreach ($orderedIds as $k => $id) {
+            $this->updatePositionQuery($k + 1, $id);
         }
     }
 
@@ -78,11 +96,17 @@ class Issue extends AbstractRepository
     protected function beforeSave(Entity $entity, array $options = [])
     {
         if ($entity->isNew()) {
-            $entity->set('position', $this->findPosition((string)$entity->get('status')));
+            if (empty($entity->get('position'))) {
+                $entity->set('position', $this->findPosition((string)$entity->get('status')));
+            }
         } else {
             if ($entity->isAttributeChanged('status')) {
                 $entity->set('position', $this->findPosition((string)$entity->get('status')));
             }
+        }
+
+        if ($entity->isAttributeChanged('position')) {
+            $this->updatePosition($entity, (int)$entity->get('position'));
         }
 
         parent::beforeSave($entity, $options);

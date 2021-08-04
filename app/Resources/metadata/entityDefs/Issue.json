@@ -118,7 +118,8 @@
       "layoutMassUpdateDisabled": true
     },
     "position": {
-      "type": "int"
+      "type": "int",
+      "min": 1
     },
     "beforeIssueId": {
       "type": "varchar",
