@@ -100,7 +100,7 @@ class Issue extends AbstractRepository
                 $entity->set('position', $this->findPosition((string)$entity->get('status')));
             }
         } else {
-            if ($entity->isAttributeChanged('status')) {
+            if ($entity->isAttributeChanged('status') && !$entity->isAttributeChanged('position')) {
                 $entity->set('position', $this->findPosition((string)$entity->get('status')));
             }
         }
