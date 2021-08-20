@@ -92,5 +92,6 @@ AtroPM is published under the GNU GPLv3 [license](https://github.com/atrocore/at
 
 ## Support
 
-- AtroPM is developed and supported by AtroCore UG (haftungsbeschränkt).
-- To contact us, please, visit [AtroCore Website](http://atrocore.com/).
+- Report a Bug - https://github.com/atrocore/atrocore/issues/new
+- Ask the Community - https://github.com/atrocore/atrocore/discussions
+- Сontact us - https://atrocore.com/contact
