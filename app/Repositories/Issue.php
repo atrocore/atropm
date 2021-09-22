@@ -149,7 +149,7 @@ class Issue extends AbstractRepository
         }
 
         if ($entity->isAttributeChanged('dueDate') && !empty($entity->get('dueDate'))) {
-            $this->updatePosition($entity, $this->findIssueByDueDate((string)$entity->get('status'), (string)$entity->get('dueDate')));
+//            $this->updatePosition($entity, $this->findIssueByDueDate((string)$entity->get('status'), (string)$entity->get('dueDate')));
         }
 
         parent::afterSave($entity, $options);
