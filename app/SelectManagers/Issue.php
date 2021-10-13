@@ -51,9 +51,11 @@ class Issue extends Base
             }
         }
 
-        $result['whereClause'][] = [
-            'archived!=' => true
-        ];
+        if (empty($params['allIssues'])) {
+            $result['whereClause'][] = [
+                'archived!=' => true
+            ];
+        }
     }
 
     /**
