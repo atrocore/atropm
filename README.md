@@ -88,7 +88,7 @@ The Installation Guide is available [here](https://github.com/atrocore/atrocore-
 
 ## License
 
-AtroPM is published under the GNU GPLv3 [license](https://github.com/atrocore/atropm/blob/master/LICENSE.txt).
+AtroPM is published under the GNU GPLv3 [license](https://www.gnu.org/licenses/gpl-3.0.en.html).
 
 ## Support
 
