@@ -84,7 +84,7 @@ Please, [ask](https://atrocore.com/contact), if you want to know more.
 
 ### Installation
 
-The Installation Guide is available [here](https://github.com/atrocore/atrocore-docs/blob/master/en/administration/installation.md).
+The Installation Guide is available [here](https://github.com/atrocore/docs/blob/master/atrocore/admin-guide/installation.md).
 
 ## License
 
