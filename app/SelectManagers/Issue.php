@@ -127,10 +127,10 @@ class Issue extends Base
     protected function accessPortalOnlyAccount(&$result)
     {
         $d = [];
-        $accountIdList = $this->getUser()->getLinkMultipleIdList('accounts');
-        if (count($accountIdList)) {
+        $accountId = $this->getUser()->get('accountId');
+        if (!empty($accountId)) {
             $this->addLeftJoin(['project', 'p1'], $result);
-            $d['p1.accountId'] = $accountIdList;
+            $d['p1.accountId'] = $accountId;
         }
 
         $contactId = $this->getUser()->get('contactId');

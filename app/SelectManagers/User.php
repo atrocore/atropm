@@ -79,10 +79,10 @@ class User extends \Treo\SelectManagers\User
     protected function accessPortalOnlyAccount(&$result)
     {
         $d = [];
-        $accountIdList = $this->getUser()->getLinkMultipleIdList('accounts');
+        $accountId = $this->getUser()->get('accountId');
 
-        if (count($accountIdList)) {
-            $d['id'] = \ProjectManagement\AclPortal\User::getProjectsUsersIds($this->getEntityManager()->getPDO(), $accountIdList);
+        if (!empty($accountId)) {
+            $d['id'] = \ProjectManagement\AclPortal\User::getProjectsUsersIds($this->getEntityManager()->getPDO(), [$accountId]);
         }
 
         if ($this->getSeed()->hasAttribute('createdById')) {

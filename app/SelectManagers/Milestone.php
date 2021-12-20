@@ -101,20 +101,17 @@ class Milestone extends Base
     protected function accessPortalOnlyAccount(&$result)
     {
         $d = [];
-        $accountIdList = $this->getUser()->getLinkMultipleIdList('accounts');
+        $accountId = $this->getUser()->get('accountId');
 
-        if (count($accountIdList)) {
-            $d['project.accountId'] = $accountIdList;
-
-            $accountsIds = implode("','", $accountIdList);
-
-            $pdo = $this->getEntityManager()->getPDO();
-            $sth = $pdo->prepare(
-                "SELECT i.milestone_id FROM `issue` AS i LEFT JOIN `project` AS p ON p.id=i.project_id WHERE i.deleted=0 AND p.deleted=0 AND p.account_id IN ('$accountsIds') AND i.milestone_id IS NOT NULL"
-            );
-            $sth->execute();
-
-            $d['id'] = $sth->fetchAll(\PDO::FETCH_COLUMN);
+        if (!empty($accountId)) {
+            $d['project.accountId'] = $accountId;
+            $d['id'] = $this
+                ->getEntityManager()
+                ->getPDO()
+                ->query(
+                    "SELECT i.milestone_id FROM `issue` AS i LEFT JOIN `project` AS p ON p.id=i.project_id WHERE i.deleted=0 AND p.deleted=0 AND p.account_id='$accountId' AND i.milestone_id IS NOT NULL"
+                )
+                ->fetchAll(\PDO::FETCH_COLUMN);
         }
 
         $contactId = $this->getUser()->get('contactId');

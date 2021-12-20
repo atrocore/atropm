@@ -2,7 +2,7 @@
   "name": "atrocore/pm",
   "description": "",
   "require": {
-    "atrocore/core": "~1.3.0"
+    "atrocore/core": "~1.4.0"
   },
   "autoload": {
     "psr-4": {
