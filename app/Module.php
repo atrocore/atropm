@@ -34,7 +34,6 @@ declare(strict_types=1);
 namespace ProjectManagement;
 
 use Espo\Core\Utils\Json;
-use Treo\Core\Loaders\Layout;
 use Treo\Core\ModuleManager\AbstractModule;
 
 /**
@@ -56,7 +55,7 @@ class Module extends AbstractModule
     public function loadLayouts(string $scope, string $name, array &$data)
     {
         // load layout class
-        $layout = (new Layout($this->container))->load();
+        $layout = $this->container->get('layout');
 
         // prepare file path
         $filePath = $layout->concatPath($this->path . 'app/Resources/layouts', $scope);
