@@ -38,7 +38,7 @@ use Espo\ORM\Entity;
 /**
  * Class User
  */
-class User extends \Treo\SelectManagers\User
+class User extends \Espo\SelectManagers\User
 {
     /**
      * @inheritDoc
