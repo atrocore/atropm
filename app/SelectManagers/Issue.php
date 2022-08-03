@@ -48,7 +48,7 @@ class Issue extends Base
         parent::applyAdditional($result, $params);
 
         foreach ($result['whereClause'] as $v) {
-            if (isset($v['archived'])) {
+            if (isset($v['archived']) || $v['closed']) {
                 return;
             }
         }
