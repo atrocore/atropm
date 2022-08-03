@@ -23,5 +23,8 @@
     "onlyOpen": "Open",
     "onlyClosed": "Closed",
     "onlyArchived": "Archived"
+  },
+  "labels": {
+    "closeAndArchive": "Close and Archive"
   }
 }

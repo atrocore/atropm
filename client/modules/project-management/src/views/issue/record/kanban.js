@@ -36,6 +36,8 @@ Espo.define('project-management:views/issue/record/kanban', 'views/record/kanban
 
         rendered: false,
 
+        rowActionsView: 'project-management:views/issue/record/row-actions/kanban',
+
         setup() {
             this.rendered = false;
 
@@ -48,6 +50,19 @@ Espo.define('project-management:views/issue/record/kanban', 'views/record/kanban
             Dep.prototype.afterRender.call(this);
 
             this.rendered = true;
+        },
+
+        actionCloseAndArchive(data) {
+            let self = this;
+            let model = this.collection.get(data.id);
+
+            this.notify('Saving...');
+            model.save({"closed": true, "archived": true}, {
+                success: function () {
+                    self.notify('Saved', 'success');
+                },
+                patch: true
+            });
         },
 
         initRealTimeMode() {
