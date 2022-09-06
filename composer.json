@@ -15,7 +15,7 @@
       "default": "PM"
     },
     "description": {
-      "default": "Project Management module for AtroCore."
+      "default": "The module enables to manage project groups, projects, milestones, and issues as well as labels to be able to implement any project workflows."
     },
     "tags": [
       "project-management"
