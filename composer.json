@@ -15,7 +15,7 @@
       "default": "PM"
     },
     "description": {
-      "default": "The module enables to manage project groups, projects, milestones, and issues as well as labels to be able to implement any project workflows."
+      "default": "This module enables the management of project groups, projects, milestones, and issues as well as labels to implement project workflows."
     },
     "tags": [
       "project-management"
