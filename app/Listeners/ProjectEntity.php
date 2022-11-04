@@ -33,8 +33,8 @@ declare(strict_types=1);
 
 namespace ProjectManagement\Listeners;
 
-use Treo\Listeners\AbstractListener;
-use Treo\Core\EventManager\Event;
+use Espo\Listeners\AbstractListener;
+use Espo\Core\EventManager\Event;
 use Espo\Core\Exceptions\Error;
 use Espo\Orm\Entity;
 
@@ -56,7 +56,7 @@ class ProjectEntity extends AbstractListener
     /**
      * @param Event $event
      *
-     * @return Entity
+     * @return array
      */
     protected function getOptions(Event $event)
     {
@@ -67,6 +67,7 @@ class ProjectEntity extends AbstractListener
      * Before save entity listener
      *
      * @param Event $event
+     *
      * @throws Error
      */
     public function beforeSave(Event $event)
@@ -88,109 +89,90 @@ class ProjectEntity extends AbstractListener
         }
     }
 
-    /**
-     * After save entity listener
-     *
-     * @param Event $event
-     */
-    public function afterSave(Event $event)
+    public function afterSave(Event $event): void
     {
-        // get project entity
-        $project = $this->getEntity($event);
         // get options
         $options = $this->getOptions($event);
 
-        // auto assign teams
-        if (empty($options['skipPMAutoAssignTeam'])) {
-            $teamsIds = [];
-            $teamsNames = [];
-            $teamProjectNameAssigned = false;
-            foreach ($project->get('teams') as $team) {
-                if ($team->get('name') == $project->get('name')) {
-                    $teamProjectNameAssigned = true;
-                }
-                $teamsIds[] = $team->get('id');
-                $teamsNames[$team->get('id')] = $team->get('name');
-            }
-
-            $getFetchedTeamsIds = $project->getFetched('teamsIds');
-            $getTeamsIds = $project->get('teamsIds');
-            // get removed teams
-            $removedTeams = [];
-            if (isset($getFetchedTeamsIds) && isset($getTeamsIds)) {
-                $removedTeams = array_diff($getFetchedTeamsIds, $getTeamsIds);
-            }
-
-            if (!$teamProjectNameAssigned) {
-                // if team with project name was not found in assigned teams to Project, try to find it in existing teams
-                if (empty($teamEntity = $this->getEntityManager()->getRepository('Team')->where([
-                    'name' => $project->get('name')
-                ])->findOne()))
-                {
-                    // if team does not exist then create new team
-                    $teamEntity = $this->getEntityManager()->getEntity('Team');
-                    $teamEntity->set([
-                        'name' => $project->get('name')
-                    ]);
-                    $this->getEntityManager()->saveEntity($teamEntity, $options);
-
-                    // add user creator to Team
-                    $userEntity = $this->getEntityManager()->getEntity('User', $project->get('createdById'));
-                    $this->getEntityManager()->getRepository('Team')->relate($teamEntity, 'users', $userEntity);
-                }
-                $teamsIds[] = $teamEntity->get('id');
-                $teamsNames[$teamEntity->get('id')] = $teamEntity->get('name');
-            }
-
-            // get teams of group
-            if (!empty($project->get('groupId'))) {
-                $groupEntity = $this->getEntityManager()->getEntity('Group', $project->get('groupId'));
-                foreach ($groupEntity->get('teams') as $team) {
-                    $teamsIds[] = $team->get('id');
-                    $teamsNames[$team->get('id')] = $team->get('name');
-                }
-            }
-
-            // set all found teams to project
-            if (!empty($teamsIds)) {
-                $project->set([
-                    'teamsIds' => array_unique($teamsIds),
-                    'teamsNames' => $teamsNames
-                ]);
-                $this->getEntityManager()->saveEntity(
-                    $project,
-                    array_merge($options, ['skipPMAutoAssignTeam' => true])
-                );
-            }
-
-            // get labels of current project
-            $labelsEntity = $this->getEntityManager()->getRepository('Label')->where(['projectId' => $project->get('id')])->find();
-            $this->setTeamsToRelatedEntities(
-                $labelsEntity,
-                $teamsIds,
-                $removedTeams,
-                array_merge($options, ['skipPMAutoAssignTeam' => true])
-            );
-
-            // get milestones of current project
-            $milestonesEntity = $this->getEntityManager()->getRepository('Milestone')->where(['projectId' => $project->get('id')])->find();
-            $this->setTeamsToRelatedEntities($milestonesEntity, $teamsIds, $removedTeams, $options);
-
-            // get issues of current project
-            $issuesEntity = $this->getEntityManager()->getRepository('Issue')->where([
-                'projectId' => $project->get('id')
-            ])->find();
-            $this->setTeamsToRelatedEntities($issuesEntity, $teamsIds, $removedTeams, $options);
-
-            // get expenses of current project
-            $expensesEntity = $this->getEntityManager()->getRepository('Expense')->where(['projectId' => $project->get('id')])->find();
-            $this->setTeamsToRelatedEntities(
-                $expensesEntity,
-                $teamsIds,
-                $removedTeams,
-                array_merge($options, ['skipPMAutoAssignTeam' => true])
-            );
+        if (!empty($options['skipPMAutoAssignTeam'])) {
+            return;
         }
+
+        // get project entity
+        $project = $this->getEntity($event);
+
+        $teamsIds = [];
+        $teamProjectNameAssigned = false;
+        foreach ($project->get('teams') as $team) {
+            if ($team->get('name') == $project->get('name')) {
+                $teamProjectNameAssigned = true;
+            }
+            $teamsIds[] = $team->get('id');
+        }
+
+        $getFetchedTeamsIds = $project->getFetched('teamsIds');
+        $getTeamsIds = $project->get('teamsIds');
+
+        // get removed teams
+        $removedTeams = [];
+        if (isset($getFetchedTeamsIds) && isset($getTeamsIds)) {
+            $removedTeams = array_diff($getFetchedTeamsIds, $getTeamsIds);
+        }
+
+        if (!$teamProjectNameAssigned) {
+            // if team with project name was not found in assigned teams to Project, try to find it in existing teams
+            if (empty($teamEntity = $this->getEntityManager()->getRepository('Team')->where(['name' => $project->get('name')])->findOne())) {
+                // if team does not exist then create new team
+                $teamEntity = $this->getEntityManager()->getEntity('Team');
+                $teamEntity->set([
+                    'name' => $project->get('name')
+                ]);
+                $this->getEntityManager()->saveEntity($teamEntity, ['skipAll' => true]);
+
+                // add user creator to Team
+                $this->getEntityManager()->getRepository('Team')->relate($teamEntity, 'users', $project->get('createdById'));
+            }
+            $teamsIds[] = $teamEntity->get('id');
+        }
+
+        // get teams of group
+        if (!empty($project->get('groupId'))) {
+            $groupEntity = $this->getEntityManager()->getEntity('Group', $project->get('groupId'));
+            foreach ($groupEntity->get('teams') as $team) {
+                $teamsIds[] = $team->get('id');
+            }
+        }
+
+        // set all found teams to project
+        foreach ($teamsIds as $teamId) {
+            $this->getEntityManager()->getRepository($project->getEntityType())->relate($project, 'teams', $teamId);
+        }
+
+        // get labels of current project
+        $labelsEntity = $this->getEntityManager()->getRepository('Label')->where(['projectId' => $project->get('id')])->find();
+        $this->setTeamsToRelatedEntities(
+            $labelsEntity,
+            $teamsIds,
+            $removedTeams,
+            array_merge($options, ['skipPMAutoAssignTeam' => true])
+        );
+
+        // get milestones of current project
+        $milestonesEntity = $this->getEntityManager()->getRepository('Milestone')->where(['projectId' => $project->get('id')])->find();
+        $this->setTeamsToRelatedEntities($milestonesEntity, $teamsIds, $removedTeams, $options);
+
+        // get issues of current project
+        $issuesEntity = $this->getEntityManager()->getRepository('Issue')->where(['projectId' => $project->get('id')])->find();
+        $this->setTeamsToRelatedEntities($issuesEntity, $teamsIds, $removedTeams, $options);
+
+        // get expenses of current project
+        $expensesEntity = $this->getEntityManager()->getRepository('Expense')->where(['projectId' => $project->get('id')])->find();
+        $this->setTeamsToRelatedEntities(
+            $expensesEntity,
+            $teamsIds,
+            $removedTeams,
+            array_merge($options, ['skipPMAutoAssignTeam' => true])
+        );
     }
 
     /**
