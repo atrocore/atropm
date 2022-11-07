@@ -28,32 +28,27 @@
 * This software is not allowed to be used in Russia and Belarus.
 */
 
-Espo.define('project-management:views/issue/detail', 'project-management:views/detail', function (Dep) {
+Espo.define('project-management:views/issue/record/detail', 'views/record/detail', function (Dep) {
 
     return Dep.extend({
-
-        recordView: 'project-management:views/issue/record/detail',
-
-        setup() {
-             Dep.prototype.setup.call(this);
-
-             this.listenTo(this.model, 'after:save', model => {
-                 this.model.fetch();
-             });
+        setupActionItems: function () {
+            Dep.prototype.setupActionItems.call(this);
+            if(!this.model.get('closed') || !this.model.get('archived')) {
+                this.dropdownItemList.push({label: 'closeAndArchive', name: 'closeAndArchive'});
+            }
         },
 
-        whereAdditional: {
-            'labels': function () {
-                return [
-                    {
-                        type: 'inProjectAndParentGroups',
-                        attribute: 'projectId',
-                        value: this.model.get('projectId')
-                    }
-                ];
-            }
-        }
+        actionCloseAndArchive: function (data) {
+            let self = this;
+
+            this.notify('Saving...');
+            this.model.save({"closed": true, "archived": true}, {
+                success: function () {
+                    self.notify('Saved', 'success');
+                },
+                patch: true
+            });
+        },
 
     });
-
 });
