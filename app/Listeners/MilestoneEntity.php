@@ -33,8 +33,8 @@ declare(strict_types=1);
 
 namespace ProjectManagement\Listeners;
 
-use Treo\Listeners\AbstractListener;
-use Treo\Core\EventManager\Event;
+use Espo\Listeners\AbstractListener;
+use Espo\Core\EventManager\Event;
 use Espo\Orm\Entity;
 use Espo\Core\Exceptions\Error;
 
@@ -108,29 +108,17 @@ class MilestoneEntity extends AbstractListener
 
             // set all found teams to milestone
             if (!empty($teamsIds)) {
-                $milestone->set(
-                    [
-                        'teamsIds' => $teamsIds
-                    ]
-                );
-                $this->getEntityManager()->saveEntity(
-                    $milestone,
-                    array_merge($options, ['skipPMAutoAssignTeam' => true])
-                );
+                foreach ($teamsIds as $teamId) {
+                    $this->getEntityManager()->getRepository($milestone->getEntityType())->relate($milestone, 'teams', $teamId);
+                }
             }
 
             // get expenses of current milestone
             $expensesEntity = $milestone->get('expenses');
             foreach ($expensesEntity as $expenseEntity) {
-                $expenseEntity->set(
-                    [
-                        'teamsIds' => $teamsIds
-                    ]
-                );
-                $this->getEntityManager()->saveEntity(
-                    $expenseEntity,
-                    array_merge($options, ['skipPMAutoAssignTeam' => true])
-                );
+                foreach ($teamsIds as $teamId) {
+                    $this->getEntityManager()->getRepository($expenseEntity->getEntityType())->relate($expenseEntity, 'teams', $teamId);
+                }
             }
         }
     }
