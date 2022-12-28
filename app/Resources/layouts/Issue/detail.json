@@ -45,12 +45,6 @@
       ],
       [
         {
-          "name": "paymentStatus"
-        },
-        false
-      ],
-      [
-        {
           "name": "project"
         },
         {

@@ -233,16 +233,6 @@
       "type": "float",
       "audited": true
     },
-    "paymentStatus": {
-      "type": "enum",
-      "required": false,
-      "options": [
-        "Invoiced",
-        "Paid"
-      ],
-      "default": null,
-      "audited": true
-    },
     "file": {
       "type": "asset",
       "required": false,
