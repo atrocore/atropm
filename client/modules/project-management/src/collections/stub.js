@@ -24,8 +24,6 @@
 *
 * In accordance with Section 7(b) of the GNU General Public License version 3,
 * these Appropriate Legal Notices must retain the display of the "AtroPM" word.
-*
-* This software is not allowed to be used in Russia and Belarus.
 */
 
 Espo.define('project-management:collections/stub', 'collection', function (Dep) {
