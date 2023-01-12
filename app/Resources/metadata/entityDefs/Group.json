@@ -39,6 +39,10 @@
             "type": "enum",
             "required": true,
             "prohibitedEmptyValue": true,
+            "optionsIds": [
+                "External",
+                "Internal"
+            ],
             "options": [
                 "External",
                 "Internal"

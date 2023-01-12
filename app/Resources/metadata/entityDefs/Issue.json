@@ -71,6 +71,11 @@
     "issueType": {
       "type": "enum",
       "required": true,
+      "optionsIds": [
+        "Request",
+        "Feature",
+        "Bug"
+      ],
       "options": [
         "Request",
         "Feature",
@@ -89,6 +94,14 @@
       "type": "enum",
       "required": true,
       "prohibitedEmptyValue": true,
+      "optionsIds": [
+        "New",
+        "In Progress",
+        "Feedback",
+        "To Release",
+        "Released",
+        "Done"
+      ],
       "options": [
         "New",
         "In Progress",
@@ -103,6 +116,11 @@
     "approvalStatus": {
       "type": "enum",
       "required": false,
+      "optionsIds": [
+        "To Approve",
+        "NOT Approved",
+        "Approved"
+      ],
       "options": [
         "To Approve",
         "NOT Approved",
@@ -156,6 +174,7 @@
       "type": "multiEnum",
       "storeArrayValues": true,
       "required": false,
+      "optionsIds": [],
       "options": [],
       "optionColors": [],
       "view": "project-management:views/issue/fields/labels-colored"
@@ -164,6 +183,24 @@
       "type": "multiEnum",
       "storeArrayValues": true,
       "required": false,
+      "optionsIds": [
+        "core",
+        "pim",
+        "pm",
+        "completeness",
+        "dam",
+        "export",
+        "import",
+        "navigation",
+        "ownership",
+        "pdf-generator",
+        "pdf-productsheets",
+        "preview",
+        "pricing",
+        "revisions",
+        "tasks",
+        "variants"
+      ],
       "options": [
         "core",
         "pim",
@@ -194,6 +231,18 @@
     "estimate": {
       "type": "enum",
       "required": false,
+      "optionsIds": [
+        "0",
+        "0.5",
+        "1",
+        "2",
+        "3",
+        "5",
+        "8",
+        "13",
+        "20",
+        "40"
+      ],
       "options": [
         "0",
         "0.5",

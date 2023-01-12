@@ -111,6 +111,10 @@
         "status": {
             "type": "enum",
             "required": true,
+            "optionsIds": [
+                "active",
+                "closed"
+            ],
             "options": [
                 "active",
                 "closed"

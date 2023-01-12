@@ -44,6 +44,10 @@
         "projectType": {
             "type": "enum",
             "required": true,
+            "optionsIds": [
+                "External",
+                "Internal"
+            ],
             "options": [
                 "External",
                 "Internal"

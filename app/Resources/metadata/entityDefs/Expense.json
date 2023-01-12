@@ -40,6 +40,11 @@
             "type": "enum",
             "required": true,
             "prohibitedEmptyValue": true,
+            "optionsIds": [
+                "New",
+                "Estimated",
+                "Realized"
+            ],
             "options": [
                 "New",
                 "Estimated",
