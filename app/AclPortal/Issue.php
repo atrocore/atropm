@@ -46,7 +46,15 @@ class Issue extends Base
     public function checkInAccount(User $user, Entity $entity)
     {
         $accountIdList = $user->getLinkMultipleIdList('accounts');
-        if (count($accountIdList) && !empty($project = $entity->get('project')) && !empty($project->get('accountId'))) {
+        if (empty($accountIdList)) {
+            $accountIdList = [];
+        }
+
+        if (!empty($user->get('accountId'))) {
+            $accountIdList[] = $user->get('accountId');
+        }
+
+        if (count($accountIdList) > 0 && !empty($project = $entity->get('project')) && !empty($project->get('accountId'))) {
             if (in_array($project->get('accountId'), $accountIdList)) {
                 return true;
             }
@@ -55,4 +63,3 @@ class Issue extends Base
         return false;
     }
 }
-
