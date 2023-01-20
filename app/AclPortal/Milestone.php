@@ -46,6 +46,13 @@ class Milestone extends Base
     public function checkInAccount(User $user, Entity $entity)
     {
         $accountIdList = $user->getLinkMultipleIdList('accounts');
+        if (empty($accountIdList)) {
+            $accountIdList = [];
+        }
+
+        if (!empty($user->get('accountId'))) {
+            $accountIdList[] = $user->get('accountId');
+        }
 
         if (count($accountIdList) == 0) {
             return false;
