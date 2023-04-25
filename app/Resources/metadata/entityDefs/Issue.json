@@ -230,7 +230,8 @@
     },
     "estimate": {
       "type": "enum",
-      "required": false,
+      "prohibitedEmptyValue": true,
+      "required": true,
       "optionsIds": [
         "?",
         "0",
