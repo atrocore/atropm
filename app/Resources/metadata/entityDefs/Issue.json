@@ -170,15 +170,6 @@
       "audited": true,
       "view": "project-management:views/issue/fields/milestone"
     },
-    "labels": {
-      "type": "multiEnum",
-      "storeArrayValues": true,
-      "required": false,
-      "optionsIds": [],
-      "options": [],
-      "optionColors": [],
-      "view": "project-management:views/issue/fields/labels-colored"
-    },
     "repositories": {
       "type": "multiEnum",
       "storeArrayValues": true,

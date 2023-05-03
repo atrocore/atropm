@@ -6,8 +6,7 @@
     "Milestone": "Milestone",
     "Issue": "Issue",
     "ExpenseType": "Expense Type",
-    "Expense": "Expense",
-    "Label": "Label"
+    "Expense": "Expense"
   },
   "scopeNamesPlural": {
     "Account": "Accounts",
@@ -16,8 +15,7 @@
     "Milestone": "Milestones",
     "Issue": "Issues",
     "ExpenseType": "Expense Types",
-    "Expense": "Expenses",
-    "Label": "Labels"
+    "Expense": "Expenses"
   },
   "boolFilters": {
     "onlyOpen": "Open",

@@ -31,65 +31,19 @@ declare(strict_types=1);
 
 namespace ProjectManagement\Listeners;
 
-use Espo\Core\Utils\Json;
-use Treo\Core\EventManager\Event;
-use Espo\Core\Utils\Util;
-use Treo\Listeners\AbstractListener;
+use Espo\Core\EventManager\Event;
+use Espo\Listeners\AbstractListener;
 
-/**
- * Class Metadata
- */
 class Metadata extends AbstractListener
 {
-    /**
-     * @param Event $event
-     */
-    public function modify(Event $event)
+    public function modify(Event $event): void
     {
-        // get data
         $data = $event->getArgument('data');
-
-        $labels = $this->getAllLabels();
-
-        $data['entityDefs']['Issue']['fields']['labels']['allLabels'] = $labels;
-        foreach ($labels as $label) {
-            $data['entityDefs']['Issue']['fields']['labels']['options'][] = $label['id'];
-            $data['entityDefs']['Issue']['fields']['labels']['optionColors'][] = $label['backgroundColor'];
-        }
 
         if (isset($data['entityDefs']['ImportFeed']['fields']['type'])) {
             $data['entityDefs']['ImportFeed']['fields']['type']['options'][] = 'Trello';
         }
 
-        // set data
         $event->setArgument('data', $data);
-    }
-
-    /**
-     * @return array
-     */
-    protected function getAllLabels(): array
-    {
-        $cacheFile = 'data/cache/all-labels.json';
-
-        if (file_exists($cacheFile)) {
-            return Json::decode(file_get_contents($cacheFile), true);
-        }
-
-        try {
-            $sth = $this
-                ->getContainer()
-                ->get('pdo')
-                ->prepare(
-                    "SELECT id, name, background_color as backgroundColor, project_id as projectId, group_id as groupId FROM label WHERE deleted=0 AND (project_id IS NOT NULL OR group_id IS NOT NULL)"
-                );
-            $sth->execute();
-            $labels = $sth->fetchAll(\PDO::FETCH_ASSOC);
-            file_put_contents($cacheFile, Json::encode($labels));
-        } catch (\Throwable $e) {
-            $labels = [];
-        }
-
-        return $labels;
     }
 }

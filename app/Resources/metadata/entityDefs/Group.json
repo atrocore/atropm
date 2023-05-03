@@ -57,13 +57,6 @@
             "noLoad": true,
             "importDisabled": true
         },
-        "labels": {
-            "type": "linkMultiple",
-            "layoutDetailDisabled": true,
-            "layoutMassUpdateDisabled": true,
-            "noLoad": true,
-            "importDisabled": true
-        },
         "projects": {
             "type": "linkMultiple",
             "layoutDetailDisabled": true,
@@ -95,12 +88,6 @@
             "type": "hasMany",
             "foreign": "group",
             "entity": "Milestone",
-            "audited": true
-        },
-        "labels": {
-            "type": "hasMany",
-            "foreign": "group",
-            "entity": "Label",
             "audited": true
         },
         "projects": {

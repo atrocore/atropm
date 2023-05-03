@@ -69,13 +69,6 @@
             "noLoad": true,
             "importDisabled": true
         },
-        "labels": {
-            "type": "linkMultiple",
-            "layoutDetailDisabled": true,
-            "layoutMassUpdateDisabled": true,
-            "noLoad": true,
-            "importDisabled": true
-        },
         "totalIssues": {
             "type": "int",
             "audited": true,
@@ -127,12 +120,6 @@
             "type": "hasMany",
             "foreign": "project",
             "entity": "Milestone",
-            "audited": true
-        },
-        "labels": {
-            "type": "hasMany",
-            "foreign": "project",
-            "entity": "Label",
             "audited": true
         },
         "expenses": {

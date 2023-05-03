@@ -16,9 +16,6 @@
         "name": "approvalStatus"
     },
     {
-        "name": "labels"
-    },
-    {
         "name": "repositories"
     },
     {
