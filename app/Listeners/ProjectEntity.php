@@ -146,15 +146,6 @@ class ProjectEntity extends AbstractListener
             $this->getEntityManager()->getRepository($project->getEntityType())->relate($project, 'teams', $teamId);
         }
 
-        // get labels of current project
-        $labelsEntity = $this->getEntityManager()->getRepository('Label')->where(['projectId' => $project->get('id')])->find();
-        $this->setTeamsToRelatedEntities(
-            $labelsEntity,
-            $teamsIds,
-            $removedTeams,
-            array_merge($options, ['skipPMAutoAssignTeam' => true])
-        );
-
         // get milestones of current project
         $milestonesEntity = $this->getEntityManager()->getRepository('Milestone')->where(['projectId' => $project->get('id')])->find();
         $this->setTeamsToRelatedEntities($milestonesEntity, $teamsIds, $removedTeams, $options);
@@ -223,11 +214,6 @@ class ProjectEntity extends AbstractListener
         );
         foreach ($relatedProjectTeams as $relatedProjectTeam) {
             $this->getEntityManager()->removeEntity($relatedProjectTeam, $options);
-        }
-
-        $labelsEntity = $this->getEntityManager()->getRepository('Label')->where(['projectId' => $project->get('id')])->find();
-        foreach ($labelsEntity as $labelEntity) {
-            $this->getEntityManager()->removeEntity($labelEntity, $options);
         }
 
         $milestonesEntity = $this->getEntityManager()->getRepository('Milestone')->where(['projectId' => $project->get('id')])->find();

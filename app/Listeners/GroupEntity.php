@@ -153,15 +153,6 @@ class GroupEntity extends AbstractListener
                 );
             }
 
-            // get labels of current group
-            $labelsEntity = $this->getEntityManager()->getRepository('Label')->where(['groupId' => $group->get('id')])->find();
-            $this->setTeamsToRelatedEntities(
-                $labelsEntity,
-                $teamsIds,
-                $removedTeams,
-                array_merge($options, ['skipPMAutoAssignTeam' => true])
-            );
-
             // get milestones of current group
             $milestonesEntity = $this->getEntityManager()->getRepository('Milestone')->where(['groupId' => $group->get('id')])->find();
             $this->setTeamsToRelatedEntities($milestonesEntity, $teamsIds, $removedTeams, $options);
@@ -224,11 +215,6 @@ class GroupEntity extends AbstractListener
         );
         foreach ($relatedGroupTeams as $relatedGroupTeam) {
             $this->getEntityManager()->removeEntity($relatedGroupTeam, $options);
-        }
-
-        $labelsEntity = $this->getEntityManager()->getRepository('Label')->where(['groupId' => $group->get('id')])->find();
-        foreach ($labelsEntity as $labelEntity) {
-            $this->getEntityManager()->removeEntity($labelEntity, $options);
         }
 
         $milestonesEntity = $this->getEntityManager()->getRepository('Milestone')->where(['groupId' => $group->get('id')])->find();

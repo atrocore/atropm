@@ -8,8 +8,7 @@
     },
     "labels": {
         "Create Group": "Create Group",
-        "milestones": "Milestones",
-        "labels": "Labels"
+        "milestones": "Milestones"
     },
     "options": {
         "groupType": {
