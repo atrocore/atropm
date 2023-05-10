@@ -61,32 +61,6 @@ class ProjectEntity extends AbstractListener
         return $event->getArgument('options');
     }
 
-    /**
-     * Before save entity listener
-     *
-     * @param Event $event
-     *
-     * @throws Error
-     */
-    public function beforeSave(Event $event)
-    {
-        // get project entity
-        $project = $this->getEntity($event);
-
-        if (ctype_digit($project->get('name'))) {
-            throw new Error('Name must not consist of numbers only');
-        }
-
-        $projectsEntity = $this->getEntityManager()->getRepository('Project')->where([
-            'name' => $project->get('name'),
-            'id!=' => $project->get('id')
-        ])->findOne();
-
-        if (!empty($projectsEntity)) {
-            throw new Error('Project with the same name already exists');
-        }
-    }
-
     public function afterSave(Event $event): void
     {
         // get options
@@ -98,6 +72,10 @@ class ProjectEntity extends AbstractListener
 
         // get project entity
         $project = $this->getEntity($event);
+
+        if (!$project->isAttributeChanged('teamsIds')) {
+            return;
+        }
 
         $teamsIds = [];
         $teamProjectNameAssigned = false;
