@@ -32,8 +32,8 @@ declare(strict_types=1);
 namespace ProjectManagement\Listeners;
 
 use Espo\Core\Utils\Json;
-use Treo\Listeners\AbstractListener;
-use Treo\Core\EventManager\Event;
+use Espo\Listeners\AbstractListener;
+use Espo\Core\EventManager\Event;
 
 /**
  * Class LayoutController

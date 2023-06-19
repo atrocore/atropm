@@ -31,8 +31,8 @@ declare(strict_types=1);
 
 namespace ProjectManagement\Listeners;
 
-use Treo\Listeners\AbstractListener;
-use Treo\Core\EventManager\Event;
+use Espo\Listeners\AbstractListener;
+use Espo\Core\EventManager\Event;
 use Espo\Orm\Entity;
 
 /**

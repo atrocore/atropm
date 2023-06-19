@@ -33,7 +33,6 @@ namespace ProjectManagement\Listeners;
 
 use Espo\Listeners\AbstractListener;
 use Espo\Core\EventManager\Event;
-use Espo\Core\Exceptions\Error;
 use Espo\Orm\Entity;
 
 /**
