@@ -31,7 +31,7 @@ declare(strict_types=1);
 
 namespace ProjectManagement\SelectManagers;
 
-use Treo\Core\SelectManagers\Base;
+use Espo\Core\SelectManagers\Base;
 
 /**
  * Class Issue
