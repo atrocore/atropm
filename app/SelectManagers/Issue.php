@@ -46,14 +46,14 @@ class Issue extends Base
         parent::applyAdditional($result, $params);
 
         foreach ($result['whereClause'] as $v) {
-            if (isset($v['archived']) || $v['closed']) {
+            if (isset($v['isArchived=']) || $v['closed']) {
                 return;
             }
         }
 
         if (empty($params['allIssues'])) {
             $result['whereClause'][] = [
-                'archived!=' => true
+                'isArchived!=' => true
             ];
         }
     }
