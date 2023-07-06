@@ -35,7 +35,12 @@ Espo.define('project-management:acl-portal/issue', 'acl-portal', function (Dep) 
     return Dep.extend({
 
         checkInAccount: function (model) {
-            var accountIdList = this.getUser().getLinkMultipleIdList('accounts');
+            let accountIdList = this.getUser().getLinkMultipleIdList('accounts');
+
+            let accountId = this.getUser().get('accountId');
+            if (accountId) {
+                accountIdList.push(accountId);
+            }
 
             if (!accountIdList.length) {
                 return false;
