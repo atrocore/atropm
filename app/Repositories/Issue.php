@@ -31,6 +31,7 @@ declare(strict_types=1);
 
 namespace ProjectManagement\Repositories;
 
+use Espo\Core\Exceptions\BadRequest;
 use Espo\ORM\Entity;
 
 /**
@@ -107,6 +108,22 @@ class Issue extends AbstractRepository
 
         if ($entity->isAttributeChanged('position')) {
             $this->updatePosition($entity, (int)$entity->get('position'));
+        }
+
+        if ($entity->isAttributeChanged('milestoneId')) {
+            $projectsIds = [];
+            if (!empty($group = $entity->get('group'))) {
+                foreach ($group->get('projects') as $project) {
+                    $projectsIds[] = $project->get('id');
+                }
+            }
+            if (!empty($project = $entity->get('project'))) {
+                $projectsIds[] = $project->get('id');
+            }
+
+            if (!in_array($entity->get('projectId'), $projectsIds)) {
+                throw new BadRequest('Issue has wrong project and can not be linked with milestone.');
+            }
         }
 
         parent::beforeSave($entity, $options);

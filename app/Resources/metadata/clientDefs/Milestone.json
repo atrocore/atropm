@@ -10,11 +10,6 @@
   "modalViews": {
     "select": "project-management:views/modals/select-records"
   },
-  "relationshipPanels": {
-    "issues": {
-      "select": false
-    }
-  },
   "bottomPanels": {
     "detail": [
       {
