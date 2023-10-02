@@ -53,7 +53,7 @@ class Issue extends AbstractRepository
 
         $issues = $this
             ->select(['id'])
-            ->where(['status' => $entity->get('status'), 'archived' => false])
+            ->where(['status' => $entity->get('status'), 'isArchived' => false])
             ->order('position')
             ->find()
             ->toArray();
@@ -187,7 +187,7 @@ class Issue extends AbstractRepository
                 [
                     'status'     => $status,
                     'closed!='   => true,
-                    'archived!=' => true,
+                    'isArchived!=' => true,
                     'dueDate<'   => $dueDate,
                 ]
             )

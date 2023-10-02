@@ -1,3 +1,4 @@
+<?php
 /*
 * This file is part of AtroPM.
 *
@@ -26,27 +27,28 @@
 * these Appropriate Legal Notices must retain the display of the "AtroPM" word.
 */
 
-Espo.define('project-management:views/issue/record/detail', 'views/record/detail', function (Dep) {
+declare(strict_types=1);
 
-    return Dep.extend({
-        setupActionItems: function () {
-            Dep.prototype.setupActionItems.call(this);
-            if(!this.model.get('closed') || !this.model.get('isArchived')) {
-                this.dropdownItemList.push({label: 'closeAndArchive', name: 'closeAndArchive'});
-            }
-        },
+namespace ProjectManagement\Migrations;
 
-        actionCloseAndArchive: function (data) {
-            let self = this;
+/**
+ * Migration for version 1.1.29
+ */
+class V1Dot1Dot29 extends V1Dot0Dot1
+{
+    /**
+     * @inheritDoc
+     */
+    public function up(): void
+    {
+        $this->execute("ALTER TABLE issue CHANGE archived is_archived TINYINT(1) DEFAULT '0' NOT NULL COLLATE `utf8mb4_unicode_ci`");
+    }
 
-            this.notify('Saving...');
-            this.model.save({"closed": true, "isArchived": true}, {
-                success: function () {
-                    self.notify('Saved', 'success');
-                },
-                patch: true
-            });
-        },
-
-    });
-});
+    /**
+     * @inheritDoc
+     */
+    public function down(): void
+    {
+        $this->execute("ALTER TABLE issue CHANGE is_archived archived TINYINT(1) DEFAULT '0' NOT NULL COLLATE `utf8mb4_unicode_ci`");
+    }
+}

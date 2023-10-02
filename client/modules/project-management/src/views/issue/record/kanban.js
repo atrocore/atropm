@@ -55,7 +55,7 @@ Espo.define('project-management:views/issue/record/kanban', 'views/record/kanban
             let model = this.collection.get(data.id);
 
             this.notify('Saving...');
-            model.save({"closed": true, "archived": true}, {
+            model.save({"closed": true, "isArchived": true}, {
                 success: function () {
                     self.notify('Saved', 'success');
                 },

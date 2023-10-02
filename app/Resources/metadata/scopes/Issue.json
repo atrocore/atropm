@@ -24,5 +24,6 @@
   "statusField": "status",
   "hasAssignedUser": true,
   "hasTeam": true,
-  "hasOwner": true
+  "hasOwner": true,
+  "hasArchive": true
 }
