@@ -19,8 +19,7 @@
   },
   "boolFilters": {
     "onlyOpen": "Open",
-    "onlyClosed": "Closed",
-    "onlyArchived": "Archived"
+    "onlyClosed": "Closed"
   },
   "labels": {
     "closeAndArchive": "Close and Archive"

@@ -9,8 +9,7 @@
     "ownedByMe",
     "assignedToMe",
     "onlyOpen",
-    "onlyClosed",
-    "onlyArchived"
+    "onlyClosed"
   ],
   "views": {
     "detail": "project-management:views/issue/detail"

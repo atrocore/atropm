@@ -301,10 +301,6 @@
       "default": "?",
       "audited": true
     },
-    "archived": {
-      "type": "bool",
-      "audited": true
-    },
     "closed": {
       "type": "bool",
       "audited": true

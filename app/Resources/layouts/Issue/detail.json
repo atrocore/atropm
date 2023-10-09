@@ -68,7 +68,7 @@
           "name": "closed"
         },
         {
-          "name": "archived"
+          "name": "isArchived"
         }
       ],
       [

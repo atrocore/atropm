@@ -38,25 +38,6 @@ use Espo\Core\SelectManagers\Base;
  */
 class Issue extends Base
 {
-    /**
-     * @inheritDoc
-     */
-    public function applyAdditional(array &$result, array $params)
-    {
-        parent::applyAdditional($result, $params);
-
-        foreach ($result['whereClause'] as $v) {
-            if (isset($v['archived']) || isset($v['archived=']) || $v['closed']) {
-                return;
-            }
-        }
-
-        if (empty($params['allIssues'])) {
-            $result['whereClause'][] = [
-                'archived!=' => true
-            ];
-        }
-    }
 
     /**
      * @param mixed $result
@@ -75,16 +56,6 @@ class Issue extends Base
     {
         $result['whereClause'][] = [
             'closed' => true
-        ];
-    }
-
-    /**
-     * @param mixed $result
-     */
-    protected function boolFilterOnlyArchived(&$result)
-    {
-        $result['whereClause'][] = [
-            'archived' => true
         ];
     }
 
