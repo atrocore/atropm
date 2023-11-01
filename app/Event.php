@@ -31,17 +31,12 @@ declare(strict_types=1);
 
 namespace ProjectManagement;
 
-use Treo\Core\ModuleManager\AfterInstallAfterDelete;
+use Atro\Core\ModuleManager\AfterInstallAfterDelete;
+use Espo\Core\Utils\Config;
 
-/**
- * Class Event
- */
 class Event extends AfterInstallAfterDelete
 {
-    /**
-     * @var array
-     */
-    protected $menuItems = [
+    protected array $menuItems = [
         'Group',
         'Project',
         'Label',
@@ -51,21 +46,13 @@ class Event extends AfterInstallAfterDelete
         'Expense'
     ];
 
-    /**
-     * @inheritdoc
-     */
     public function afterInstall(): void
     {
-        // add menu items
         $this->addMenuItems();
     }
 
-    /**
-     * @inheritdoc
-     */
     public function afterDelete(): void
     {
-        // delete menu items
         $this->deleteMenuItems();
     }
 
@@ -74,7 +61,7 @@ class Event extends AfterInstallAfterDelete
      */
     protected function addMenuItems()
     {
-        // get config
+        /** @var Config $config */
         $config = $this->getContainer()->get('config');
 
         // get config data
@@ -108,7 +95,7 @@ class Event extends AfterInstallAfterDelete
      */
     protected function deleteMenuItems()
     {
-        // get config
+        /** @var Config $config */
         $config = $this->getContainer()->get('config');
 
         // for tabList

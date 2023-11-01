@@ -32,8 +32,8 @@ declare(strict_types=1);
 namespace ProjectManagement\Listeners;
 
 use Espo\Core\Utils\Json;
-use Espo\Listeners\AbstractListener;
-use Espo\Core\EventManager\Event;
+use Atro\Listeners\AbstractListener;
+use Atro\Core\EventManager\Event;
 
 /**
  * Class LayoutController

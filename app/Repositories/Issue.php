@@ -31,6 +31,7 @@ declare(strict_types=1);
 
 namespace ProjectManagement\Repositories;
 
+use Doctrine\DBAL\Connection;
 use Espo\Core\Exceptions\BadRequest;
 use Espo\ORM\Entity;
 
@@ -199,6 +200,15 @@ class Issue extends AbstractRepository
 
     protected function updatePositionQuery(int $position, string $id): void
     {
-        $this->getEntityManager()->getPDO()->exec("UPDATE `issue` SET position=$position WHERE id='$id'");
+        /** @var Connection $conn */
+        $conn = $this->getEntityManager()->getConnection();
+
+        $conn->createQueryBuilder()
+            ->update($conn->quoteIdentifier('issue'), 'i')
+            ->set('position', ':pos')
+            ->where('i.id = :id')
+            ->setParameter('pos', $position)
+            ->setParameter('id', $id)
+            ->executeQuery();
     }
 }

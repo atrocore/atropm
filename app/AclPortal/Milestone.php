@@ -31,6 +31,8 @@ declare(strict_types=1);
 
 namespace ProjectManagement\AclPortal;
 
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\ParameterType;
 use Espo\Core\AclPortal\Base;
 use Espo\Entities\User;
 use Espo\ORM\Entity;
@@ -64,12 +66,16 @@ class Milestone extends Base
             }
         }
 
+        /** @var Connection $conn */
+        $conn = $this->getEntityManager()->getConnection();
+
         $accountsIds = implode("','", $accountIdList);
 
         $pdo = $this->getEntityManager()->getPDO();
         $sth = $pdo->prepare(
-            "SELECT i.milestone_id FROM `issue` AS i LEFT JOIN `project` AS p ON p.id=i.project_id WHERE i.deleted=0 AND p.deleted=0 AND p.account_id IN ('$accountsIds') AND i.milestone_id IS NOT NULL"
+            "SELECT i.milestone_id FROM {$conn->quoteIdentifier('issue')} i LEFT JOIN {$conn->quoteIdentifier('project')} p ON p.id=i.project_id WHERE i.deleted=:false AND p.deleted=:false AND p.account_id IN ('$accountsIds') AND i.milestone_id IS NOT NULL"
         );
+        $sth->bindValue(':false', false, ParameterType::BOOLEAN);
         $sth->execute();
 
         return in_array($entity->get('id'), $sth->fetchAll(\PDO::FETCH_COLUMN));

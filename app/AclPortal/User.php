@@ -31,22 +31,29 @@ declare(strict_types=1);
 
 namespace ProjectManagement\AclPortal;
 
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\ParameterType;
 use Espo\Core\AclPortal\Base;
 use Espo\Entities\User as UserEntity;
 use Espo\ORM\Entity;
+use Espo\ORM\EntityManager;
 
 /**
  * Class User
  */
 class User extends Base
 {
-    public static function getProjectsUsersIds(\PDO $pdo, array $accountIdList): array
+    public static function getProjectsUsersIds(EntityManager $entityManager, array $accountIdList): array
     {
+        /** @var Connection $conn */
+        $conn = $entityManager->getConnection();
+
         $accountsIds = implode("','", $accountIdList);
 
-        $sth = $pdo->prepare(
-            "SELECT DISTINCT u.id FROM `project` AS p LEFT JOIN entity_team AS et ON et.entity_id=p.id LEFT JOIN team_user AS tu ON tu.team_id=et.team_id LEFT JOIN user AS u ON u.id=tu.user_id WHERE p.account_id IN ('$accountsIds') AND et.entity_type='Project' AND u.deleted=0"
+        $sth = $entityManager->getPDO()->prepare(
+            "SELECT DISTINCT u.id FROM {$conn->quoteIdentifier('project')} p LEFT JOIN {$conn->quoteIdentifier('entity_team')} et ON et.entity_id=p.id LEFT JOIN {$conn->quoteIdentifier('team_user')} tu ON tu.team_id=et.team_id LEFT JOIN {$conn->quoteIdentifier('user')} u ON u.id=tu.user_id WHERE p.account_id IN ('$accountsIds') AND et.entity_type='Project' AND u.deleted=:false"
         );
+        $sth->bindValue(':false', false, ParameterType::BOOLEAN);
         $sth->execute();
 
         return $sth->fetchAll(\PDO::FETCH_COLUMN);
@@ -59,7 +66,7 @@ class User extends Base
     {
         $accountIdList = $user->getLinkMultipleIdList('accounts');
         if (count($accountIdList)) {
-            if (in_array($user->get('id'), self::getProjectsUsersIds($this->getEntityManager()->getPDO(), $accountIdList))) {
+            if (in_array($user->get('id'), self::getProjectsUsersIds($this->getEntityManager(), $accountIdList))) {
                 return true;
             }
         }

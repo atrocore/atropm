@@ -31,7 +31,7 @@ declare(strict_types=1);
 
 namespace ProjectManagement\Migrations;
 
-use Treo\Core\Migration\Base;
+use Atro\Core\Migration\Base;
 
 /**
  * Migration for version 1.0.1

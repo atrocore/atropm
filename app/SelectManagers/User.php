@@ -82,7 +82,7 @@ class User extends \Espo\SelectManagers\User
         $accountId = $this->getUser()->get('accountId');
 
         if (!empty($accountId)) {
-            $d['id'] = \ProjectManagement\AclPortal\User::getProjectsUsersIds($this->getEntityManager()->getPDO(), [$accountId]);
+            $d['id'] = \ProjectManagement\AclPortal\User::getProjectsUsersIds($this->getEntityManager(), [$accountId]);
         }
 
         if ($this->getSeed()->hasAttribute('createdById')) {

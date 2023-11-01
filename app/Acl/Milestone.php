@@ -31,7 +31,10 @@ declare(strict_types=1);
 
 namespace ProjectManagement\Acl;
 
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\ParameterType;
 use Espo\Core\Acl\Base;
+use Espo\ORM\EntityManager;
 use Espo\Entities\User;
 use Espo\ORM\Entity;
 
@@ -40,13 +43,17 @@ use Espo\ORM\Entity;
  */
 class Milestone extends Base
 {
-    public static function getMilestoneIdsByIssues(\PDO $pdo, array $userTeamIdList): array
+    public static function getMilestoneIdsByIssues(EntityManager $entityManager, array $userTeamIdList): array
     {
+        /** @var Connection $conn */
+        $conn = $entityManager->getConnection();
+
         $sqlTeamsIds = implode("','", $userTeamIdList);
 
-        $sth = $pdo->prepare(
-            "SELECT i.milestone_id FROM `issue` AS i LEFT JOIN `project` AS p ON p.id=i.project_id LEFT JOIN `entity_team` AS et ON et.entity_id=p.id WHERE i.deleted=0 AND p.deleted=0 AND et.deleted=0 AND et.entity_type='Project' AND et.team_id IN ('$sqlTeamsIds') AND milestone_id IS NOT NULL"
+        $sth = $entityManager->getPDO()->prepare(
+            "SELECT i.milestone_id FROM {$conn->quoteIdentifier('issue')} i LEFT JOIN {$conn->quoteIdentifier('project')} p ON p.id=i.project_id LEFT JOIN {$conn->quoteIdentifier('entity_team')} et ON et.entity_id=p.id WHERE i.deleted=:false AND p.deleted=:false AND et.deleted=:false AND et.entity_type='Project' AND et.team_id IN ('$sqlTeamsIds') AND milestone_id IS NOT NULL"
         );
+        $sth->bindValue(':false', false, ParameterType::BOOLEAN);
         $sth->execute();
 
         return $sth->fetchAll(\PDO::FETCH_COLUMN);
@@ -63,7 +70,7 @@ class Milestone extends Base
             return false;
         }
 
-        if (in_array($entity->get('id'), self::getMilestoneIdsByIssues($this->getEntityManager()->getPDO(), $userTeamIdList))) {
+        if (in_array($entity->get('id'), self::getMilestoneIdsByIssues($this->getEntityManager(), $userTeamIdList))) {
             return true;
         }
 

@@ -32,16 +32,10 @@ declare(strict_types=1);
 namespace ProjectManagement;
 
 use Espo\Core\Utils\Json;
-use Treo\Core\ModuleManager\AbstractModule;
+use Atro\Core\ModuleManager\AbstractModule;
 
-/**
- * Class Module
- */
 class Module extends AbstractModule
 {
-    /**
-     * @inheritdoc
-     */
     public static function getLoadOrder(): int
     {
         return 5000;
@@ -76,7 +70,6 @@ class Module extends AbstractModule
                         }
                     }
                     break;
-
                 case 'list':
                 case 'listSmall':
                     // merge fields (by "name" parameter)
@@ -86,7 +79,6 @@ class Module extends AbstractModule
                     $fileDataAssoc = array_combine($fileDataKeys, $fileDataArr);
                     $data = array_values(array_merge($dataAssoc, $fileDataAssoc));
                     break;
-
                 case 'detail':
                 case 'detailSmall':
                     // add only new panels (by "label" parameter)
@@ -97,7 +89,6 @@ class Module extends AbstractModule
                         }
                     }
                     break;
-
                 default:
                     $data = array_merge_recursive($data, $fileDataArr);
             }

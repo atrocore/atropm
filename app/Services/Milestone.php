@@ -62,7 +62,7 @@ class Milestone extends AbstractService
         $this->prepareEntityParentForOutput($entity, 'group', 'Group');
         $this->prepareEntityParentForOutput($entity, 'project', 'Project');
 
-        $entity->set('inProjectTeams', in_array($entity->get('id'), Acl::getMilestoneIdsByIssues($this->getEntityManager()->getPDO(), $this->getUser()->getLinkMultipleIdList('teams'))));
+        $entity->set('inProjectTeams', in_array($entity->get('id'), Acl::getMilestoneIdsByIssues($this->getEntityManager(), $this->getUser()->getLinkMultipleIdList('teams'))));
     }
 
     /**

@@ -31,6 +31,8 @@ declare(strict_types=1);
 
 namespace ProjectManagement\SelectManagers;
 
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\ParameterType;
 use Espo\Core\SelectManagers\Base;
 
 /**
@@ -71,9 +73,14 @@ class Issue extends Base
 
         $sqlTeamsIds = implode("','", $d['teamsAccess.id']);
         $pdo = $this->getEntityManager()->getPDO();
+
+        /** @var Connection $conn */
+        $conn = $this->getEntityManager()->getConnection();
+
         $sth = $pdo->prepare(
-            "SELECT i.id FROM `issue` AS i LEFT JOIN `project` AS p ON p.id=i.project_id LEFT JOIN `entity_team` AS et ON et.entity_id=p.id WHERE i.deleted=0 AND p.deleted=0 AND et.deleted=0 AND et.entity_type='Project' AND et.team_id IN ('$sqlTeamsIds')"
+            "SELECT i.id FROM {$conn->quoteIdentifier('issue')} i LEFT JOIN {$conn->quoteIdentifier('project')} p ON p.id=i.project_id LEFT JOIN {$conn->quoteIdentifier('entity_team')} et ON et.entity_id=p.id WHERE i.deleted=:false AND p.deleted=:false AND et.deleted=:false AND et.entity_type='Project' AND et.team_id IN ('$sqlTeamsIds')"
         );
+        $sth->bindValue(':false', false, ParameterType::BOOLEAN);
         $sth->execute();
         $d['id'] = $sth->fetchAll(\PDO::FETCH_COLUMN);
 

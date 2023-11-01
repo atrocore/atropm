@@ -31,6 +31,8 @@ declare(strict_types=1);
 
 namespace ProjectManagement\SelectManagers;
 
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\ParameterType;
 use Espo\Core\SelectManagers\Base;
 
 /**
@@ -71,14 +73,18 @@ class Milestone extends Base
 
         $sqlTeamsIds = implode("','", $d['teamsAccess.id']);
 
+        /** @var Connection $conn */
+        $conn = $this->getEntityManager()->getConnection();
+
         $pdo = $this->getEntityManager()->getPDO();
 
         $sth = $pdo->prepare(
-            "SELECT m.id FROM `milestone` AS m LEFT JOIN `project` AS p ON p.id=m.project_id LEFT JOIN `entity_team` AS et ON et.entity_id=p.id WHERE m.deleted=0 AND p.deleted=0 AND et.deleted=0 AND et.entity_type='Project' AND et.team_id IN ('$sqlTeamsIds')"
+            "SELECT m.id FROM {$conn->quoteIdentifier('milestone')} m LEFT JOIN {$conn->quoteIdentifier('project')} p ON p.id=m.project_id LEFT JOIN {$conn->quoteIdentifier('entity_team')} et ON et.entity_id=p.id WHERE m.deleted=:false AND p.deleted=:false AND et.deleted=:false AND et.entity_type='Project' AND et.team_id IN ('$sqlTeamsIds')"
         );
+        $sth->bindValue(':false', false, ParameterType::BOOLEAN);
         $sth->execute();
 
-        $d['id'] = array_merge($sth->fetchAll(\PDO::FETCH_COLUMN), \ProjectManagement\Acl\Milestone::getMilestoneIdsByIssues($pdo, $d['teamsAccess.id']));
+        $d['id'] = array_merge($sth->fetchAll(\PDO::FETCH_COLUMN), \ProjectManagement\Acl\Milestone::getMilestoneIdsByIssues($this->getEntityManager(), $d['teamsAccess.id']));
 
         if ($this->hasOwnerUserField()) {
             $d['ownerUserId'] = $this->getUser()->id;
@@ -103,15 +109,22 @@ class Milestone extends Base
         $d = [];
         $accountId = $this->getUser()->get('accountId');
 
+        /** @var Connection $conn */
+        $conn = $this->getEntityManager()->getConnection();
+
         if (!empty($accountId)) {
             $d['project.accountId'] = $accountId;
-            $d['id'] = $this
-                ->getEntityManager()
-                ->getPDO()
-                ->query(
-                    "SELECT i.milestone_id FROM `issue` AS i LEFT JOIN `project` AS p ON p.id=i.project_id WHERE i.deleted=0 AND p.deleted=0 AND p.account_id='$accountId' AND i.milestone_id IS NOT NULL"
-                )
-                ->fetchAll(\PDO::FETCH_COLUMN);
+
+            $res = $conn->createQueryBuilder()
+                ->select('i.milestone_id')
+                ->from($conn->quoteIdentifier('issue'), 'i')
+                ->leftJoin('i', $conn->quoteIdentifier('project'), 'p', 'p.id = i.project_id')
+                ->where('i.deleted = :false AND p.deleted = :false AND p.account_id = :accountId AND i.milestone_id IS NOT NULL')
+                ->setParameter('false', false, ParameterType::BOOLEAN)
+                ->setParameter('accountId', $accountId)
+                ->fetchAssociative();
+
+            $d['id'] = $res['milestone_id'] ?? 'no-such-id';
         }
 
         $contactId = $this->getUser()->get('contactId');
