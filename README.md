@@ -79,8 +79,8 @@ Please, [ask](https://atrocore.com/contact), if you want to know more.
 ## Requirements
 
 - Unix-based system. Ubuntu is recommended.
-- PHP 7.4 or above.
-- MySQL 5.5.3 or above **(not MariaDB)**.
+* PHP 7.4 (or above).
+* MySQL 5.5.3 (or above) or PostgreSQL 14.9 (or above).
 
 ### Installation
 
