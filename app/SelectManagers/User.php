@@ -31,6 +31,8 @@ declare(strict_types=1);
 
 namespace ProjectManagement\SelectManagers;
 
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\ParameterType;
 use Espo\ORM\Entity;
 
 /**
@@ -66,10 +68,21 @@ class User extends \Espo\SelectManagers\User
             $teamsIds = array_merge($teamsIds, $project->getLinkMultipleIdList('teams'));
         }
 
+        $conn = $this->getEntityManager()->getConnection();
+
+        $res = $conn->createQueryBuilder()
+            ->select('user_id')
+            ->from('team_user')
+            ->where('team_id IN (:teamsIds)')
+            ->andWhere('deleted = :false')
+            ->setParameter('teamsIds', $teamsIds, Connection::PARAM_STR_ARRAY)
+            ->setParameter('false', false, ParameterType::BOOLEAN)
+            ->fetchAllAssociative();
+
         $where = [
-            'type'      => 'linkedWith',
-            'attribute' => 'teams',
-            'value'     => $teamsIds,
+            'type'      => 'in',
+            'attribute' => 'id',
+            'value'     => array_column($res, 'user_id'),
         ];
     }
 
