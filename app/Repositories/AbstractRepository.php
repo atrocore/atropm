@@ -47,7 +47,7 @@ abstract class AbstractRepository extends Base
 
         $issues = $entity->get('issues');
 
-        $totalIssues = $issues->count();
+        $totalIssues = $issues !== null ? count($issues) : 0;
         $openIssues = 0;
 
         if ($totalIssues > 0) {
