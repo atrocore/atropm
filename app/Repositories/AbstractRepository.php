@@ -31,7 +31,7 @@ declare(strict_types=1);
 
 namespace ProjectManagement\Repositories;
 
-use Espo\Core\Templates\Repositories\Base;
+use Atro\Core\Templates\Repositories\Base;
 use Espo\ORM\Entity;
 
 /**
