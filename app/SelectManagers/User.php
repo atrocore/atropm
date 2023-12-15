@@ -89,33 +89,6 @@ class User extends \Espo\SelectManagers\User
     /**
      * @inheritDoc
      */
-    protected function accessPortalOnlyAccount(&$result)
-    {
-        $d = [];
-        $accountId = $this->getUser()->get('accountId');
-
-        if (!empty($accountId)) {
-            $d['id'] = \ProjectManagement\AclPortal\User::getProjectsUsersIds($this->getEntityManager(), [$accountId]);
-        }
-
-        if ($this->getSeed()->hasAttribute('createdById')) {
-            $d['createdById'] = $this->getUser()->id;
-        }
-
-        if (!empty($d)) {
-            $result['whereClause'][] = [
-                'OR' => $d
-            ];
-        } else {
-            $result['whereClause'][] = [
-                'id' => null
-            ];
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
     protected function access(&$result)
     {
         \Espo\Core\SelectManagers\Base::access($result);

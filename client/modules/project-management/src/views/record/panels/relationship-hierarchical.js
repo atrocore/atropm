@@ -30,7 +30,7 @@ Espo.define('project-management:views/record/panels/relationship-hierarchical', 
 
     return Dep.extend({
 
-        noCreateScopeList: ['User', 'Team', 'Role', 'Portal'],
+        noCreateScopeList: ['User', 'Team', 'Role'],
 
         setup: function () {
             Dep.prototype.setup.call(this);

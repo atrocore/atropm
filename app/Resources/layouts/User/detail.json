@@ -2,14 +2,6 @@
   {
     "label": "Project Management Settings",
     "style": "default",
-    "dynamicLogicVisible": {
-      "conditionGroup": [
-        {
-          "type": "isFalse",
-          "attribute": "isPortalUser"
-        }
-      ]
-    },
     "rows": [
       [
         {

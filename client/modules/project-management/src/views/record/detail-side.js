@@ -32,7 +32,7 @@ Espo.define('project-management:views/record/detail-side', 'class-replace!projec
 
         setupDefaultPanel() {
             this.defaultPanelDefs.options.fieldList = this.defaultPanelDefs.options.fieldList.filter(fieldDefs => {
-                return fieldDefs.name !== 'teams' || (fieldDefs.name === 'teams' && !this.getUser().get('isPortalUser'));
+                return fieldDefs.name !== 'teams' || (fieldDefs.name === 'teams');
             });
 
             Dep.prototype.setupDefaultPanel.call(this);

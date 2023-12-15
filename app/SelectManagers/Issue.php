@@ -98,43 +98,4 @@ class Issue extends Base
 
         $result['whereClause'][] = ['OR' => $d];
     }
-
-    /**
-     * @inheritDoc
-     */
-    protected function accessPortalOnlyAccount(&$result)
-    {
-        $d = [];
-        $accountId = $this->getUser()->get('accountId');
-        if (!empty($accountId)) {
-            $this->addLeftJoin(['project', 'p1'], $result);
-            $d['p1.accountId'] = $accountId;
-        }
-
-        $contactId = $this->getUser()->get('contactId');
-        if ($contactId) {
-            if ($this->getSeed()->hasAttribute('contactId')) {
-                $d['contactId'] = $contactId;
-            }
-            if ($this->getSeed()->hasRelation('contacts')) {
-                $this->addLeftJoin(['contacts', 'contactsAccess'], $result);
-                $this->setDistinct(true, $result);
-                $d['contactsAccess.id'] = $contactId;
-            }
-        }
-
-        if ($this->getSeed()->hasAttribute('createdById')) {
-            $d['createdById'] = $this->getUser()->id;
-        }
-
-        if (!empty($d)) {
-            $result['whereClause'][] = [
-                'OR' => $d
-            ];
-        } else {
-            $result['whereClause'][] = [
-                'id' => null
-            ];
-        }
-    }
 }
