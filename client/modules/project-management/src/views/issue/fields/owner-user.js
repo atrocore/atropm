@@ -48,7 +48,6 @@ Espo.define('project-management:views/issue/fields/owner-user', ['views/fields/o
                 }
 
                 const teamsIds = this.model.get('teamsIds') || [];
-                teamsIds.push('no-such-id')
 
                 return [
                     {

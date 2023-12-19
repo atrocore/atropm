@@ -68,7 +68,6 @@ Espo.define('project-management:views/fields/assigned-user-with-teams-filter', [
             }
 
             const teamsIds = this.model.get('teamsIds') || [];
-            teamsIds.push('no-such-id');
 
             return [
                 {

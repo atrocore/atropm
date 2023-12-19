@@ -61,6 +61,9 @@ class User extends \Espo\SelectManagers\User
     protected function issueAssignedUsersFilter(array &$where): void
     {
         $teamsIds = $where['data']['teamsIds'];
+        if (empty($teamsIds)){
+            $teamsIds = ['no-such-id'];
+        }
 
         /** @var Entity $project */
         $project = $this->getEntityManager()->getEntity('Project', $where['data']['projectId']);

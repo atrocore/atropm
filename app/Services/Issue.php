@@ -46,21 +46,6 @@ class Issue extends Base
     /**
      * @inheritDoc
      */
-    public function prepareEntityForOutput(Entity $entity)
-    {
-        $projectTeamsIds = ['no-such-id'];
-        if (!empty($project = $entity->get('project'))) {
-            $entity->set('projectAccountId', $project->get('accountId'));
-            $projectTeamsIds = array_merge($projectTeamsIds, $project->getLinkMultipleIdList('teams'));
-        }
-        $entity->set('projectTeamsIds', $projectTeamsIds);
-
-        parent::prepareEntityForOutput($entity);
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function isPermittedAssignedUser(Entity $entity)
     {
         return true;
