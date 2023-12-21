@@ -41,7 +41,7 @@ use Espo\ORM\Entity;
  */
 class Issue extends Base
 {
-    protected $mandatorySelectAttributeList = ['assignedUserId', 'assignedUserName'];
+    protected $mandatorySelectAttributeList = ['assignedUserId', 'assignedUserName', 'ownerUserId', 'ownerUserName', 'projectId', 'projectName'];
 
     /**
      * @inheritDoc
