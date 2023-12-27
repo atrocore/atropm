@@ -120,7 +120,8 @@
       "type": "link",
       "required": true,
       "audited": true,
-      "layoutMassUpdateDisabled": true
+      "layoutMassUpdateDisabled": true,
+      "view": "project-management:views/fields/link"
     },
     "position": {
       "type": "int",
