@@ -59,7 +59,8 @@
             "required": true
         },
         "unitPrice": {
-            "type": "currency",
+            "type": "float",
+            "measureId": "currency",
             "required": true,
             "audited": true,
             "min": null,
@@ -71,7 +72,8 @@
             "audited": true
         },
         "total": {
-            "type": "currency",
+            "type": "float",
+            "measureId": "currency",
             "audited": true,
             "min": null,
             "max": null,

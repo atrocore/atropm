@@ -2,7 +2,7 @@
     "fields": {
         "expenseType": "Expense Type",
         "unitPrice": "Unit Price",
-        "unitPriceCurrency": "Unit Price (Currency)",
+        "unitPriceUnit": "Unit Price (Currency)",
         "unitPriceConverted": "Unit Price (Converted)",
         "units": "Units",
         "status": "Status",

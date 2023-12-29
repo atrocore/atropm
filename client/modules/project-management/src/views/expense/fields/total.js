@@ -38,7 +38,7 @@ Espo.define('project-management:views/expense/fields/total', 'views/fields/curre
             }, this);
             this.setValue();
 
-            this.listenTo(this.model, 'change:unitPriceCurrency', function () {
+            this.listenTo(this.model, 'change:unitPriceUnitId', function () {
                 this.setCurrency();
             }, this);
             this.setCurrency();
