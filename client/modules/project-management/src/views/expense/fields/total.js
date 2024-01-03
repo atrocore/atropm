@@ -54,7 +54,6 @@ Espo.define('project-management:views/expense/fields/total', 'views/fields/unit-
                 } else {
                     data[this.originalName] = null;
                 }
-                console.log('data', data)
                 this.model.set(data);
             }
         },

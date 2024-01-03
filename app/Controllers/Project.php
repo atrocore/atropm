@@ -88,7 +88,7 @@ class Project extends Base
                     'children' => []
                 ];
                 $expenseItem['entity']['expenses'] = $expense->get('total');
-                $expenseItem['entity']['expensesCurrency'] = $expense->get('totalCurrency');
+                $expenseItem['entity']['expensesUnitId'] = $expense->get('totalUnitId');
 
                 $list[] = $expenseItem;
             }
@@ -96,19 +96,19 @@ class Project extends Base
 
         $result = [
             'total' => 0,
-            'totalCurrency' => '',
+            'totalUnitId' => '',
             'list' => []
         ];
         foreach ($list as $e) {
             if (!is_null($result['total'])) {
-                if ((empty($result['totalCurrency']) || ($result['totalCurrency'] == $e['entity']['expensesCurrency']))
+                if ((empty($result['totalUnitId']) || ($result['totalUnitId'] == $e['entity']['expensesUnitId']))
                     && !is_null($e['entity']['expenses']))
                 {
                     $result['total'] += $e['entity']['expenses'];
-                    $result['totalCurrency'] = $e['entity']['expensesCurrency'];
+                    $result['totalUnitId'] = $e['entity']['expensesUnitId'];
                 } else {
                     $result['total'] = null;
-                    $result['totalCurrency'] = null;
+                    $result['totalUnitId'] = null;
                 }
             }
             $result['list'][] = $e;
