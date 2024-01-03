@@ -31,7 +31,7 @@ declare(strict_types=1);
 
 namespace ProjectManagement\Controllers;
 
-class Issue extends \Espo\Core\Templates\Controllers\Base
+class Issue extends \Atro\Core\Templates\Controllers\Base
 {
     public function getActionGetIssueExpenses($params, $data, $request)
     {
@@ -45,32 +45,31 @@ class Issue extends \Espo\Core\Templates\Controllers\Base
             foreach ($expenses as $expense) {
                 $service->loadAdditionalFieldsForList($expense);
                 $expenseItem = [
-                    'type' => $expense->getEntityType(),
-                    'entity' => (array)$expense->getValueMap(),
+                    'type'     => $expense->getEntityType(),
+                    'entity'   => (array)$expense->getValueMap(),
                     'children' => []
                 ];
                 $expenseItem['entity']['expenses'] = $expense->get('total');
-                $expenseItem['entity']['expensesCurrency'] = $expense->get('totalCurrency');
+                $expenseItem['entity']['expensesUnitId'] = $expense->get('totalUnitId');
 
                 $list[] = $expenseItem;
             }
         }
 
         $result = [
-            'total' => 0,
-            'totalCurrency' => '',
-            'list' => []
+            'total'       => 0,
+            'totalUnitId' => '',
+            'list'        => []
         ];
         foreach ($list as $e) {
             if (!is_null($result['total'])) {
-                if ((empty($result['totalCurrency']) || ($result['totalCurrency'] == $e['entity']['expensesCurrency']))
-                    && !is_null($e['entity']['expenses']))
-                {
+                if ((empty($result['totalUnitId']) || ($result['totalUnitId'] == $e['entity']['expensesUnitId']))
+                    && !is_null($e['entity']['expenses'])) {
                     $result['total'] += $e['entity']['expenses'];
-                    $result['totalCurrency'] = $e['entity']['expensesCurrency'];
+                    $result['totalUnitId'] = $e['entity']['expensesUnitId'];
                 } else {
                     $result['total'] = null;
-                    $result['totalCurrency'] = null;
+                    $result['totalUnitId'] = null;
                 }
             }
             $result['list'][] = $e;
