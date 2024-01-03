@@ -31,7 +31,8 @@ Espo.define('project-management:views/milestone/record/panels/expenses', 'projec
     return Dep.extend({
 
         totalDefs: {
-            type: 'currency'
+            type: 'float',
+            measureId: 'currency'
         },
 
         rowActionsViews: {
@@ -45,14 +46,14 @@ Espo.define('project-management:views/milestone/record/panels/expenses', 'projec
                 {name: 'expenseType'},
                 {name: 'status'},
                 {name: 'labels'},
-                {name: 'expenses', type: 'currency'}
+                {name: 'expenses', type: 'float', measureId: 'currency'}
             ],
             Expense: [
                 {name: 'name', link: true, view: 'project-management:views/fields/varchar-with-caret'},
                 {name: 'expenseType'},
                 {name: 'status'},
                 {name: 'description'},
-                {name: 'total', type: 'currency'}
+                {name: 'total', type: 'float', measureId: 'currency'}
             ]
         },
 
