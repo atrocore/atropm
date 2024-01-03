@@ -12,7 +12,7 @@
                     "name": "expenseType"
                 },
                 {
-                    "name": "unitPrice"
+                    "name": "unitUnitPrice"
                 }
             ],
             [
@@ -20,7 +20,7 @@
                     "name": "units"
                 },
                 {
-                    "name": "total"
+                    "name": "unitTotal"
                 }
             ],
             [

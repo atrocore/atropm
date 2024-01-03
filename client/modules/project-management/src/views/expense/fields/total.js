@@ -50,10 +50,11 @@ Espo.define('project-management:views/expense/fields/total', 'views/fields/unit-
                 var unitPrice = this.model.get('unitPrice');
                 var units = this.model.get('units');
                 if (unitPrice && units) {
-                    data[this.name] = unitPrice * units;
+                    data[this.originalName] = unitPrice * units;
                 } else {
-                    data[this.name] = null;
+                    data[this.originalName] = null;
                 }
+                console.log('data', data)
                 this.model.set(data);
             }
         },

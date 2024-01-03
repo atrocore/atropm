@@ -73,12 +73,12 @@ Espo.define('project-management:views/expense/record/edit', 'views/record/edit',
                 data['unitPrice'] = null;
             }
 
-            if (this.assignedUser.has('unitPriceCurrency')) {
-                data['unitPriceCurrency'] = this.assignedUser.get('unitPriceCurrency');
-            } else if (this.expenseType.has('unitPriceCurrency')) {
-                data['unitPriceCurrency'] = this.expenseType.get('unitPriceCurrency')
+            if (this.assignedUser.has('unitPriceUnitId')) {
+                data['unitPriceUnitId'] = this.assignedUser.get('unitPriceUnitId');
+            } else if (this.expenseType.has('unitPriceUnitId')) {
+                data['unitPriceUnitId'] = this.expenseType.get('unitPriceUnitId')
             } else {
-                data['unitPriceCurrency'] = null;
+                data['unitPriceUnitId'] = null;
             }
 
             if (this.expenseType.has('defaultUnitsAmount')) {

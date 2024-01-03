@@ -77,8 +77,7 @@
             "audited": true,
             "min": null,
             "max": null,
-            "readOnly": true,
-            "view": "project-management:views/expense/fields/total"
+            "readOnly": true
         },
         "dateCompleted": {
             "type": "date",

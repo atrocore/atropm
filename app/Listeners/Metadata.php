@@ -44,6 +44,7 @@ class Metadata extends AbstractListener
             $data['entityDefs']['ImportFeed']['fields']['type']['options'][] = 'Trello';
         }
 
+        $data['entityDefs']['Expense']['fields']['unitTotal']['view'] = 'project-management:views/expense/fields/total';
         $event->setArgument('data', $data);
     }
 }
