@@ -26,7 +26,7 @@
 * these Appropriate Legal Notices must retain the display of the "AtroPM" word.
 */
 
-Espo.define('project-management:views/expense/fields/total', 'views/fields/currency', function (Dep) {
+Espo.define('project-management:views/expense/fields/total', 'views/fields/unit-float', function (Dep) {
 
     return Dep.extend({
 
@@ -59,13 +59,13 @@ Espo.define('project-management:views/expense/fields/total', 'views/fields/curre
         },
 
         setCurrency: function () {
-            if (this.model.has('unitPriceCurrency')) {
+            if (this.model.has('unitPriceUnitId')) {
                 var data = {};
-                var unitPriceCurrency = this.model.get('unitPriceCurrency');
+                var unitPriceCurrency = this.model.get('unitPriceUnitId');
                 if (unitPriceCurrency) {
-                    data[this.currencyFieldName] = unitPriceCurrency;
+                    data[this.unitFieldName] = unitPriceCurrency;
                 } else {
-                    data[this.currencyFieldName] = null;
+                    data[this.unitFieldName] = null;
                 }
                 this.model.set(data);
             }
