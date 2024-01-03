@@ -34,6 +34,22 @@ Espo.define('project-management:views/fields/link', 'views/fields/link', functio
             Dep.prototype.setup.call(this);
 
             this.modifySelectLinkActionHandler();
+
+            if (this.name === 'project') {
+                this.on('linkLoaded', function (e) {
+                    const idValue = this.model.get(this.idName);
+                    if (idValue === null) {
+                        this.ajaxGetRequest(this.foreignScope, {silent: true})
+                            .done(function (response) {
+                                if (response.list && response.list.length === 1) {
+                                    const item = response.list.pop();
+                                    this.model.set(this.idName, item.id);
+                                    this.model.set(this.nameName, item.name);
+                                }
+                            }.bind(this));
+                    }
+                });
+            }
         },
 
         modifySelectLinkActionHandler: function () {
