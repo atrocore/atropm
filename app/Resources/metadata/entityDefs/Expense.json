@@ -59,7 +59,8 @@
             "required": true
         },
         "unitPrice": {
-            "type": "currency",
+            "type": "float",
+            "measureId": "currency",
             "required": true,
             "audited": true,
             "min": null,
@@ -71,12 +72,12 @@
             "audited": true
         },
         "total": {
-            "type": "currency",
+            "type": "float",
+            "measureId": "currency",
             "audited": true,
             "min": null,
             "max": null,
-            "readOnly": true,
-            "view": "project-management:views/expense/fields/total"
+            "readOnly": true
         },
         "dateCompleted": {
             "type": "date",

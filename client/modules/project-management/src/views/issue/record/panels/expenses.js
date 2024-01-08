@@ -31,7 +31,11 @@ Espo.define('project-management:views/issue/record/panels/expenses', 'project-ma
     return Dep.extend({
 
         totalDefs: {
-            type: 'currency'
+            type: 'float',
+            measureId: 'currency',
+            mainField: 'total',
+            unitField: true,
+            view: "views/fields/unit-float"
         },
 
         rowActionsViews: {

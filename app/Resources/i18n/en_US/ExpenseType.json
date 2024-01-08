@@ -1,7 +1,7 @@
 {
     "fields": {
         "unitPrice": "Unit Price",
-        "unitPriceCurrency": "Unit Price (Currency)",
+        "unitPriceUnit": "Unit Price (Currency)",
         "unitPriceConverted": "Unit Price (Converted)",
         "unitName": "Unit Name",
         "pluralizedUnitName": "Pluralized Unit Name",

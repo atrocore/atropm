@@ -1,7 +1,8 @@
 {
   "fields": {
     "unitPrice": {
-      "type": "currency",
+      "type": "float",
+      "measureId": "currency",
       "audited": true,
       "min": null,
       "max": null

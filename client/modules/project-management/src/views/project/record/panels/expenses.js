@@ -31,7 +31,11 @@ Espo.define('project-management:views/project/record/panels/expenses', 'project-
     return Dep.extend({
 
         totalDefs: {
-            type: 'currency'
+            type: 'float',
+            measureId: 'currency',
+            mainField: 'total',
+            unitField: true,
+            view: "views/fields/unit-float"
         },
 
         rowActionsViews: {
@@ -42,7 +46,7 @@ Espo.define('project-management:views/project/record/panels/expenses', 'project-
             Expense: [
                 {name: 'name', link: true},
                 {name: 'expenseType'},
-                {name: 'total'},
+                {name: 'unitTotal'},
                 {name: 'assignedUser'},
                 {name: 'dateCompleted'}
             ]
@@ -51,7 +55,7 @@ Espo.define('project-management:views/project/record/panels/expenses', 'project-
         headLayout: [
             {name: 'name'},
             {name: 'expenseType'},
-            {name: 'total'},
+            {name: 'unitTotal'},
             {name: 'assignedUser'},
             {name: 'dateCompleted'}
         ],

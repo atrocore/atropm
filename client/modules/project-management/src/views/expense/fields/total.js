@@ -26,7 +26,7 @@
 * these Appropriate Legal Notices must retain the display of the "AtroPM" word.
 */
 
-Espo.define('project-management:views/expense/fields/total', 'views/fields/currency', function (Dep) {
+Espo.define('project-management:views/expense/fields/total', 'views/fields/unit-float', function (Dep) {
 
     return Dep.extend({
 
@@ -38,7 +38,7 @@ Espo.define('project-management:views/expense/fields/total', 'views/fields/curre
             }, this);
             this.setValue();
 
-            this.listenTo(this.model, 'change:unitPriceCurrency', function () {
+            this.listenTo(this.model, 'change:unitPriceUnitId', function () {
                 this.setCurrency();
             }, this);
             this.setCurrency();
@@ -50,22 +50,22 @@ Espo.define('project-management:views/expense/fields/total', 'views/fields/curre
                 var unitPrice = this.model.get('unitPrice');
                 var units = this.model.get('units');
                 if (unitPrice && units) {
-                    data[this.name] = unitPrice * units;
+                    data[this.originalName] = unitPrice * units;
                 } else {
-                    data[this.name] = null;
+                    data[this.originalName] = null;
                 }
                 this.model.set(data);
             }
         },
 
         setCurrency: function () {
-            if (this.model.has('unitPriceCurrency')) {
+            if (this.model.has('unitPriceUnitId')) {
                 var data = {};
-                var unitPriceCurrency = this.model.get('unitPriceCurrency');
+                var unitPriceCurrency = this.model.get('unitPriceUnitId');
                 if (unitPriceCurrency) {
-                    data[this.currencyFieldName] = unitPriceCurrency;
+                    data[this.unitFieldName] = unitPriceCurrency;
                 } else {
-                    data[this.currencyFieldName] = null;
+                    data[this.unitFieldName] = null;
                 }
                 this.model.set(data);
             }

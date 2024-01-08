@@ -7,7 +7,7 @@
         "name": "expenseType"
     },
     {
-        "name": "total"
+        "name": "unitTotal"
     },
     {
         "name": "assignedUser"

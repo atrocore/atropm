@@ -48,7 +48,7 @@ class Milestone extends \Espo\Core\Templates\Controllers\Base
                     'children' => []
                 ];
                 $expenseItem['entity']['expenses'] = $expense->get('total');
-                $expenseItem['entity']['expensesCurrency'] = $expense->get('totalCurrency');
+                $expenseItem['entity']['expensesUnitId'] = $expense->get('totalUnitId');
 
                 $list[] = $expenseItem;
             }
@@ -67,24 +67,24 @@ class Milestone extends \Espo\Core\Templates\Controllers\Base
                 // get all issue Expenses
                 $expenses = $this->getEntityManager()->getRepository('Expense')->where(['issueId' => $issue->get('id')])->find();
                 $expenseTotal = 0;
-                $expenseCurrency = '';
+                $expenseUnitId = '';
                 foreach ($expenses as $expense) {
                     $issueItem['children'][] = [
                         'type' => $expense->getEntityType(),
                         'entity' => (array) $expense->getValueMap()
                     ];
                     if (!is_null($expenseTotal)) {
-                        if (empty($expenseCurrency) || $expenseCurrency == $expense->get('totalCurrency')) {
+                        if (empty($expenseUnitId) || $expenseUnitId == $expense->get('totalUnitId')) {
                             $expenseTotal += $expense->get('total');
-                            $expenseCurrency = $expense->get('totalCurrency');
+                            $expenseUnitId = $expense->get('totalUnitId');
                         } else {
                             $expenseTotal = null;
-                            $expenseCurrency = null;
+                            $expenseUnitId = null;
                         }
                     }
                 }
                 $issueItem['entity']['expenses'] = $expenseTotal;
-                $issueItem['entity']['expensesCurrency'] = $expenseCurrency;
+                $issueItem['entity']['expensesUnitId'] = $expenseUnitId;
 
                 $list[] = $issueItem;
             }
@@ -92,19 +92,19 @@ class Milestone extends \Espo\Core\Templates\Controllers\Base
 
         $result = [
             'total' => 0,
-            'totalCurrency' => '',
+            'totalUnitId' => '',
             'list' => []
         ];
         foreach ($list as $e) {
             if (!is_null($result['total'])) {
-                if ((empty($result['totalCurrency']) || ($result['totalCurrency'] == $e['entity']['expensesCurrency']))
+                if ((empty($result['totalUnitId']) || ($result['totalUnitId'] == $e['entity']['expensesUnitId']))
                     && !is_null($e['entity']['expenses']))
                 {
                     $result['total'] += $e['entity']['expenses'];
-                    $result['totalCurrency'] = $e['entity']['expensesCurrency'];
+                    $result['totalUnitId'] = $e['entity']['expensesUnitId'];
                 } else {
                     $result['total'] = null;
-                    $result['totalCurrency'] = null;
+                    $result['totalUnitId'] = null;
                 }
             }
             $result['list'][] = $e;

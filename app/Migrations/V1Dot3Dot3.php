@@ -29,22 +29,34 @@
 
 declare(strict_types=1);
 
-namespace ProjectManagement\Listeners;
+namespace ProjectManagement\Migrations;
 
-use Atro\Core\EventManager\Event;
-use Atro\Listeners\AbstractListener;
+use Atro\Core\Migration\Base;
+use Atro\Migrations\V1Dot8Dot3;
+use Espo\Core\Exceptions\Error;
 
-class Metadata extends AbstractListener
+/**
+ * Migration for version 1.3.3
+ */
+class V1Dot3Dot3 extends Base
 {
-    public function modify(Event $event): void
+    /**
+     * @inheritDoc
+     */
+    public function up(): void
     {
-        $data = $event->getArgument('data');
+        V1Dot8Dot3::migrateCurrencyField($this, 'User', 'unitPrice');
+        V1Dot8Dot3::migrateCurrencyField($this, 'Expense', 'unitPrice');
+        V1Dot8Dot3::migrateCurrencyField($this, 'Expense', 'total');
+        V1Dot8Dot3::migrateCurrencyField($this, 'ExpenseType', 'unitPrice');
+        $this->updateComposer('atrocore/pm', '^1.3.3');
+    }
 
-        if (isset($data['entityDefs']['ImportFeed']['fields']['type'])) {
-            $data['entityDefs']['ImportFeed']['fields']['type']['options'][] = 'Trello';
-        }
-
-        $data['entityDefs']['Expense']['fields']['unitTotal']['view'] = 'project-management:views/expense/fields/total';
-        $event->setArgument('data', $data);
+    /**
+     * @inheritDoc
+     */
+    public function down(): void
+    {
+        throw new Error("Downgrade prohibited");
     }
 }
