@@ -290,6 +290,9 @@
       "previewSize": "small",
       "audited": true,
       "assetType": "File"
+    },
+    "reducedHourlyRate": {
+      "type": "bool"
     }
   },
   "links": {
