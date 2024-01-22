@@ -9,6 +9,9 @@
     "onlyOpen",
     "onlyClosed"
   ],
+  "views": {
+    "detail": "project-management:views/issue/detail"
+  },
   "bottomPanels": {
     "detail": [
       {

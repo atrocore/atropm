@@ -30,8 +30,6 @@ Espo.define('project-management:views/issue/detail', 'project-management:views/d
 
     return Dep.extend({
 
-        recordView: 'project-management:views/issue/record/detail',
-
         setup() {
              Dep.prototype.setup.call(this);
 
