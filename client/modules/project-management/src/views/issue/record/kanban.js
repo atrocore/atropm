@@ -34,8 +34,6 @@ Espo.define('project-management:views/issue/record/kanban', 'views/record/kanban
 
         rendered: false,
 
-        rowActionsView: 'project-management:views/issue/record/row-actions/kanban',
-
         setup() {
             this.rendered = false;
 
