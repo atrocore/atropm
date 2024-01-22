@@ -20,8 +20,5 @@
   "boolFilters": {
     "onlyOpen": "Open",
     "onlyClosed": "Closed"
-  },
-  "labels": {
-    "closeAndArchive": "Close and Archive"
   }
 }
